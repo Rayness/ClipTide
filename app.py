@@ -1,4 +1,3 @@
-import yt_dlp
 import os
 import subprocess
 import sys
@@ -56,6 +55,7 @@ def install_yt_dlp():
         print("Устанавливаю yt-dlp...")
         subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp"])
 
+
 def main():
     install_yt_dlp()
     install_ffmpeg()
@@ -78,6 +78,7 @@ def progress_hook(d):
         print("\nЗагрузка завершена!")
 
 def download_audio_as_mp3(url):
+    import yt_dlp
     ydl_opts = {
         'format': 'bestaudio/best',  # Загрузить лучшее качество аудио
         'outtmpl': '%(title)s.%(ext)s',  # Сохранять с оригинальным названием

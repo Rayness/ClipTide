@@ -1,26 +1,23 @@
 @echo off
 chcp 65001
 setlocal enabledelayedexpansion
+
 rem Получаем язык системы
 for /f "tokens=2 delims==" %%I in ('"wmic os get locale /value"') do set locale=%%I
 
 rem Проверяем, установлен ли Python
-where python >nul 2>nul
+python --version >nul 2>nul
 if %errorlevel% neq 0 (
     echo Python не найден. Начинаю установку...
-
-    rem Скачиваем установщик Python
-    set "URL=https://www.python.org/ftp/python/3.10.6/python-3.10.6.exe"
-    set "INSTALLER=python-installer.exe"
-    
+   
     rem Скачиваем установщик
-    powershell -Command "Invoke-WebRequest -Uri %URL% -OutFile %INSTALLER%"
+    powershell -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.10.6/python-3.10.6.exe' -OutFile 'python-installer.exe'"
     
     rem Запускаем установку
-    start /wait %INSTALLER% /quiet InstallAllUsers=1 PrependPath=1
+    python-installer.exe /passive InstallAllUsers=1 PrependPath=1
     
     rem Удаляем установочный файл
-    del %INSTALLER%
+    del python-installer.exe
 
     echo Python установлен!
 ) else (
