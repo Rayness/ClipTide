@@ -4,4 +4,4 @@
 
 Для использования необходим python
 
-Скачать можно [тут](https://github.com/Rayness/YouTube-Download/releases/tag/alpha)
+Скачать можно [тут](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.1.2-Alpha)
