@@ -11,35 +11,6 @@ FFMPEG_URL = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 
-def check_python_installed():
-    try:
-        # Попробуем вызвать python --version
-        result = subprocess.run([sys.executable, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
-        # Проверим код возврата
-        if result.returncode == 0:
-            print(f"Python установлен: {result.stdout.decode().strip()}")
-            return
-        else:
-            print("Python не найден.")
-    except FileNotFoundError:
-        print("Python не найден в системе, будет произведена установка")
-
-        python_url = "https://www.python.org/ftp/python/3.10.6/python-3.10.6-amd64.exe"
-        installer_path = "python_installer.exe"
-
-        print("Скачивание установщика Python...")
-        # Скачиваем файл
-        urllib.request.urlretrieve(python_url, installer_path, reporthook=download_progress_hook)
-        print("Установщик скачан.")
-
-        print("Запуск установщика Python...")
-        # Запуск установщика с параметрами
-        subprocess.run([installer_path, "/quiet", "InstallAllUsers=1", "PrependPath=1"], check=True)
-        print("Python установлен.")
-
-
-
 # Функция для отображения прогресса
 def download_progress_hook(count, block_size, total_size):
     # Вычисляем сколько процентов уже загружено
@@ -124,7 +95,6 @@ def download_audio_as_mp3(url):
         ydl.download([url])
 
 if __name__ == "__main__":
-    check_python_installed()
     main()
     import sys
     if len(sys.argv) > 1:
