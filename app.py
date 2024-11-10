@@ -30,7 +30,7 @@ def check_python_installed():
 
         print("Скачивание установщика Python...")
         # Скачиваем файл
-        urllib.request.urlretrieve(python_url, installer_path)
+        urllib.request.urlretrieve(python_url, installer_path, reporthook=download_progress_hook)
         print("Установщик скачан.")
 
         print("Запуск установщика Python...")
