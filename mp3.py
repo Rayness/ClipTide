@@ -1,5 +1,6 @@
 import sys
 import os
+import yt_dlp
 from pathlib import Path
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
@@ -20,7 +21,6 @@ def progress_hook(d):
         print("\nЗагрузка завершена!")
 
 def download_audio_as_mp3(url):
-    import yt_dlp
     ydl_opts = {
         'format': 'bestaudio/best',  # Загрузить лучшее качество аудио
         'outtmpl': '%(title)s.%(ext)s',  # Сохранять с оригинальным названием
@@ -37,9 +37,7 @@ def download_audio_as_mp3(url):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
+
+
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) > 1:
-        download_audio_as_mp3(sys.argv[1])
-    else:
-        print("Пожалуйста, введите URL видео YouTube.")
+    download_audio_as_mp3(sys.argv[1])

@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 rem Получаем язык системы
 for /f "tokens=2 delims==" %%I in ('"wmic os get locale /value"') do set locale=%%I
 
-:cheking
+:checking
 rem Проверяем, установлен ли Python
 python --version >nul 2>nul
 if %errorlevel% neq 0 (
@@ -12,9 +12,9 @@ if %errorlevel% neq 0 (
 ) else (
     echo Python уже установлен.
     python checks.py
-    goto menu   
+    echo Переход к меню
+    goto menu
 )
-
 
 :py-install-menu
     echo Python не найден.
@@ -29,25 +29,21 @@ if %errorlevel% neq 0 (
     if %cho%==2 goto py-install
 
 :menu
+    echo Меню загружено
     echo.
     echo Текущие варианты:
     echo.
-    echo 1 - скачивание аудиофайла в формате .mp3
+    echo 1 - Скачать аудио в формате .mp3 --- Максимальное качество звука 
     echo -----------------------------------------------------------------------
-    echo 2 - скачивание видео в формате .mp4 - HD -- 720p || в разработке
-    echo 3 - скачивание видео в формате .mp4 - FullHD -- 1080p || в разработке
-    echo 4 - скачивание видео в формате .mp4 - 2K -- 1440p || в разработке
-    echo 5 - скачивание видео в формате .mp4 - 4K -- 2160p || в разработке
+    echo 2 - Скачать видео в формате .mp4 --- HD - 4K (На данный момент работает очень не стабильно)
     echo -----------------------------------------------------------------------
     echo 0 - Выход
     echo.
-
-set /p choice="Введите ваш выбор и нажмите 'Enter': "
+    set /p choice="Введите ваш выбор и нажмите 'Enter': "
 
 if %choice%==1 goto Download-mp3
+if %choice%==2 goto Download-mp4
 if %choice%==0 goto End
-
-goto Not-ready
 
 :manual-install
     echo Для ручной установки Python перейдите по ссылке: https://www.python.org/downloads/ и выберите 'Download Python *.**.*', где * - текущая версия. || Например: 3.10.6, у вас будет более старшая версия
@@ -58,7 +54,7 @@ goto Not-ready
     echo.
     echo Выполните установку Python после чего нажмите любую кнопку для возвращения в прогромму...
     pause >nul
-    goto cheking
+    goto checking
 
 :py-install
     echo Скачивание установщика...
@@ -73,17 +69,40 @@ goto Not-ready
     echo Python установлен!
     goto checking
 
+:Download-mp4
+    echo.
+    echo ВНИМАНИЕ: Если вы живете в России, то с загрузкой 100% возникнут сложности и проблемы.
+    echo Для решения данной проблемы рекомендуется использовать сами знаете что (VPN), ибо с zapret всё работает так же нестабильно.
+    echo.
+    echo Выберите предпочтительное разрешение:
+    echo ----------------------------------------------------
+    echo 1 - 720p || HD
+    echo 2 - 1080p || FHD
+    echo 3 - 1440p || 2K - если поддерживается видео
+    echo 4 - 2160p || 4K - если поддерживается видео
+    echo ----------------------------------------------------
+    echo.
+    echo.
+    echo 0 - Назад
+    set /p res_choice="Введите разрешение: "
+    
+if %res_choice%==1 set resolution=720p
+if %res_choice%==2 set resolution=1080p
+if %res_choice%==3 set resolution=1440p
+if %res_choice%==4 set resolution=2160p
+if %res_choice%==0 goto menu
+
+
+echo Выбрано разрешение: !resolution!
+set /p URL="Введите ссылку на YouTube видео, которое хотите скачать в .mp4: "
+echo Ваша ссылка: "%URL%"
+python mp4.py "%URL%" !resolution!
+goto Download-Complete
 
 :Download-mp3
     set /p URL="Введите ссылку на YouTube видео, которое хотите скачать в .mp3: "
-    python app.py %URL%
+    python mp3.py %URL% audio
     goto Download-Complete
-
-:Not-ready
-    echo Выбранный вами вариант ещё в разработке, либо не существует
-    echo Нажмите любую клавишу, чтобы вернуться в меню...
-    pause >nul
-    goto menu
 
 :End
     echo Выход из программы...
