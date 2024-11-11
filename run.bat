@@ -22,6 +22,7 @@ if %errorlevel% neq 0 (
 ) else (
     echo Python уже установлен.
 )
+python checks.py
 
 :menu
     echo.
