@@ -20,10 +20,10 @@ def progress_hook(d):
     elif d['status'] == 'finished':
         print("\nЗагрузка завершена!")
 
-def download_audio_as_mp3(url):
+def download_audio_as_mp3(url, output_folder):
     ydl_opts = {
         'format': 'bestaudio/best',  # Загрузить лучшее качество аудио
-        'outtmpl': '%(title)s.%(ext)s',  # Сохранять с оригинальным названием
+        'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),  # Сохранять с оригинальным названием
         'postprocessors': [
             {  # Первый этап: скачивание аудио
                 'key': 'FFmpegExtractAudio',
@@ -40,4 +40,9 @@ def download_audio_as_mp3(url):
 
 
 if __name__ == "__main__":
-    download_audio_as_mp3(sys.argv[1])
+    if len(sys.argv) < 2:
+        print("Ошибка: Недостаточно аргументов. Использование: python mp4.py <URL> <resolution>")
+        sys.exit(1)
+    url = sys.argv[1]
+    output_folder = sys.argv[2]
+    download_audio_as_mp3(url, output_folder)

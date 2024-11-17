@@ -22,10 +22,10 @@ def progress_hook(d):
     elif d['status'] == 'finished':
         print("\nЗагрузка завершена!")
 
-def download_video(url, resolution):
+def download_video(url, resolution, output_folder):
     ydl_opts = {
         'format': f'bestvideo[height<={resolution}]+bestaudio/best[height<={resolution}]',
-        'outtmpl': '%(title)s.%(ext)s',
+        'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),
         'merge_output_format': 'mp4',
         'quiet': False,  # Показывает прогресс в консоли
         'socket_timeout': 60,
@@ -41,4 +41,5 @@ if __name__ == '__main__':
     
     url = sys.argv[1]
     resolution = sys.argv[2]
-    download_video(url, resolution)
+    output_folder = sys.argv[3]
+    download_video(url, resolution, output_folder)
