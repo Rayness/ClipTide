@@ -4,7 +4,6 @@ setlocal enabledelayedexpansion
 rem Получаем язык системы
 for /f "tokens=2 delims==" %%I in ('"wmic os get locale /value"') do set locale=%%I
 
-
 :checking
 rem Проверяем, установлен ли Python
 python --version >nul 2>nul
@@ -13,6 +12,15 @@ if %errorlevel% neq 0 (
 ) else (
     echo Python уже установлен.
     python checks.py
+    if not exist downloads (
+        mkdir downloads
+        set download_folder="downloads"
+        echo Папка "downloads" создана и выбрана по умолчанию. 
+        echo %download_folder% > path.txt
+    ) else (
+        echo Папка "downloads" уже существует.
+        set /p download_folder=<path.txt
+    )
     echo Переход к меню
     goto menu
 )
@@ -70,6 +78,7 @@ if %choice%==0 goto End
     echo.
     echo Выбор папки для сохранения скаченных файлов:
     echo.
+    echo Текущая папка для загрузки файлов: "%download_folder%"
     echo --------------------------------------------------------------------------------
     echo [1] - Папка по умолчанию (будет создана папка "downloads" в папке с программой)
     echo [2] - Указать свой вариант (например, "C:\\downloads'):")
@@ -80,9 +89,14 @@ if %choice%==0 goto End
 
     if %choi%==1 (
         set download_folder="downloads"
+        echo.
+        echo Путь был обновлен
+        echo %download_folder% > path.txt
+        pause
         goto menu
     )
     if %choi%==2 goto settings_manual
+    if %choi%==0 goto menu
 
 :settings_manual
     echo.
@@ -91,6 +105,7 @@ if %choice%==0 goto End
     set /p download_folder="Вставьте сюда путь к папке: "
     echo.
     echo Путь был обновлен
+    echo %download_folder% > path.txt
     pause
     goto menu
 
@@ -108,23 +123,16 @@ if %choice%==0 goto End
     goto checking
 
 :Download-mp4
-    if not exist downloads (
-    mkdir downloads
-    set download_folder="downloads"
-    echo Папка "downloads" создана и выбрана по умолчанию.
-    ) else (
-        echo Папка "downloads" уже существует.
-    )
     echo.
     echo ВНИМАНИЕ: Если вы живете в России, то с загрузкой 100% возникнут сложности и проблемы.
     echo Для решения данной проблемы рекомендуется использовать сами знаете что (VPN), ибо с zapret всё работает так же нестабильно.
     echo.
     echo Выберите предпочтительное разрешение:
     echo ----------------------------------------------------
-    echo [1]   720p || HD
-    echo [2]   1080p || FHD
-    echo [3]   1440p || 2K - если поддерживается видео
-    echo [4]   2160p || 4K - если поддерживается видео
+    echo [1] - 720p || HD
+    echo [2] - 1080p || FHD
+    echo [3] - 1440p || 2K - если поддерживается видео
+    echo [4] - 2160p || 4K - если поддерживается видео
     echo ----------------------------------------------------
     echo.
     echo.
@@ -144,13 +152,6 @@ python mp4.py "%URL%" !resolution! "%download_folder%"
 goto Download-Complete
 
 :Download-mp3
-    if not exist downloads (
-    mkdir downloads
-    set download_folder="cd%\downloads"
-    echo Папка "downloads" создана и выбрана по умолчанию.
-    ) else (
-        echo Папка "downloads" уже существует.
-    )
     set /p URL="Введите ссылку на YouTube видео, которое хотите скачать в .mp3: "
     python mp3.py "%URL%" "%download_folder%"
     goto Download-Complete
