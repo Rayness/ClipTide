@@ -12,11 +12,6 @@ ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 ffmpeg_bin_path = str(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin")
 os.environ["PATH"] += os.pathsep + ffmpeg_bin_path
 print("FFmpeg установлен и добавлен в PATH.")
-import yt_dlp
-import sys
-
-import sys
-import yt_dlp
 
 def progress_hook(d):
     if d['status'] == 'downloading':
@@ -33,6 +28,7 @@ def download_video(url, resolution):
         'outtmpl': '%(title)s.%(ext)s',
         'merge_output_format': 'mp4',
         'quiet': False,  # Показывает прогресс в консоли
+        'socket_timeout': 60,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
