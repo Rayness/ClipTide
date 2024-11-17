@@ -3,7 +3,7 @@ chcp 65001 >nul
 setlocal enabledelayedexpansion 
 rem Получаем язык системы
 for /f "tokens=2 delims==" %%I in ('"wmic os get locale /value"') do set locale=%%I
-set download_folder="downloads"
+
 
 :checking
 rem Проверяем, установлен ли Python
@@ -23,8 +23,8 @@ if %errorlevel% neq 0 (
     echo Выберите дальнейшее действие:
     echo.
     echo -----------------------------------------------------------------------------------------
-    echo [1]   Установить Python в ручную | Рекомендуется скачать актуальную версию не нижу 3.10.6
-    echo [2]   Установить Python в автоматическом формате | Будет установлена версия 3.10.6
+    echo [1] - Установить Python в ручную | Рекомендуется скачать актуальную версию не нижу 3.10.6
+    echo [2] - Установить Python в автоматическом формате | Будет установлена версия 3.10.6
     echo -----------------------------------------------------------------------------------------
     echo [0]   Отменить установку и закрыть приложение
     echo.
@@ -39,12 +39,12 @@ if %errorlevel% neq 0 (
     echo Текущие варианты:
     echo.
     echo -----------------------------------------------------------------------
-    echo [1]   Скачать аудио в формате .mp3 --- Максимальное качество звука 
-    echo [2]   Скачать видео в формате .mp4 --- HD - 4K
+    echo [1] - Скачать аудио в формате .mp3 --- Максимальное качество звука 
+    echo [2] - Скачать видео в формате .mp4 --- HD - 4K
     echo -----------------------------------------------------------------------
-    echo [3]   Настройки
+    echo [3] - Настройки
     echo -----------------------------------------------------------------------
-    echo [0]   Выход
+    echo [0] - Выход
     echo.
     set /p choice="Введите ваш выбор и нажмите 'Enter': "
 
@@ -89,6 +89,10 @@ if %choice%==0 goto End
     echo Укажите папку для скачивания (например - "C:\\downloads'):"): 
     echo.
     set /p download_folder="Вставьте сюда путь к папке: "
+    echo.
+    echo Путь был обновлен
+    pause
+    goto menu
 
 :py-install
     echo Скачивание установщика...
@@ -106,9 +110,10 @@ if %choice%==0 goto End
 :Download-mp4
     if not exist downloads (
     mkdir downloads
-    echo Папка создана.
+    set download_folder="downloads"
+    echo Папка "downloads" создана и выбрана по умолчанию.
     ) else (
-        echo Папка уже существует.
+        echo Папка "downloads" уже существует.
     )
     echo.
     echo ВНИМАНИЕ: Если вы живете в России, то с загрузкой 100% возникнут сложности и проблемы.
@@ -141,9 +146,10 @@ goto Download-Complete
 :Download-mp3
     if not exist downloads (
     mkdir downloads
-    echo Папка создана.
+    set download_folder="cd%\downloads"
+    echo Папка "downloads" создана и выбрана по умолчанию.
     ) else (
-        echo Папка уже существует.
+        echo Папка "downloads" уже существует.
     )
     set /p URL="Введите ссылку на YouTube видео, которое хотите скачать в .mp3: "
     python mp3.py "%URL%" "%download_folder%"
@@ -155,9 +161,9 @@ goto Download-Complete
     exit
 
 :Download-Complete
-    start downloads
-    echo Загрузка завершена! Нажмите любую клавишу для продолжения...
-    pause >nul
+    start "" "%download_folder%"
+    echo Загрузка завершена! Возвращение в меню через 4 секунды...
+    timeout /t 4 /nobreak >nul
     goto menu
 
 
