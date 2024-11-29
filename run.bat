@@ -16,10 +16,10 @@ if %errorlevel% neq 0 (
         mkdir downloads
         set download_folder="downloads"
         echo Папка "downloads" создана и выбрана по умолчанию. 
-        echo "%download_folder%" > path.txt
+        echo "%download_folder%" >path
     ) else (
         echo Папка "downloads" уже существует.
-        set /p download_folder=<path.txt
+        set /p download_folder=<path
     )
     echo Переход к меню
     goto menu
@@ -91,7 +91,7 @@ if %choice%==0 goto End
         set download_folder="downloads"
         echo.
         echo Путь был обновлен
-        echo "%download_folder%" > path.txt
+        echo "%download_folder%" >path
         pause
         goto menu
     )
@@ -105,7 +105,7 @@ if %choice%==0 goto End
     set /p download_folder="Вставьте сюда путь к папке: "
     echo.
     echo Путь был обновлен
-    echo "%download_folder%" > path.txt
+    echo "%download_folder%" >path
     pause
     goto menu
 
