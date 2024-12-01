@@ -4,7 +4,7 @@ import sys
 import yt_dlp
 from pathlib import Path
 
-folder = "downloads"
+file = "data.yd"
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
@@ -47,6 +47,20 @@ def create_file(file_name):
         print(f"Файл '{file_name}' создан.")
     except Exception as e:
         print(f"Ошибка при создании файла: {e}")
+
+
+def read_from_file(file_name):
+    try:
+        with open(file_name, "r") as file:
+            content = file.read()
+        print(f"Данные из файла '{file_name}':\n{content}")
+        return content
+    except FileNotFoundError:
+        print(f"Файл '{file_name}' не найден.")
+        return None
+    except Exception as e:
+        print(f"Ошибка при чтении: {e}")
+        return None
 
 # Функция для записи данных в файл
 def write_to_file(file_name, content):
@@ -95,15 +109,75 @@ def download_video(url, resolution, output_folder):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
-def video_settings():
-    print("Выберите предпочтительное разрешение")
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def settingsFolder_menu():
+    clear_screen()
+    print("Изменение папки для загрузки")
     print("")
+    print("------------------------------------------------------------------------")
+    print("[1] - Выбрать папку по умолчанию")
+    print("[2] - Указать свою папку")
+    print("------------------------------------------------------------------------")
+    print("[0] - Назад в меню")
+    print("")
+    try: 
+        choice = int(input("Введите свой выбор: "))
+        if choice == 1:
+            folder = "downloads"
+            print("Выбрана папка по умолчанию: ", folder)
+            write_to_file(file, folder)
+        elif choice == 2:
+            print("Текущая папка для сохранения: ", folder)
+            userPath = input("Вставьте путь к папке, в которую будут сохраняться видео: ")
+            write_to_file(file, userPath)
+        elif choice == 0:
+            return
+        else:
+            print("Неверный выбор. Попробуйте снова")
+    except ValueError:
+            print("Пожалуйста, введите только число!")
+
+def settings_menu():
+    clear_screen()
+    print("")
+    print("Настройки")
+    print("------------------------------------------------------------------------")
+    print("[1] - Изменить папку загрузки | ",folder )
+    print("[2] - Изменить язык приложения | Русский")
+    print("------------------------------------------------------------------------")
+    print("[0] - Назад в меню")
+    print("[00] - Выход")
+    print("")
+    try:
+        choice = int(input("Выберите пункт меню: "))
+        if choice == 1:
+            settingsFolder_menu()
+        elif choice == 0:
+            return
+        elif choice == 00:
+            print("Выход из программы...")
+            exit()
+        else:
+            print("Неверный выбор. Попробуйте снова.")
+    except ValueError:
+        print("Пожалуйста, введите только число!")
+
+folder = read_from_file(file)
+
+def video_settings():
+    clear_screen()
+    print("Выберите предпочтительное разрешение")
+    print("-----------------------------------------------")
     print("[1] - 720p || HD")
     print("[2] - 1080p || FHD")
     print("[3] - 1440p || 2K - если поддерживается видео")
     print("[4] - 2160p || 4K - если поддерживается видео")
+    print("-----------------------------------------------")
+    print("[0] - Назад в меню")
     try:
-        choice = int(input("Введите цифру для продолжения: "))
+        choice = int(input("Выберите пункт меню: "))
         if choice == 1:
             print("Загрузчик видео")
             link = input("Вставьте ссылку на видео: ")
@@ -124,17 +198,31 @@ def video_settings():
             link = input("Вставьте ссылку на видео: ")
             download_video(link, "2160p", folder)
             open_folder(folder)
+        elif choice == 0:
+            return
         else:
             print("Неверный выбор. Попробуйте снова")
     except ValueError:
         print("Пожалуйста, введите только число!")
 
-def main():
+def audio_menu():
+    clear_screen()
+    print("\nЗагрузчик аудио")
+    print("----------------------------------")
+    print("\n[0] - Для отмены")
+    print("----------------------------------")
+    link = input("Вставьте ссылку на видео: ")
+    if link == '0':
+        return
+    else:
+        download_audio_as_mp3(link, folder)
+        open_folder(folder)
+
+def main_menu():
     while True:
-        print("")
-        print("\033[31mДобро пожаловать в YouTube Downloader\033[0m")
-        print("")
-        print("\033[32mДля продолжения выберите пункт меню вводя нужные цифры на клавиатуре\033[0m")
+        clear_screen()
+        print("\033[31m\nДобро пожаловать в YouTube Downloader\033[0m")
+        print("\033[32m\nДля продолжения выберите пункт меню вводя нужные цифры на клавиатуре\033[0m")
         print("------------------------------------------------------------------------")
         print("\033[34m[1]\033[0m - Скачать аудио в формате .mp3 --- Максимальное качество звука")
         print("\033[34m[2]\033[0m - Скачать видео в формате .mp4 --- HD - 4K")
@@ -142,17 +230,16 @@ def main():
         print("\033[31m[3]\033[0m - Настройки")
         print("------------------------------------------------------------------------")
         print("\033[31m[0]\033[0m - Выход из программы")
-        print("")
         try:
-            choice = int(input("Введите цифру: "))
+            choice = int(input("\nВыберите пункт меню: "))
             if choice == 1:
-                print("Загрузчик аудио")
-                link = input("Вставьте ссылку на видео: ")
-                download_audio_as_mp3(link, folder)
-                open_folder(folder)
+                audio_menu()
             elif choice == 2:
                 video_settings()
+            elif choice == 3:
+                settings_menu()
             elif choice == 0:
+                print("Выход из программы...")
                 break
             else:
                 print("Неверный выбор. Попробуйте снова.")
@@ -160,4 +247,4 @@ def main():
             print("Пожалуйста, введите только число.")
 
 if __name__ == "__main__":
-    main()
+    main_menu()
