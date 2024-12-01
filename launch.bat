@@ -4,6 +4,8 @@ setlocal enabledelayedexpansion
 rem Получаем язык системы
 for /f "tokens=2 delims==" %%I in ('"wmic os get locale /value"') do set locale=%%I
 
+
+
 :checking
 rem Проверяем, установлен ли Python
 python --version >nul 2>nul

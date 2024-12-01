@@ -55,10 +55,18 @@ def install_yt_dlp():
         print("Устанавливаю yt-dlp...")
         subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp"])
 
+def install_rich():
+    try:
+        import rich
+        print("rich уже установлен")
+    except ImportError:
+        print("Устанавливаю rich...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "rich"])
 
 def main():
     install_yt_dlp()
     install_ffmpeg()
+    install_rich()
 
 
 if __name__ == "__main__":

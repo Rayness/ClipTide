@@ -2,9 +2,14 @@ import os
 import subprocess
 import sys
 import yt_dlp
+from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
+from rich.text import Text
 from pathlib import Path
 
 file = "data.yd"
+console = Console()
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
@@ -114,104 +119,165 @@ def clear_screen():
 
 def settingsFolder_menu():
     clear_screen()
-    print("Изменение папки для загрузки")
-    print("")
-    print("------------------------------------------------------------------------")
-    print("[1] - Выбрать папку по умолчанию")
-    print("[2] - Указать свою папку")
-    print("------------------------------------------------------------------------")
-    print("[0] - Назад в меню")
-    print("")
+
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        "------------------------------------------------------------------------",
+        "[1] - Выбрать папку по умолчанию | 'downloads'",
+        "[2] - Указать свою папку",
+        "------------------------------------------------------------------------",
+        "[9] - [bold red]Назад в меню[/]",
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title="=== Изменение папки для загрузки ===",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False,
+    )
+
+    console.print(Align(menu_panel, align="center"))
     try: 
-        choice = int(input("Введите свой выбор: "))
+        choice = int(console.input("\nВведите свой выбор: ").strip())
         if choice == 1:
             folder = "downloads"
-            print("Выбрана папка по умолчанию: ", folder)
+            console.print("Выбрана папка по умолчанию: ", folder)
             write_to_file(file, folder)
         elif choice == 2:
-            print("Текущая папка для сохранения: ", folder)
             userPath = input("Вставьте путь к папке, в которую будут сохраняться видео: ")
             write_to_file(file, userPath)
-        elif choice == 0:
+        elif choice == 9:
             return
         else:
-            print("Неверный выбор. Попробуйте снова")
+            console.print("Неверный выбор. Попробуйте снова")
     except ValueError:
-            print("Пожалуйста, введите только число!")
+            console.print("Пожалуйста, введите только число!")
 
 def settings_menu():
     clear_screen()
-    print("")
-    print("Настройки")
-    print("------------------------------------------------------------------------")
-    print("[1] - Изменить папку загрузки | ",folder )
-    print("[2] - Изменить язык приложения | Русский")
-    print("------------------------------------------------------------------------")
-    print("[0] - Назад в меню")
-    print("[00] - Выход")
-    print("")
+
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        "------------------------------------------------------------------------",
+        f"[1] - Изменить папку загрузки | {folder}",
+        f"[2] - Изменить язык приложения | Русский ([red]В разработке[/])",
+        "------------------------------------------------------------------------",
+        "[9] - [bold red]Назад в меню[/]",
+        "[0] - [bold red]Выход[/]"
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title="=== Настройки ===",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False,
+    )
+
+    console.print(Align(menu_panel, align="center"))
+
     try:
-        choice = int(input("Выберите пункт меню: "))
+        choice = int(input("\nВыберите пункт меню: "))
         if choice == 1:
             settingsFolder_menu()
-        elif choice == 0:
+        elif choice == 9:
             return
-        elif choice == 00:
-            print("Выход из программы...")
+        elif choice == 0:
+            console.print("Выход из программы...")
             exit()
         else:
-            print("Неверный выбор. Попробуйте снова.")
+            console.print("Неверный выбор. Попробуйте снова.")
     except ValueError:
-        print("Пожалуйста, введите только число!")
+        console.print("Пожалуйста, введите только число!")
 
 folder = read_from_file(file)
 
 def video_settings():
     clear_screen()
-    print("Выберите предпочтительное разрешение")
-    print("-----------------------------------------------")
-    print("[1] - 720p || HD")
-    print("[2] - 1080p || FHD")
-    print("[3] - 1440p || 2K - если поддерживается видео")
-    print("[4] - 2160p || 4K - если поддерживается видео")
-    print("-----------------------------------------------")
-    print("[0] - Назад в меню")
+
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        "-----------------------------------------------",
+        "[1] - 720p  || HD",
+        "[2] - 1080p || FHD",
+        "[3] - 1440p || 2K - если поддерживается видео",
+        "[4] - 2160p || 4K - если поддерживается видео",
+        "-----------------------------------------------",
+        "[9] - [bold red]Назад в меню[/]",
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title="=== Выбор разрешения ===",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False,
+    )
+
+    console.print(Align(menu_panel, align="center"))
+
     try:
-        choice = int(input("Выберите пункт меню: "))
+        choice = int(console.input("\nВыберите пункт меню: ").strip())
         if choice == 1:
-            print("Загрузчик видео")
-            link = input("Вставьте ссылку на видео: ")
+            console.print("Загрузчик видео")
+            link = console.input("Вставьте ссылку на видео: ")
             download_video(link, "720p", folder)
             open_folder(folder)
         elif choice == 2:
-            print("Загрузчик видео")
-            link = input("Вставьте ссылку на видео: ")
+            console.print("Загрузчик видео")
+            link = console.input("Вставьте ссылку на видео: ")
             download_video(link, "1080p", folder)
             open_folder(folder)
         elif choice == 3:
-            print("Загрузчик видео")
-            link = input("Вставьте ссылку на видео: ")
+            console.print("Загрузчик видео")
+            link = console.input("Вставьте ссылку на видео: ")
             download_video(link, "1440p", folder)
             open_folder(folder)
         elif choice == 4:
-            print("Загрузчик видео")
-            link = input("Вставьте ссылку на видео: ")
+            console.print("Загрузчик видео")
+            link = console.input("Вставьте ссылку на видео: ")
             download_video(link, "2160p", folder)
             open_folder(folder)
-        elif choice == 0:
+        elif choice == 9:
             return
         else:
-            print("Неверный выбор. Попробуйте снова")
+            console.print("Неверный выбор. Попробуйте снова")
     except ValueError:
-        print("Пожалуйста, введите только число!")
+        console.print("Пожалуйста, введите только число!")
 
 def audio_menu():
     clear_screen()
-    print("\nЗагрузчик аудио")
-    print("----------------------------------")
-    print("\n[0] - Для отмены")
-    print("----------------------------------")
-    link = input("Вставьте ссылку на видео: ")
+
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        "----------------------------------",
+        "[0] - [bold red]Для отмены[/]",
+        "----------------------------------",
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title="=== Загрузка аудио ===",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False,
+    )
+
+    console.print(Align(menu_panel, align="center"))
+    link = console.input("Вставьте ссылку на видео: ".strip())
     if link == '0':
         return
     else:
@@ -221,17 +287,32 @@ def audio_menu():
 def main_menu():
     while True:
         clear_screen()
-        print("\033[31m\nДобро пожаловать в YouTube Downloader\033[0m")
-        print("\033[32m\nДля продолжения выберите пункт меню вводя нужные цифры на клавиатуре\033[0m")
-        print("------------------------------------------------------------------------")
-        print("\033[34m[1]\033[0m - Скачать аудио в формате .mp3 --- Максимальное качество звука")
-        print("\033[34m[2]\033[0m - Скачать видео в формате .mp4 --- HD - 4K")
-        print("------------------------------------------------------------------------")
-        print("\033[31m[3]\033[0m - Настройки")
-        print("------------------------------------------------------------------------")
-        print("\033[31m[0]\033[0m - Выход из программы")
+        title = Text("Добро пожаловать в YouTube Downloader", justify="center", style="bold red")
+        console.print(Align.center(Panel(title, expand=False, border_style="green")))
+        menu_options = "\n".join([
+            "\nДля продолжения выберите пункт меню вводя нужные цифры на клавиатуре",
+            "------------------------------------------------------------------------",
+            "[1] - Скачать аудио в формате .mp3 --- Максимальное качество звука",
+            "[2] - Скачать видео в формате .mp4 --- HD - 4K",
+            "------------------------------------------------------------------------",
+            "[3] - Настройки",
+            "------------------------------------------------------------------------",
+            "[0] - [bold red]Выход из программы[/]",
+        ])
+
+        menu_panel = Panel(
+            menu_options,
+            title="=== Главное меню ===",
+            title_align="center",
+            border_style="green",
+            width=240,
+            expand=False,
+        )
+
+        console.print(Align(menu_panel, align="center"))
+
         try:
-            choice = int(input("\nВыберите пункт меню: "))
+            choice = int(console.input("\nВыберите пункт меню: ").strip())
             if choice == 1:
                 audio_menu()
             elif choice == 2:
@@ -239,12 +320,12 @@ def main_menu():
             elif choice == 3:
                 settings_menu()
             elif choice == 0:
-                print("Выход из программы...")
+                console.print("Выход из программы...")
                 break
             else:
-                print("Неверный выбор. Попробуйте снова.")
+                console.print("Неверный выбор. Попробуйте снова.")
         except ValueError:
-            print("Пожалуйста, введите только число.")
+            console.print("Пожалуйста, введите только число.")
 
 if __name__ == "__main__":
     main_menu()
