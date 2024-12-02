@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import yt_dlp
+import json
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
@@ -9,15 +10,22 @@ from rich.text import Text
 from pathlib import Path
 
 file = "data.yd"
+language = "en"
 console = Console()
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 
+def load_translations(language):
+    with open(f"locales/{language}.json", "r", encoding="utf-8") as file:
+        return json.load(file)
+
+translations = load_translations(language)
+
 # Добавляем FFmpeg в PATH
 ffmpeg_bin_path = str(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin")
 os.environ["PATH"] += os.pathsep + ffmpeg_bin_path
-print("FFmpeg установлен и добавлен в PATH.")
+print(f"{translations["ffmpeg"]}")
 
 #Функция для указания пути к файлу
 def downloadPath():
@@ -27,9 +35,9 @@ def downloadPath():
 def create_folder(folder_name):
     try:
         os.makedirs(folder_name, exist_ok=True)
-        print("Папка создана")
+        print(f"{translations["create_folder:success"]}")
     except Exception as e:
-        print("Ошибка при создании папки: {e}")
+        print(f"{translations["create_folder:error"]}: {e}")
 
 # Функция для открытия папки
 def open_folder(folder_path):
@@ -40,18 +48,18 @@ def open_folder(folder_path):
             subprocess.run(["open", folder_path])
         else:
             subprocess.run(["xdg-open", folder_path])
-        print(f"Открыта папка: {folder_path}")
+        print(f"{translations["open_folder:success"]}: {folder_path}")
     except Exception as e:
-        print(f"Ошибка при открытии папки: {e}")
+        print(f"{translations["open_folder:error"]}: {e}")
 
 # Функция для создания пустого файла
 def create_file(file_name):
     try:
         with open(file_name, "w") as f:
             pass
-        print(f"Файл '{file_name}' создан.")
+        print(f"{translations["create_file:success"]}: {file_name}")
     except Exception as e:
-        print(f"Ошибка при создании файла: {e}")
+        print(f"{translations["create_file:error"]}: {e}")
 
 
 def read_from_file(file_name):
@@ -81,9 +89,9 @@ def progress_hook(d):
         # Рассчитываем процент скачанного контента
         percent = d['downloaded_bytes'] / d['total_bytes'] * 100
         # Выводим прогресс
-        print(f"Загрузка: {percent:.2f}% - {d['downloaded_bytes']} из {d['total_bytes']} байт", end='\r')
+        print(f"{translations["progress_hook:process"]}: {percent:.2f}% - {d['downloaded_bytes']} из {d['total_bytes']} байт", end='\r')
     elif d['status'] == 'finished':
-        print("\nЗагрузка завершена!")
+        print(f"\n{translations["progress_hook:success"]}")
 
 def download_audio_as_mp3(url, output_folder):
     ydl_opts = {
@@ -125,15 +133,15 @@ def settingsFolder_menu():
 
     menu_options = "\n".join([
         "------------------------------------------------------------------------",
-        "[1] - Выбрать папку по умолчанию | 'downloads'",
-        "[2] - Указать свою папку",
+        f"[1] - {translations["settingsFolder_menu:menu:defoult_folder"]} | 'downloads'",
+        f"[2] - {translations["settingsFolder_menu:menu:select_folder"]}",
         "------------------------------------------------------------------------",
-        "[9] - [bold red]Назад в меню[/]",
+        f"[9] - [bold red]{translations["menu:back"]}[/]",
     ])
 
     menu_panel = Panel(
         menu_options,
-        title="=== Изменение папки для загрузки ===",
+        title=f"{translations["settingsFolder_menu:menu:panel:title"]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -142,20 +150,20 @@ def settingsFolder_menu():
 
     console.print(Align(menu_panel, align="center"))
     try: 
-        choice = int(console.input("\nВведите свой выбор: ").strip())
+        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
         if choice == 1:
             folder = "downloads"
-            console.print("Выбрана папка по умолчанию: ", folder)
+            console.print(f"{translations["settingsFolder_menu:folder:defoult_folder"]}: ", folder)
             write_to_file(file, folder)
         elif choice == 2:
-            userPath = input("Вставьте путь к папке, в которую будут сохраняться видео: ")
+            userPath = input(f"{translations["settingsFolder_menu:folder:select_folder"]}: ")
             write_to_file(file, userPath)
         elif choice == 9:
             return
         else:
-            console.print("Неверный выбор. Попробуйте снова")
+            console.print(f"{translations["error_choice"]}")
     except ValueError:
-            console.print("Пожалуйста, введите только число!")
+            console.print(f"{translations["error_value"]}")
 
 def settings_menu():
     clear_screen()
@@ -165,16 +173,16 @@ def settings_menu():
 
     menu_options = "\n".join([
         "------------------------------------------------------------------------",
-        f"[1] - Изменить папку загрузки | {folder}",
-        f"[2] - Изменить язык приложения | Русский ([red]В разработке[/])",
+        f"[1] - {translations["settings_menu:menu:change_folder"]}  | {folder}",
+        f"[2] - {translations["settings_menu:menu:change_language"]} | ([red]{language}[/])",
         "------------------------------------------------------------------------",
-        "[9] - [bold red]Назад в меню[/]",
-        "[0] - [bold red]Выход[/]"
+        f"[9] - [bold red]{translations["menu:back"]}[/]",
+        f"[0] - [bold red]{translations["menu:exit"]}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title="=== Настройки ===",
+        title=f"{translations["settings_menu:menu:panel:title"]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -184,18 +192,18 @@ def settings_menu():
     console.print(Align(menu_panel, align="center"))
 
     try:
-        choice = int(input("\nВыберите пункт меню: "))
+        choice = int(input(f"\n{translations["choice_input"]}: "))
         if choice == 1:
             settingsFolder_menu()
         elif choice == 9:
             return
         elif choice == 0:
-            console.print("Выход из программы...")
+            console.print(f"{translations["exit_app"]}")
             exit()
         else:
-            console.print("Неверный выбор. Попробуйте снова.")
+            console.print(f"{translations["error_choice"]}")
     except ValueError:
-        console.print("Пожалуйста, введите только число!")
+        console.print(f"{translations["error_value"]}")
 
 folder = read_from_file(file)
 
@@ -209,15 +217,15 @@ def video_settings():
         "-----------------------------------------------",
         "[1] - 720p  || HD",
         "[2] - 1080p || FHD",
-        "[3] - 1440p || 2K - если поддерживается видео",
-        "[4] - 2160p || 4K - если поддерживается видео",
+        f"[3] - 1440p || 2K - {translations["video_settings:menu:if_true"]}",
+        f"[4] - 2160p || 4K - {translations["video_settings:menu:if_true"]}",
         "-----------------------------------------------",
-        "[9] - [bold red]Назад в меню[/]",
+        f"[9] - [bold red]{translations["menu:back"]}[/]",
     ])
 
     menu_panel = Panel(
         menu_options,
-        title="=== Выбор разрешения ===",
+        title=f"{translations["=== Выбор разрешения ==="]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -227,33 +235,33 @@ def video_settings():
     console.print(Align(menu_panel, align="center"))
 
     try:
-        choice = int(console.input("\nВыберите пункт меню: ").strip())
+        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
         if choice == 1:
-            console.print("Загрузчик видео")
-            link = console.input("Вставьте ссылку на видео: ")
+            console.print(f"{translations["video_settings:menu:video_loader"]}")
+            link = console.input(f"{translations["input_link"]}: ")
             download_video(link, "720p", folder)
             open_folder(folder)
         elif choice == 2:
-            console.print("Загрузчик видео")
-            link = console.input("Вставьте ссылку на видео: ")
+            console.print(f"{translations["video_settings:menu:video_loader"]}")
+            link = console.input(f"{translations["input_link"]}: ")
             download_video(link, "1080p", folder)
             open_folder(folder)
         elif choice == 3:
-            console.print("Загрузчик видео")
-            link = console.input("Вставьте ссылку на видео: ")
+            console.print(f"{translations["video_settings:menu:video_loader"]}")
+            link = console.input(f"{translations["input_link"]}: ")
             download_video(link, "1440p", folder)
             open_folder(folder)
         elif choice == 4:
-            console.print("Загрузчик видео")
-            link = console.input("Вставьте ссылку на видео: ")
+            console.print(f"{translations["video_settings:menu:video_loader"]}")
+            link = console.input(f"{translations["input_link"]}: ")
             download_video(link, "2160p", folder)
             open_folder(folder)
         elif choice == 9:
             return
         else:
-            console.print("Неверный выбор. Попробуйте снова")
+            console.print(f"{translations["error_choice"]}")
     except ValueError:
-        console.print("Пожалуйста, введите только число!")
+        console.print(f"{translations["error_value"]}")
 
 def audio_menu():
     clear_screen()
@@ -263,13 +271,13 @@ def audio_menu():
 
     menu_options = "\n".join([
         "----------------------------------",
-        "[0] - [bold red]Для отмены[/]",
+        f"[0] - [bold red]{translations["audio_menu:menu:cancel"]}[/]",
         "----------------------------------",
     ])
 
     menu_panel = Panel(
         menu_options,
-        title="=== Загрузка аудио ===",
+        title=f"{translations["audio_menu:menu:panel:title"]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -277,7 +285,7 @@ def audio_menu():
     )
 
     console.print(Align(menu_panel, align="center"))
-    link = console.input("Вставьте ссылку на видео: ".strip())
+    link = console.input(f"{translations["input_link"]}: ".strip())
     if link == '0':
         return
     else:
@@ -287,22 +295,22 @@ def audio_menu():
 def main_menu():
     while True:
         clear_screen()
-        title = Text("Добро пожаловать в YouTube Downloader", justify="center", style="bold red")
+        title = Text(f"{translations["main_menu:title"]} YouTube Downloader", justify="center", style="bold red")
         console.print(Align.center(Panel(title, expand=False, border_style="green")))
         menu_options = "\n".join([
-            "\nДля продолжения выберите пункт меню вводя нужные цифры на клавиатуре",
+            f"\n[green]{translations["main_menu:menu:help"]}[/]",
             "------------------------------------------------------------------------",
-            "[1] - Скачать аудио в формате .mp3 --- Максимальное качество звука",
-            "[2] - Скачать видео в формате .mp4 --- HD - 4K",
+            f"[1] - {translations["main_menu:menu:download_mp3"]}",
+            f"[2] - {translations["main_menu:menu:download_mp4"]}",
             "------------------------------------------------------------------------",
-            "[3] - Настройки",
+            f"[3] - {translations["main_menu:menu:settings"]}",
             "------------------------------------------------------------------------",
-            "[0] - [bold red]Выход из программы[/]",
+            f"[0] - [bold red]{translations["main_menu:menu:exit"]}[/]",
         ])
 
         menu_panel = Panel(
             menu_options,
-            title="=== Главное меню ===",
+            title=f"{translations["main_menu:menu:panel:title"]}",
             title_align="center",
             border_style="green",
             width=240,
@@ -312,7 +320,7 @@ def main_menu():
         console.print(Align(menu_panel, align="center"))
 
         try:
-            choice = int(console.input("\nВыберите пункт меню: ").strip())
+            choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
             if choice == 1:
                 audio_menu()
             elif choice == 2:
@@ -320,12 +328,12 @@ def main_menu():
             elif choice == 3:
                 settings_menu()
             elif choice == 0:
-                console.print("Выход из программы...")
+                console.print(f"{translations["exit_app"]}")
                 break
             else:
-                console.print("Неверный выбор. Попробуйте снова.")
+                console.print(f"{translations["error_choice"]}")
         except ValueError:
-            console.print("Пожалуйста, введите только число.")
+            console.print(f"{translations["error_value"]}")
 
 if __name__ == "__main__":
     main_menu()

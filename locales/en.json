@@ -1,0 +1,47 @@
+{
+    "ffmpeg" : "FFmpeg is installed and added to PATH.",
+
+    "create_folder:success" : "Folder created",
+    "create_folder:error" : "Error creating folder",
+    "open_folder:success" : "Folder opened",
+    "open_folder:error" : "Error opening folder",
+    "create_file:success" : "File created",
+    "progress_hook:process" : "Download",
+    "progress_hook:success" : "Download complete!",
+
+    "settingsFolder_menu:menu:defoult_folder" : "Select default folder",
+    "settingsFolder_menu:menu:select_folder" : "Specify your folder",
+    "settingsFolder_menu:menu:panel:title" : "=== Change download folder ===",
+    "settingsFolder_menu:folder:defoult_folder" : "Default folder selected",
+    "settingsFolder_menu:folder:select_folder" : "Insert the path to the folder where the videos will be saved",
+
+    "settings_menu:menu:change_folder" : "Change download folder",
+    "settings_menu:menu:change_language" : "Change the language of the application",
+    "settings_menu:menu:panel:title" : "=== Settings ===",
+    "settings_menu:menu:choice_exit" : "Exiting the program...",
+    "settings_menu:menu:error_choice" : "Incorrect choice. Try again.",
+    "settings_menu:menu:error_value" : "Please enter only a number!",
+
+    "video_settings:menu:if_true" : "if video is supported",
+    "video_settings:menu:panel:title" : "=== Selecting a resolution ===",
+    "video_settings:menu:video_loader" : "Video downloader",
+
+    "audio_menu:menu:cancel" : "To cancel",
+    "audio_menu:menu:panel:title" : "=== Loading audio ===",
+
+    "main_menu:title" : "Welcome to",
+    "main_menu:menu:help" : "To continue, select the menu item by entering the required numbers on the keyboard",
+    "main_menu:menu:download_mp3" : "Download audio in .mp3 format || Maximum sound quality",
+    "main_menu:menu:download_mp4" : "Download video in .mp4 format || HD - 4K",
+    "main_menu:menu:settings" : "Settings",
+    "main_menu:menu:exit" : "Exit the program",
+    "main_menu:menu:panel:title" : "=== Main menu ===",
+
+    "input_link" : "Insert video link",
+    "menu:back" : "Back to menu",
+    "menu:exit" : "Exit",
+    "exit_app" : "Exiting the program...",
+    "error_choice" : "Incorrect choice. Try again.",
+    "error_value" : "Please enter only a number!",
+    "choice_input" : "Select a menu item"
+ }

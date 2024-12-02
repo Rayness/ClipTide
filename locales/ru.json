@@ -1,0 +1,51 @@
+{
+    "ffmpeg" : "FFmpeg установлен и добавлен в PATH.",
+
+    "create_folder:success" : "Папка создана",
+    "create_folder:error" : "Ошибка при создании папки",
+
+    "open_folder:success" : "Открыта папка",
+    "open_folder:error" : "Ошибка при открытии папки",
+
+    "create_file:success" : "Файл создан",
+    "create_file:error" : "Ошибка при создании файла",
+
+    "progress_hook:process" : "Загрузка",
+    "progress_hook:success" : "Загрузка завершена!",
+
+    "settingsFolder_menu:menu:defoult_folder" : "Выбрать папку по умолчанию",
+    "settingsFolder_menu:menu:select_folder" : "Указать свою папку",
+    "settingsFolder_menu:menu:panel:title" : "=== Изменение папки для загрузки ===",
+    "settingsFolder_menu:folder:defoult_folder" : "Выбрана папка по умолчанию",
+    "settingsFolder_menu:folder:select_folder" : "Вставьте путь к папке, в которую будут сохраняться видео",
+
+    "settings_menu:menu:change_folder" : "Изменить папку загрузки",
+    "settings_menu:menu:change_language" : "Изменить язык приложения",
+    "settings_menu:menu:panel:title" : "=== Настройки ===",
+    "settings_menu:menu:choice_exit" : "Выход из программы...",
+    "settings_menu:menu:error_choice" : "Неверный выбор. Попробуйте снова.",
+    "settings_menu:menu:error_value" : "Пожалуйста, введите только число!",
+
+    "video_settings:menu:if_true" : "если поддерживается видео",
+    "video_settings:menu:panel:title" : "=== Выбор разрешения ===",
+    "video_settings:menu:video_loader" : "Загрузчик видео",
+
+    "audio_menu:menu:cancel" : "Для отмены",
+    "audio_menu:menu:panel:title" : "=== Загрузка аудио ===",
+
+    "main_menu:title" : "Добро пожаловать в",
+    "main_menu:menu:help" : "Для продолжения выберите пункт меню вводя нужные цифры на клавиатуре",
+    "main_menu:menu:download_mp3" : "Скачать аудио в формате .mp3 || Максимальное качество звука",
+    "main_menu:menu:download_mp4" : "Скачать видео в формате .mp4 || HD - 4K",
+    "main_menu:menu:settings" : "Настройки",
+    "main_menu:menu:exit" : "Выход из программы",
+    "main_menu:menu:panel:title" : "=== Главное меню ===",
+
+    "input_link" : "Вставьте ссылку на видео",
+    "menu:back" : "Назад в меню",
+    "menu:exit" : "Выход",
+    "exit_app" : "Выход из программы...",
+    "error_choice" : "Неверный выбор. Попробуйте снова.",
+    "error_value" : "Пожалуйста, введите только число!",
+    "choice_input" : "Выберите пункт меню"
+ }
