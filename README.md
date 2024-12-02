@@ -6,7 +6,7 @@ RU
 
 Для использования необходим Python (если нету, то установится автоматически), а так же находиться в стране со свободным доступом к YouTube (думаю понятно о чем я)... вообще возможно скоро это условие более не понадобится
 
-Актуальную версию скачать можно [тут](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1-beta)
+Актуальную версию скачать можно [тут](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1)
 
 ----------------------
 
@@ -18,4 +18,4 @@ Currently, there is the ability to download both .mp3 and .mp4 files, but there 
 
 To use, you need Python (if you don't have it, it will be installed automatically), and also to be in a country with free access to YouTube (I think it's clear what I mean)...
 
-You can download the current version [here](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1-beta)
+You can download the current version [here](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1)
