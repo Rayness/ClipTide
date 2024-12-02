@@ -3,12 +3,17 @@
 
     "create_folder:success" : "Folder created",
     "create_folder:error" : "Error creating folder",
+
     "open_folder:success" : "Folder opened",
     "open_folder:error" : "Error opening folder",
+
     "create_file:success" : "File created",
+    "create_file:error" : "Error creating file",
+
     "progress_hook:process" : "Download",
     "progress_hook:success" : "Download complete!",
 
+    "settingsFolder_menu:menu:info" : "After changing the download folder, the application will restart",
     "settingsFolder_menu:menu:defoult_folder" : "Select default folder",
     "settingsFolder_menu:menu:select_folder" : "Specify your folder",
     "settingsFolder_menu:menu:panel:title" : "=== Change download folder ===",
@@ -30,12 +35,17 @@
     "audio_menu:menu:panel:title" : "=== Loading audio ===",
 
     "main_menu:title" : "Welcome to",
-    "main_menu:menu:help" : "To continue, select the menu item by entering the required numbers on the keyboard",
+    "main_menu:menu:help" : "Select the menu item by entering the required numbers on the keyboard",
     "main_menu:menu:download_mp3" : "Download audio in .mp3 format || Maximum sound quality",
     "main_menu:menu:download_mp4" : "Download video in .mp4 format || HD - 4K",
     "main_menu:menu:settings" : "Settings",
     "main_menu:menu:exit" : "Exit the program",
     "main_menu:menu:panel:title" : "=== Main menu ===",
+
+    "settingsLanguage_menu:info" : "After changing the language, the application will restart.",
+    "settingsLanguage_menu:lang:ru" : "Russian",
+    "settingsLanguage_menu:lang:en" : "English",
+    "settingsLanguage_menu:title" : "=== Select language ===",
 
     "input_link" : "Insert video link",
     "menu:back" : "Back to menu",

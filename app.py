@@ -12,7 +12,31 @@ from pathlib import Path
 
 config_file = "config.ini"
 
-language = "en"
+# Функция для записи данных в INI-файл
+def save_config(language, folder_path):
+    config = configparser.ConfigParser()
+    config['Settings'] = {
+        'language': language,
+        'folder_path': folder_path
+    }
+    with open(config_file, 'w') as file:
+        config.write(file)
+    print("Конфигурация сохранена.")
+
+# Функция для чтения данных из INI-файла
+def load_config():
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    if 'Settings' in config:
+        language = config['Settings'].get('language', 'en')  # По умолчанию 'en'
+        folder_path = config['Settings'].get('folder_path', 'downloads') # По умолчанию 'downloads'
+        return language, folder_path
+    else:
+        print("Конфигурационный файл не найден или повреждён.")
+        return 'en', 'downloads'
+
+lang, path = load_config()
+
 console = Console()
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
@@ -22,7 +46,7 @@ def load_translations(language):
     with open(f"localization/{language}.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
-translations = load_translations(language)
+translations = load_translations(lang)
 
 # Добавляем FFmpeg в PATH
 ffmpeg_bin_path = str(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin")
@@ -53,29 +77,6 @@ def open_folder(folder_path):
         print(f"{translations["open_folder:success"]}: {folder_path}")
     except Exception as e:
         print(f"{translations["open_folder:error"]}: {e}")
-
-# Функция для записи данных в INI-файл
-def save_config(language, folder_path):
-    config = configparser.ConfigParser()
-    config['Settings'] = {
-        'language': language,
-        'folder_path': folder_path
-    }
-    with open(config_file, 'w') as file:
-        config.write(file)
-    print("Конфигурация сохранена.")
-
-# Функция для чтения данных из INI-файла
-def load_config():
-    config = configparser.ConfigParser()
-    config.read(config_file)
-    if 'Settings' in config:
-        language = config['Settings'].get('language', 'en')  # По умолчанию 'en'
-        folder_path = config['Settings'].get('folder_path', 'downloads') # По умолчанию 'downloads'
-        return language, folder_path
-    else:
-        print("Конфигурационный файл не найден или повреждён.")
-        return 'en', 'downloads'
 
 def progress_hook(d):
     if d['status'] == 'downloading':
@@ -118,25 +119,57 @@ def download_video(url, resolution, output_folder):
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
-lang, path = load_config()
+def restart_program():
+    """Перезапускает текущий скрипт."""
+    print("Перезапуск приложения...")
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 def settingsLanguage_menu():
+    clear_screen()
+
     title = Text("YouTube Downloader", justify="center", style="bold red")
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
+        f"[yellow bold]После изменения языка приложение перезапустится[/]",
         "------------------------------------------------------------------------",
         f"[1] - Русский",
         f"[2] - Английский",
         "------------------------------------------------------------------------",
-        f"[9] - [bold red]{translations["menu:back"]}[/]"
+        f"[9] - [bold red]{translations["menu:back"]}[/]",
         f"[0] - [bold red]{translations["menu:exit"]}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title="Выбор языка",
+        title="=== Выбор языка ===",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False,
     )
+
+    console.print(Align(menu_panel, align="center"))
+
+    try:
+        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
+        if choice == 1:
+            lang = "ru"
+            save_config(lang, path)
+            restart_program()
+        elif choice == 2:
+            lang = "en"
+            save_config(lang, path)
+            restart_program()
+        elif choice == 9:
+            return
+        elif choice == 0:
+            exit()
+        else:
+            console.print(f"{translations["error_choice"]}")
+    except ValueError:
+            console.print(f"{translations["error_value"]}")
 
 def settingsFolder_menu():
     clear_screen()
@@ -145,6 +178,7 @@ def settingsFolder_menu():
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
+        f"[yellow bold]После изменения папки загрузки приложение перезапустится[/]",
         "------------------------------------------------------------------------",
         f"[1] - {translations["settingsFolder_menu:menu:defoult_folder"]} | 'downloads'",
         f"[2] - {translations["settingsFolder_menu:menu:select_folder"]}",
@@ -167,10 +201,12 @@ def settingsFolder_menu():
         if choice == 1:
             folder = "downloads"
             console.print(f"{translations["settingsFolder_menu:folder:defoult_folder"]}: ", folder)
-            save_config(language, folder)
+            save_config(lang, folder)
+            restart_program()
         elif choice == 2:
             userPath = input(f"{translations["settingsFolder_menu:folder:select_folder"]}: ")
-            save_config(language, userPath)
+            save_config(lang, userPath)
+            restart_program()
         elif choice == 9:
             return
         else:
@@ -186,8 +222,8 @@ def settings_menu():
 
     menu_options = "\n".join([
         "------------------------------------------------------------------------",
-        f"[1] - {translations["settings_menu:menu:change_folder"]}  | {path}",
-        f"[2] - {translations["settings_menu:menu:change_language"]} | ([red]{language}[/])",
+        f"[1] - {translations["settings_menu:menu:change_folder"]}  | ([red]{path}[/])",
+        f"[2] - {translations["settings_menu:menu:change_language"]} | ([red]{lang}[/])",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations["menu:back"]}[/]",
         f"[0] - [bold red]{translations["menu:exit"]}[/]"
@@ -208,6 +244,8 @@ def settings_menu():
         choice = int(input(f"\n{translations["choice_input"]}: "))
         if choice == 1:
             settingsFolder_menu()
+        elif choice == 2:
+            settingsLanguage_menu()
         elif choice == 9:
             return
         elif choice == 0:

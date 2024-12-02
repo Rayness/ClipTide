@@ -13,6 +13,7 @@
     "progress_hook:process" : "Загрузка",
     "progress_hook:success" : "Загрузка завершена!",
 
+    "settingsFolder_menu:menu:info" : "После изменения папки загрузки приложение перезапустится",
     "settingsFolder_menu:menu:defoult_folder" : "Выбрать папку по умолчанию",
     "settingsFolder_menu:menu:select_folder" : "Указать свою папку",
     "settingsFolder_menu:menu:panel:title" : "=== Изменение папки для загрузки ===",
@@ -34,12 +35,17 @@
     "audio_menu:menu:panel:title" : "=== Загрузка аудио ===",
 
     "main_menu:title" : "Добро пожаловать в",
-    "main_menu:menu:help" : "Для продолжения выберите пункт меню вводя нужные цифры на клавиатуре",
+    "main_menu:menu:help" : "Выберите пункт меню вводя нужные цифры на клавиатуре",
     "main_menu:menu:download_mp3" : "Скачать аудио в формате .mp3 || Максимальное качество звука",
     "main_menu:menu:download_mp4" : "Скачать видео в формате .mp4 || HD - 4K",
     "main_menu:menu:settings" : "Настройки",
     "main_menu:menu:exit" : "Выход из программы",
     "main_menu:menu:panel:title" : "=== Главное меню ===",
+
+    "settingsLanguage_menu:info" : "После изменения языка приложение перезапустится",
+    "settingsLanguage_menu:lang:ru" : "Русский",
+    "settingsLanguage_menu:lang:en" : "Английский",
+    "settingsLanguage_menu:title" : "=== Выбор языка ===",
 
     "input_link" : "Вставьте ссылку на видео",
     "menu:back" : "Назад в меню",
