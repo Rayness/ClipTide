@@ -132,10 +132,10 @@ def settingsLanguage_menu():
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
-        f"[yellow bold]После изменения языка приложение перезапустится[/]",
+        f"[yellow bold]{translations["settingsLanguage_menu:info"]}[/]",
         "------------------------------------------------------------------------",
-        f"[1] - Русский",
-        f"[2] - Английский",
+        f"[1] - {translations["settingsLanguage_menu:lang:ru"]}",
+        f"[2] - {translations["settingsLanguage_menu:lang:en"]}",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations["menu:back"]}[/]",
         f"[0] - [bold red]{translations["menu:exit"]}[/]"
@@ -143,7 +143,7 @@ def settingsLanguage_menu():
 
     menu_panel = Panel(
         menu_options,
-        title="=== Выбор языка ===",
+        title=f"{translations["settingsLanguage_menu:title"]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -178,12 +178,13 @@ def settingsFolder_menu():
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
-        f"[yellow bold]После изменения папки загрузки приложение перезапустится[/]",
+        f"[yellow bold]{translations["settingsFolder_menu:menu:info"]}[/]",
         "------------------------------------------------------------------------",
         f"[1] - {translations["settingsFolder_menu:menu:defoult_folder"]} | 'downloads'",
         f"[2] - {translations["settingsFolder_menu:menu:select_folder"]}",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations["menu:back"]}[/]",
+        f"[0] - [bold red]{translations["menu:exit"]}[/]"
     ])
 
     menu_panel = Panel(
@@ -209,6 +210,8 @@ def settingsFolder_menu():
             restart_program()
         elif choice == 9:
             return
+        elif choice == 0:
+            exit()
         else:
             console.print(f"{translations["error_choice"]}")
     except ValueError:
