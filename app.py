@@ -3,13 +3,15 @@ import subprocess
 import sys
 import yt_dlp
 import json
+import configparser
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
 from rich.text import Text
 from pathlib import Path
 
-file = "data.yd"
+config_file = "config.ini"
+
 language = "en"
 console = Console()
 
@@ -17,7 +19,7 @@ ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 
 def load_translations(language):
-    with open(f"locales/{language}.json", "r", encoding="utf-8") as file:
+    with open(f"localization/{language}.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
 translations = load_translations(language)
@@ -52,37 +54,28 @@ def open_folder(folder_path):
     except Exception as e:
         print(f"{translations["open_folder:error"]}: {e}")
 
-# Функция для создания пустого файла
-def create_file(file_name):
-    try:
-        with open(file_name, "w") as f:
-            pass
-        print(f"{translations["create_file:success"]}: {file_name}")
-    except Exception as e:
-        print(f"{translations["create_file:error"]}: {e}")
+# Функция для записи данных в INI-файл
+def save_config(language, folder_path):
+    config = configparser.ConfigParser()
+    config['Settings'] = {
+        'language': language,
+        'folder_path': folder_path
+    }
+    with open(config_file, 'w') as file:
+        config.write(file)
+    print("Конфигурация сохранена.")
 
-
-def read_from_file(file_name):
-    try:
-        with open(file_name, "r") as file:
-            content = file.read()
-        print(f"Данные из файла '{file_name}':\n{content}")
-        return content
-    except FileNotFoundError:
-        print(f"Файл '{file_name}' не найден.")
-        return None
-    except Exception as e:
-        print(f"Ошибка при чтении: {e}")
-        return None
-
-# Функция для записи данных в файл
-def write_to_file(file_name, content):
-    try:
-        with open(file_name, "w") as f:
-            f.write(content)
-        print(f"Данные записаны в файл '{file_name}'.")
-    except Exception as e:
-        print(f"Ошибка при записи в файл: {e}")
+# Функция для чтения данных из INI-файла
+def load_config():
+    config = configparser.ConfigParser()
+    config.read(config_file)
+    if 'Settings' in config:
+        language = config['Settings'].get('language', 'en')  # По умолчанию 'en'
+        folder_path = config['Settings'].get('folder_path', 'downloads') # По умолчанию 'downloads'
+        return language, folder_path
+    else:
+        print("Конфигурационный файл не найден или повреждён.")
+        return 'en', 'downloads'
 
 def progress_hook(d):
     if d['status'] == 'downloading':
@@ -125,6 +118,26 @@ def download_video(url, resolution, output_folder):
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
+lang, path = load_config()
+
+def settingsLanguage_menu():
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        "------------------------------------------------------------------------",
+        f"[1] - Русский",
+        f"[2] - Английский",
+        "------------------------------------------------------------------------",
+        f"[9] - [bold red]{translations["menu:back"]}[/]"
+        f"[0] - [bold red]{translations["menu:exit"]}[/]"
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title="Выбор языка",
+    )
+
 def settingsFolder_menu():
     clear_screen()
 
@@ -154,10 +167,10 @@ def settingsFolder_menu():
         if choice == 1:
             folder = "downloads"
             console.print(f"{translations["settingsFolder_menu:folder:defoult_folder"]}: ", folder)
-            write_to_file(file, folder)
+            save_config(language, folder)
         elif choice == 2:
             userPath = input(f"{translations["settingsFolder_menu:folder:select_folder"]}: ")
-            write_to_file(file, userPath)
+            save_config(language, userPath)
         elif choice == 9:
             return
         else:
@@ -173,7 +186,7 @@ def settings_menu():
 
     menu_options = "\n".join([
         "------------------------------------------------------------------------",
-        f"[1] - {translations["settings_menu:menu:change_folder"]}  | {folder}",
+        f"[1] - {translations["settings_menu:menu:change_folder"]}  | {path}",
         f"[2] - {translations["settings_menu:menu:change_language"]} | ([red]{language}[/])",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations["menu:back"]}[/]",
@@ -205,8 +218,6 @@ def settings_menu():
     except ValueError:
         console.print(f"{translations["error_value"]}")
 
-folder = read_from_file(file)
-
 def video_settings():
     clear_screen()
 
@@ -215,17 +226,18 @@ def video_settings():
 
     menu_options = "\n".join([
         "-----------------------------------------------",
-        "[1] - 720p  || HD",
-        "[2] - 1080p || FHD",
+        f"[1] - 720p  || HD",
+        f"[2] - 1080p || FHD",
         f"[3] - 1440p || 2K - {translations["video_settings:menu:if_true"]}",
         f"[4] - 2160p || 4K - {translations["video_settings:menu:if_true"]}",
         "-----------------------------------------------",
         f"[9] - [bold red]{translations["menu:back"]}[/]",
+        f"[0] - [bold red]{translations["menu:exit"]}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["=== Выбор разрешения ==="]}",
+        title=f"{translations["video_settings:menu:panel:title"]}",
         title_align="center",
         border_style="green",
         width=240,
@@ -239,23 +251,23 @@ def video_settings():
         if choice == 1:
             console.print(f"{translations["video_settings:menu:video_loader"]}")
             link = console.input(f"{translations["input_link"]}: ")
-            download_video(link, "720p", folder)
-            open_folder(folder)
+            download_video(link, "720p", path)
+            open_folder(path)
         elif choice == 2:
             console.print(f"{translations["video_settings:menu:video_loader"]}")
             link = console.input(f"{translations["input_link"]}: ")
-            download_video(link, "1080p", folder)
-            open_folder(folder)
+            download_video(link, "1080p", path)
+            open_folder(path)
         elif choice == 3:
             console.print(f"{translations["video_settings:menu:video_loader"]}")
             link = console.input(f"{translations["input_link"]}: ")
-            download_video(link, "1440p", folder)
-            open_folder(folder)
+            download_video(link, "1440p", path)
+            open_folder(path)
         elif choice == 4:
             console.print(f"{translations["video_settings:menu:video_loader"]}")
             link = console.input(f"{translations["input_link"]}: ")
-            download_video(link, "2160p", folder)
-            open_folder(folder)
+            download_video(link, "2160p", path)
+            open_folder(path)
         elif choice == 9:
             return
         else:
@@ -289,8 +301,8 @@ def audio_menu():
     if link == '0':
         return
     else:
-        download_audio_as_mp3(link, folder)
-        open_folder(folder)
+        download_audio_as_mp3(link, path)
+        open_folder(path)
 
 def main_menu():
     while True:
