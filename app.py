@@ -61,9 +61,9 @@ def downloadPath():
 def create_folder(folder_name):
     try:
         os.makedirs(folder_name, exist_ok=True)
-        print(f"{translations["create_folder:success"]}")
+        print(f"{translations['create_folder:success']}")
     except Exception as e:
-        print(f"{translations["create_folder:error"]}: {e}")
+        print(f"{translations['create_folder:error']}: {e}")
 
 # Функция для открытия папки
 def open_folder(folder_path):
@@ -74,18 +74,18 @@ def open_folder(folder_path):
             subprocess.run(["open", folder_path])
         else:
             subprocess.run(["xdg-open", folder_path])
-        print(f"{translations["open_folder:success"]}: {folder_path}")
+        print(f"{translations['open_folder:success']}: {folder_path}")
     except Exception as e:
-        print(f"{translations["open_folder:error"]}: {e}")
+        print(f"{translations['open_folder:error']}: {e}")
 
 def progress_hook(d):
     if d['status'] == 'downloading':
         # Рассчитываем процент скачанного контента
         percent = d['downloaded_bytes'] / d['total_bytes'] * 100
         # Выводим прогресс
-        print(f"{translations["progress_hook:process"]}: {percent:.2f}% - {d['downloaded_bytes']} из {d['total_bytes']} байт", end='\r')
+        print(f"{translations['progress_hook:process']}: {percent:.2f}% - {d['downloaded_bytes']} из {d['total_bytes']} байт", end='\r')
     elif d['status'] == 'finished':
-        print(f"\n{translations["progress_hook:success"]}")
+        print(f"\n{translations['progress_hook:success']}")
 
 def download_audio_as_mp3(url, output_folder):
     ydl_opts = {
@@ -132,18 +132,18 @@ def settingsLanguage_menu():
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
-        f"[yellow bold]{translations["settingsLanguage_menu:info"]}[/]",
+        f"[yellow bold]{translations['settingsLanguage_menu:info']}[/]",
         "------------------------------------------------------------------------",
-        f"[1] - {translations["settingsLanguage_menu:lang:ru"]}",
-        f"[2] - {translations["settingsLanguage_menu:lang:en"]}",
+        f"[1] - {translations['settingsLanguage_menu:lang:ru']}",
+        f"[2] - {translations['settingsLanguage_menu:lang:en']}",
         "------------------------------------------------------------------------",
-        f"[9] - [bold red]{translations["menu:back"]}[/]",
-        f"[0] - [bold red]{translations["menu:exit"]}[/]"
+        f"[9] - [bold red]{translations['menu:back']}[/]",
+        f"[0] - [bold red]{translations['menu:exit']}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["settingsLanguage_menu:title"]}",
+        title=f"{translations['settingsLanguage_menu:title']}",
         title_align="center",
         border_style="green",
         width=240,
@@ -153,7 +153,7 @@ def settingsLanguage_menu():
     console.print(Align(menu_panel, align="center"))
 
     try:
-        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
+        choice = int(console.input(f"\n{translations['choice_input']}: ").strip())
         if choice == 1:
             lang = "ru"
             save_config(lang, path)
@@ -167,9 +167,9 @@ def settingsLanguage_menu():
         elif choice == 0:
             exit()
         else:
-            console.print(f"{translations["error_choice"]}")
+            console.print(f"{translations['error_choice']}")
     except ValueError:
-            console.print(f"{translations["error_value"]}")
+            console.print(f"{translations['error_value']}")
 
 def settingsFolder_menu():
     clear_screen()
@@ -178,18 +178,18 @@ def settingsFolder_menu():
     console.print(Align.center(Panel(title, expand=False, border_style="green")))
 
     menu_options = "\n".join([
-        f"[yellow bold]{translations["settingsFolder_menu:menu:info"]}[/]",
+        f"[yellow bold]{translations['settingsFolder_menu:menu:info']}[/]",
         "------------------------------------------------------------------------",
-        f"[1] - {translations["settingsFolder_menu:menu:defoult_folder"]} | 'downloads'",
-        f"[2] - {translations["settingsFolder_menu:menu:select_folder"]}",
+        f"[1] - {translations['settingsFolder_menu:menu:defoult_folder']} | 'downloads'",
+        f"[2] - {translations['settingsFolder_menu:menu:select_folder']}",
         "------------------------------------------------------------------------",
-        f"[9] - [bold red]{translations["menu:back"]}[/]",
-        f"[0] - [bold red]{translations["menu:exit"]}[/]"
+        f"[9] - [bold red]{translations['menu:back']}[/]",
+        f"[0] - [bold red]{translations['menu:exit']}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["settingsFolder_menu:menu:panel:title"]}",
+        title=f"{translations['settingsFolder_menu:menu:panel:title']}",
         title_align="center",
         border_style="green",
         width=240,
@@ -198,14 +198,14 @@ def settingsFolder_menu():
 
     console.print(Align(menu_panel, align="center"))
     try: 
-        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
+        choice = int(console.input(f"\n{translations['choice_input']}: ").strip())
         if choice == 1:
             folder = "downloads"
-            console.print(f"{translations["settingsFolder_menu:folder:defoult_folder"]}: ", folder)
+            console.print(f"{translations['settingsFolder_menu:folder:defoult_folder']}: ", folder)
             save_config(lang, folder)
             restart_program()
         elif choice == 2:
-            userPath = input(f"{translations["settingsFolder_menu:folder:select_folder"]}: ")
+            userPath = input(f"{translations['settingsFolder_menu:folder:select_folder']}: ")
             save_config(lang, userPath)
             restart_program()
         elif choice == 9:
@@ -213,9 +213,9 @@ def settingsFolder_menu():
         elif choice == 0:
             exit()
         else:
-            console.print(f"{translations["error_choice"]}")
+            console.print(f"{translations['error_choice']}")
     except ValueError:
-            console.print(f"{translations["error_value"]}")
+            console.print(f"{translations['error_value']}")
 
 def settings_menu():
     clear_screen()
@@ -225,16 +225,16 @@ def settings_menu():
 
     menu_options = "\n".join([
         "------------------------------------------------------------------------",
-        f"[1] - {translations["settings_menu:menu:change_folder"]}  | ([red]{path}[/])",
-        f"[2] - {translations["settings_menu:menu:change_language"]} | ([red]{lang}[/])",
+        f"[1] - {translations['settings_menu:menu:change_folder']}  | ([red]{path}[/])",
+        f"[2] - {translations['settings_menu:menu:change_language']} | ([red]{lang}[/])",
         "------------------------------------------------------------------------",
-        f"[9] - [bold red]{translations["menu:back"]}[/]",
-        f"[0] - [bold red]{translations["menu:exit"]}[/]"
+        f"[9] - [bold red]{translations['menu:back']}[/]",
+        f"[0] - [bold red]{translations['menu:exit']}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["settings_menu:menu:panel:title"]}",
+        title=f"{translations['settings_menu:menu:panel:title']}",
         title_align="center",
         border_style="green",
         width=240,
@@ -244,7 +244,7 @@ def settings_menu():
     console.print(Align(menu_panel, align="center"))
 
     try:
-        choice = int(input(f"\n{translations["choice_input"]}: "))
+        choice = int(input(f"\n{translations['choice_input']}: "))
         if choice == 1:
             settingsFolder_menu()
         elif choice == 2:
@@ -252,12 +252,12 @@ def settings_menu():
         elif choice == 9:
             return
         elif choice == 0:
-            console.print(f"{translations["exit_app"]}")
+            console.print(f"{translations['exit_app']}")
             exit()
         else:
-            console.print(f"{translations["error_choice"]}")
+            console.print(f"{translations['error_choice']}")
     except ValueError:
-        console.print(f"{translations["error_value"]}")
+        console.print(f"{translations['error_value']}")
 
 def video_settings():
     clear_screen()
@@ -269,16 +269,16 @@ def video_settings():
         "-----------------------------------------------",
         f"[1] - 720p  || HD",
         f"[2] - 1080p || FHD",
-        f"[3] - 1440p || 2K - {translations["video_settings:menu:if_true"]}",
-        f"[4] - 2160p || 4K - {translations["video_settings:menu:if_true"]}",
+        f"[3] - 1440p || 2K - {translations['video_settings:menu:if_true']}",
+        f"[4] - 2160p || 4K - {translations['video_settings:menu:if_true']}",
         "-----------------------------------------------",
-        f"[9] - [bold red]{translations["menu:back"]}[/]",
-        f"[0] - [bold red]{translations["menu:exit"]}[/]"
+        f"[9] - [bold red]{translations['menu:back']}[/]",
+        f"[0] - [bold red]{translations['menu:exit']}[/]"
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["video_settings:menu:panel:title"]}",
+        title=f"{translations['video_settings:menu:panel:title']}",
         title_align="center",
         border_style="green",
         width=240,
@@ -288,33 +288,33 @@ def video_settings():
     console.print(Align(menu_panel, align="center"))
 
     try:
-        choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
+        choice = int(console.input(f"\n{translations['choice_input']}: ").strip())
         if choice == 1:
-            console.print(f"{translations["video_settings:menu:video_loader"]}")
-            link = console.input(f"{translations["input_link"]}: ")
+            console.print(f"{translations['video_settings:menu:video_loader']}")
+            link = console.input(f"{translations['input_link']}: ")
             download_video(link, "720p", path)
             open_folder(path)
         elif choice == 2:
-            console.print(f"{translations["video_settings:menu:video_loader"]}")
-            link = console.input(f"{translations["input_link"]}: ")
+            console.print(f"{translations['video_settings:menu:video_loader']}")
+            link = console.input(f"{translations['input_link']}: ")
             download_video(link, "1080p", path)
             open_folder(path)
         elif choice == 3:
-            console.print(f"{translations["video_settings:menu:video_loader"]}")
-            link = console.input(f"{translations["input_link"]}: ")
+            console.print(f"{translations['video_settings:menu:video_loader']}")
+            link = console.input(f"{translations['input_link']}: ")
             download_video(link, "1440p", path)
             open_folder(path)
         elif choice == 4:
-            console.print(f"{translations["video_settings:menu:video_loader"]}")
-            link = console.input(f"{translations["input_link"]}: ")
+            console.print(f"{translations['video_settings:menu:video_loader']}")
+            link = console.input(f"{translations['input_link']}: ")
             download_video(link, "2160p", path)
             open_folder(path)
         elif choice == 9:
             return
         else:
-            console.print(f"{translations["error_choice"]}")
+            console.print(f"{translations['error_choice']}")
     except ValueError:
-        console.print(f"{translations["error_value"]}")
+        console.print(f"{translations['error_value']}")
 
 def audio_menu():
     clear_screen()
@@ -324,13 +324,13 @@ def audio_menu():
 
     menu_options = "\n".join([
         "----------------------------------",
-        f"[0] - [bold red]{translations["audio_menu:menu:cancel"]}[/]",
+        f"[0] - [bold red]{translations['audio_menu:menu:cancel']}[/]",
         "----------------------------------",
     ])
 
     menu_panel = Panel(
         menu_options,
-        title=f"{translations["audio_menu:menu:panel:title"]}",
+        title=f"{translations['audio_menu:menu:panel:title']}",
         title_align="center",
         border_style="green",
         width=240,
@@ -338,7 +338,7 @@ def audio_menu():
     )
 
     console.print(Align(menu_panel, align="center"))
-    link = console.input(f"{translations["input_link"]}: ".strip())
+    link = console.input(f"{translations['input_link']}: ".strip())
     if link == '0':
         return
     else:
@@ -348,22 +348,22 @@ def audio_menu():
 def main_menu():
     while True:
         clear_screen()
-        title = Text(f"{translations["main_menu:title"]} YouTube Downloader", justify="center", style="bold red")
+        title = Text(f"{translations['main_menu:title']} YouTube Downloader", justify="center", style="bold red")
         console.print(Align.center(Panel(title, expand=False, border_style="green")))
         menu_options = "\n".join([
-            f"\n[green]{translations["main_menu:menu:help"]}[/]",
+            f"\n[green]{translations['main_menu:menu:help']}[/]",
             "------------------------------------------------------------------------",
-            f"[1] - {translations["main_menu:menu:download_mp3"]}",
-            f"[2] - {translations["main_menu:menu:download_mp4"]}",
+            f"[1] - {translations['main_menu:menu:download_mp3']}",
+            f"[2] - {translations['main_menu:menu:download_mp4']}",
             "------------------------------------------------------------------------",
-            f"[3] - {translations["main_menu:menu:settings"]}",
+            f"[3] - {translations['main_menu:menu:settings']}",
             "------------------------------------------------------------------------",
-            f"[0] - [bold red]{translations["main_menu:menu:exit"]}[/]",
+            f"[0] - [bold red]{translations['main_menu:menu:exit']}[/]",
         ])
 
         menu_panel = Panel(
             menu_options,
-            title=f"{translations["main_menu:menu:panel:title"]}",
+            title=f"{translations['main_menu:menu:panel:title']}",
             title_align="center",
             border_style="green",
             width=240,
@@ -373,7 +373,7 @@ def main_menu():
         console.print(Align(menu_panel, align="center"))
 
         try:
-            choice = int(console.input(f"\n{translations["choice_input"]}: ").strip())
+            choice = int(console.input(f"\n{translations['choice_input']}: ").strip())
             if choice == 1:
                 audio_menu()
             elif choice == 2:
@@ -381,12 +381,12 @@ def main_menu():
             elif choice == 3:
                 settings_menu()
             elif choice == 0:
-                console.print(f"{translations["exit_app"]}")
+                console.print(f"{translations['exit_app']}")
                 break
             else:
-                console.print(f"{translations["error_choice"]}")
+                console.print(f"{translations['error_choice']}")
         except ValueError:
-            console.print(f"{translations["error_value"]}")
+            console.print(f"{translations['error_value']}")
 
 if __name__ == "__main__":
     main_menu()
