@@ -17,7 +17,6 @@ if %errorlevel% neq 0 (
     del python-installer.exe
 
     echo Python установлен!
-    goto checking
 ) else (
     echo Python уже установлен.
     python checks.py
