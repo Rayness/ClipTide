@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+sys.path.insert(0, "./libs")
 import yt_dlp
 import json
 import configparser

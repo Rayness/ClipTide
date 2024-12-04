@@ -19,7 +19,6 @@ if %errorlevel% neq 0 (
     echo Python установлен!
 ) else (
     echo Python уже установлен.
-    python checks.py
 )
 
 python app.py

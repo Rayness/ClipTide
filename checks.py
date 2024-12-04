@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+sys.path.insert(0, "./libs")
 import zipfile
 import urllib.request
 from pathlib import Path
@@ -49,19 +50,21 @@ def install_ffmpeg():
 
 def install_yt_dlp():
     try:
+        sys.path.insert(0, "./libs")
         import yt_dlp
         print("yt-dlp уже установлен.")
     except ImportError:
         print("Устанавливаю yt-dlp...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp"])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "yt-dlp", "--target=./libs"])
 
 def install_rich():
     try:
+        sys.path.insert(0, "./libs")
         import rich
         print("rich уже установлен")
     except ImportError:
         print("Устанавливаю rich...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "rich"])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "rich", "--target=./libs"])
 
 def main():
     install_yt_dlp()
