@@ -16,10 +16,12 @@ config_file = "config.ini"
 # Функция для записи данных в INI-файл
 def save_config(language, folder_path):
     config = configparser.ConfigParser()
-    config['Settings'] = {
-        'language': language,
-        'folder_path': folder_path
-    }
+
+    config.read(config_file)
+
+    config['Settings']['language'] = language
+    config['Settings']['folder_path'] = folder_path
+    
     with open(config_file, 'w') as file:
         config.write(file)
     print("Конфигурация сохранена.")
@@ -123,8 +125,7 @@ def clear_screen():
 def restart_program():
     """Перезапускает текущий скрипт."""
     print("Перезапуск приложения...")
-    python = sys.executable
-    os.execl(python, python, *sys.argv)
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 def settingsLanguage_menu():
     clear_screen()
@@ -228,6 +229,7 @@ def settings_menu():
         "------------------------------------------------------------------------",
         f"[1] - {translations['settings_menu:menu:change_folder']}  | ([red]{path}[/])",
         f"[2] - {translations['settings_menu:menu:change_language']} | ([red]{lang}[/])",
+        f"[3] - {translations['settings_menu:experimental']} | ([red]{translations['in_progress']}[/]) ",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations['menu:back']}[/]",
         f"[0] - [bold red]{translations['menu:exit']}[/]"

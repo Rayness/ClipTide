@@ -2,10 +2,5 @@
 /YT-downloader.7z
 /path.yt
 /downloads
-<<<<<<< HEAD
 config.ini
 /libs
-=======
-/libs
-config.ini
->>>>>>> 1927627 (add config to gitignore ))
