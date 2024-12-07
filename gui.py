@@ -14,28 +14,30 @@ ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 
 translations = load_translations('en')
 
+audio_dl = False
+
 # Добавляем FFmpeg в PATH
 ffmpeg_bin_path = str(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin")
 os.environ["PATH"] += os.pathsep + ffmpeg_bin_path
-
-
-translations = load_translations('en')
 
 class VideoDownloaderApp:
     def __init__(self, root):
         self.root = root
         self.root.title("YouTube Downloader")
-        self.root.geometry("500x450")
+        self.root.geometry("500x500")
 
         # Очередь загрузок
         self.download_queue = []
 
         # Поле ввода ссылки
-        self.url_label = ttk.Label(root, text="Введите ссылку на видео:")
+        self.url_label = ttk.Label(root, text=f"Введите ссылку на видео:")
         self.url_label.pack(pady=5)
 
         self.url_entry = ttk.Entry(root, width=50)
         self.url_entry.pack(pady=5)
+
+        self.download_audio = ttk.Checkbutton(root, text="Скачать только аудио", variable=audio_dl)
+        self.download_audio.pack(pady=5)
 
         # Кнопка для добавления в очередь
         self.add_to_queue_button = ttk.Button(root, text="Добавить в очередь", command=self.add_to_queue)
@@ -62,8 +64,8 @@ class VideoDownloaderApp:
         # Метка для статуса
         self.status_label = ttk.Label(root, text="Статус: Готов")
         self.status_label.pack(pady=5)
-
-    def downloading(self, url, output_folder):
+    
+    def downloading_audio(self, url, output_folder):
         def progress_hook(d):
             if d['status'] == 'downloading':
                 downloaded_bytes = d.get('downloaded_bytes', 0)
@@ -72,6 +74,7 @@ class VideoDownloaderApp:
                 self.update_progress(progress, f"Скачивается... {progress}%")
             elif d['status'] == 'finished':
                 self.update_progress(100, "Загрузка завершена!")
+                
         ydl_opts = {
             'format': 'bestaudio/best',  # Загрузить лучшее качество аудио
             'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),  # Сохранять с оригинальным названием
@@ -83,7 +86,30 @@ class VideoDownloaderApp:
                 },
             ],
             'progress_hooks': [progress_hook],
+        }
 
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+        except Exception as e:
+            self.update_progress(0, f"Ошибка: {str(e)}")
+    
+    def downloading_video(self, url, output_folder, resolution):
+        def progress_hook(d):
+            if d['status'] == 'downloading':
+                downloaded_bytes = d.get('downloaded_bytes', 0)
+                total_bytes = d.get('total_bytes', 1)  # Избегаем деления на ноль
+                progress = int((downloaded_bytes / total_bytes) * 100)
+                self.update_progress(progress, f"Скачивается... {progress}%")
+            elif d['status'] == 'finished':
+                self.update_progress(100, "Загрузка завершена!")
+
+        ydl_opts = {
+            'format': f'bestvideo[height<={resolution}]+bestaudio/best[height<={resolution}]',
+            'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),
+            'merge_output_format': 'mp4',
+            'socket_timeout': 60,
+            'progress_hooks' : [progress_hook],
         }
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -109,9 +135,13 @@ class VideoDownloaderApp:
             url = self.download_queue.pop(0)
             output_folder = 'downloads'
             self.queue_listbox.delete(0)
-            self.downloading(url, output_folder)
+            if audio_dl:
+                self.downloading_audio(url, output_folder)
+            else:
+                self.downloading_video(url, output_folder, '1080')
 
         self.status_label.config(text="Статус: Все загрузки завершены!")
+        self.progress['value'] = '0'
 
     def update_progress(self, value, status_text):
         """Обновление прогресса и текста."""
