@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, "./libs")
 import yt_dlp
 import json
+from queue import Queue
 import configparser
 from rich.console import Console
 from rich.panel import Panel
@@ -91,6 +92,7 @@ def progress_hook(d):
         print(f"\n{translations['progress_hook:success']}")
 
 def download_audio_as_mp3(url, output_folder):
+    clear_screen()
     ydl_opts = {
         'format': 'bestaudio/best',  # Загрузить лучшее качество аудио
         'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),  # Сохранять с оригинальным названием
@@ -107,7 +109,12 @@ def download_audio_as_mp3(url, output_folder):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
 def download_video(url, resolution, output_folder):
+    clear_screen()
     ydl_opts = {
         'format': f'bestvideo[height<={resolution}]+bestaudio/best[height<={resolution}]',
         'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),
@@ -118,9 +125,6 @@ def download_video(url, resolution, output_folder):
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
-
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
 
 def restart_program():
     """Перезапускает текущий скрипт."""
