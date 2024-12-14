@@ -2,10 +2,9 @@ import sys
 import tkinter as tk
 import os
 sys.path.insert(0, "./libs")
-from tkinter import ttk, filedialog
+from tkinter import IntVar, ttk, filedialog
 import threading
 import yt_dlp
-import json
 from scripts.utils import load_translations
 from pathlib import Path
 
@@ -36,7 +35,7 @@ class VideoDownloaderApp:
         self.url_entry = ttk.Entry(root, width=50)
         self.url_entry.pack(pady=5)
 
-        self.download_audio = ttk.Checkbutton(root, text="Скачать только аудио", variable=audio_dl)
+        self.download_audio = ttk.Checkbutton(root, text="Скачать только аудио", command=self.download_audio_check)
         self.download_audio.pack(pady=5)
 
         # Кнопка для добавления в очередь
@@ -64,6 +63,14 @@ class VideoDownloaderApp:
         # Метка для статуса
         self.status_label = ttk.Label(root, text="Статус: Готов")
         self.status_label.pack(pady=5)
+
+    def download_audio_check(self):
+        global audio_dl
+        if audio_dl != True:
+            audio_dl = True
+        else:
+            audio_dl = False
+        print(audio_dl)
     
     def downloading_audio(self, url, output_folder):
         def progress_hook(d):
@@ -135,7 +142,7 @@ class VideoDownloaderApp:
             url = self.download_queue.pop(0)
             output_folder = 'downloads'
             self.queue_listbox.delete(0)
-            if audio_dl:
+            if audio_dl == True:
                 self.downloading_audio(url, output_folder)
             else:
                 self.downloading_video(url, output_folder, '1080')

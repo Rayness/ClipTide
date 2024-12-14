@@ -26,6 +26,11 @@
     "settings_menu:menu:choice_exit" : "Выход из программы...",
     "settings_menu:experimental" : "Экспериментальное",
 
+    "settingsExperimental:queue" : "Очередь",
+    "settingsExperimental:auto_update" : "Автообновление",
+    "settingsExperimental:on" : "Вкл",
+    "settingsExperimental:off" : "Выкл",
+
     "video_settings:menu:if_true" : "если поддерживается видео",
     "video_settings:menu:panel:title" : "=== Выбор разрешения ===",
     "video_settings:menu:video_loader" : "Загрузчик видео",
@@ -44,6 +49,7 @@
     "settingsLanguage_menu:info" : "После изменения языка приложение перезапустится",
     "settingsLanguage_menu:lang:ru" : "Русский",
     "settingsLanguage_menu:lang:en" : "Английский",
+    "settingsLanguage_menu:lang:jp" : "Японский",
     "settingsLanguage_menu:title" : "=== Выбор языка ===",
 
     "input_link" : "Вставьте ссылку на видео",

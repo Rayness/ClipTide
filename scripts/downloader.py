@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.insert(0, "./libs")
 import yt_dlp
-import json
 from pathlib import Path
 from scripts.utils import load_translations
 

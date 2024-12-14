@@ -131,6 +131,42 @@ def restart_program():
     print("Перезапуск приложения...")
     os.execv(sys.executable, ['python'] + sys.argv)
 
+def experimentalSettings():
+    clear_screen()
+    title = Text("YouTube Downloader", justify="center", style="bold red")
+    console.print(Align.center(Panel(title, expand=False, border_style="green")))
+
+    menu_options = "\n".join([
+        f"[1] - {translations['settingsExperimental:queue']} | {translations['settingsExperimental:off']} | [red]{translations['in_progress']}[/]",
+        f"[2] - {translations['settingsExperimental:auto_update']} | {translations['settingsExperimental:off']} | [red]{translations['in_progress']}[/]",
+        "-------------------------------------------------------",
+        f"[9] - [bold red]{translations['menu:back']}[/]",
+        f"[0] - [bold red]{translations['menu:exit']}[/]"
+    ])
+
+    menu_panel = Panel(
+        menu_options,
+        title=f"{translations['settings_menu:experimental']}",
+        title_align="center",
+        border_style="green",
+        width=240,
+        expand=False
+    )
+
+    console.print(Align(menu_panel, align="center"))
+
+    try:
+        choice = int(console.input(f"\n{translations['choice_input']}: ").strip())
+        if choice == 1:
+            console.print("В разработке")
+        elif choice == 9:
+            return
+        elif choice == 0:
+            exit()
+        else:
+            console.print(f"{translations['error_choice']}")
+    except ValueError:
+        console.print(f"{translations['error_value']}")
 def settingsLanguage_menu():
     clear_screen()
 
@@ -142,6 +178,7 @@ def settingsLanguage_menu():
         "------------------------------------------------------------------------",
         f"[1] - {translations['settingsLanguage_menu:lang:ru']}",
         f"[2] - {translations['settingsLanguage_menu:lang:en']}",
+        f"[3] - {translations['settingsLanguage_menu:lang:jp']}",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations['menu:back']}[/]",
         f"[0] - [bold red]{translations['menu:exit']}[/]"
@@ -166,6 +203,10 @@ def settingsLanguage_menu():
             restart_program()
         elif choice == 2:
             lang = "en"
+            save_config(lang, path)
+            restart_program()
+        elif choice == 3:
+            lang = "jp"
             save_config(lang, path)
             restart_program()
         elif choice == 9:
@@ -256,6 +297,8 @@ def settings_menu():
             settingsFolder_menu()
         elif choice == 2:
             settingsLanguage_menu()
+        elif choice == 3:
+            experimentalSettings()
         elif choice == 9:
             return
         elif choice == 0:

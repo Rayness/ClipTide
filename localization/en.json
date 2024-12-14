@@ -26,6 +26,11 @@
     "settings_menu:menu:choice_exit" : "Exiting the program...",
     "settings_menu:experimental" : "Experimental",
 
+    "settingsExperimental:queue" : "Queue",
+    "settingsExperimental:auto_update" : "Auto-update",
+    "settingsExperimental:on" : "On",
+    "settingsExperimental:off" : "Off",
+
     "video_settings:menu:if_true" : "if video is supported",
     "video_settings:menu:panel:title" : "=== Selecting a resolution ===",
     "video_settings:menu:video_loader" : "Video downloader",
@@ -44,6 +49,7 @@
     "settingsLanguage_menu:info" : "After changing the language, the application will restart.",
     "settingsLanguage_menu:lang:ru" : "Russian",
     "settingsLanguage_menu:lang:en" : "English",
+    "settingsLanguage_menu:lang:jp" : "Japanese",
     "settingsLanguage_menu:title" : "=== Select language ===",
 
     "input_link" : "Insert video link",
@@ -53,5 +59,5 @@
     "error_choice" : "Incorrect choice. Try again.",
     "error_value" : "Please enter only a number!",
     "choice_input" : "Select a menu item",
-    "in_progress" : "VIP"
+    "in_progress" : "WIP"
  }
