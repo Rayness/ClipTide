@@ -4,10 +4,10 @@
  • [Русский Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
 
 <p align="center">
-    <a href="https://www.python.org/downloads/" alt="Backers on Open Collective">
+    <a href="https://www.python.org/downloads/">
         <img src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4">
     </a>
-    <a href="https://www.python.org/downloads/" alt="Backers on Open Collective">
+    <a href="https://pypi.org/project/rich/">
         <img src="https://img.shields.io/badge/rich-13.9.4-%2332CD32">
     </a>
 </p>
