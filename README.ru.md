@@ -1,4 +1,10 @@
+# YouTube Downloader --Classic
+
+
+[Русский Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md) [English Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.md)
+
 ## Общая информация: 
+![Screenshot 2024-12-14 200941](https://github.com/user-attachments/assets/9b14f2e2-299f-4740-bcfa-a9d411f701ed)
 > [!NOTE]
 > Данная небольшая программа предназначена для скачивания видео контента в аудио и видео форматах с видеохостинга YouTube. Работает всё на Python с использованием бибилиотеки [ydl](https://github.com/ytdl-org/youtube-dl) для загрузки видео, а так же [rich](https://github.com/Textualize/rich) для оформления консольного интерфейса.
 
