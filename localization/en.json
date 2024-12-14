@@ -23,7 +23,6 @@
     "settings_menu:menu:change_folder" : "Change download folder",
     "settings_menu:menu:change_language" : "Change the language of the application",
     "settings_menu:menu:panel:title" : "=== Settings ===",
-    "settings_menu:menu:choice_exit" : "Exiting the program...",
     "settings_menu:experimental" : "Experimental",
 
     "settingsExperimental:queue" : "Queue",
@@ -31,7 +30,7 @@
     "settingsExperimental:on" : "On",
     "settingsExperimental:off" : "Off",
 
-    "video_settings:menu:if_true" : "if video is supported",
+    "video_settings:menu:if_true" : "If video is supported",
     "video_settings:menu:panel:title" : "=== Selecting a resolution ===",
     "video_settings:menu:video_loader" : "Video downloader",
 
@@ -50,6 +49,7 @@
     "settingsLanguage_menu:lang:ru" : "Russian",
     "settingsLanguage_menu:lang:en" : "English",
     "settingsLanguage_menu:lang:jp" : "Japanese",
+    "settingsLanguage_menu:lang:uk" : "Ukrainian",
     "settingsLanguage_menu:title" : "=== Select language ===",
 
     "input_link" : "Insert video link",

@@ -179,6 +179,7 @@ def settingsLanguage_menu():
         f"[1] - {translations['settingsLanguage_menu:lang:ru']}",
         f"[2] - {translations['settingsLanguage_menu:lang:en']}",
         f"[3] - {translations['settingsLanguage_menu:lang:jp']}",
+        f"[4] - {translations['settingsLanguage_menu:lang:uk']}",
         "------------------------------------------------------------------------",
         f"[9] - [bold red]{translations['menu:back']}[/]",
         f"[0] - [bold red]{translations['menu:exit']}[/]"
@@ -207,6 +208,10 @@ def settingsLanguage_menu():
             restart_program()
         elif choice == 3:
             lang = "jp"
+            save_config(lang, path)
+            restart_program()
+        elif choice == 4:
+            lang = "uk"
             save_config(lang, path)
             restart_program()
         elif choice == 9:
