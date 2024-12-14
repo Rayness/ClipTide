@@ -1,4 +1,5 @@
-[![Supported Python Versions](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4)](https://www.python.org/downloads/) [![Rich version](https://img.shields.io/badge/rich-13.9.4-%2332CD32)](https://pypi.org/project/rich/) [![Rich version](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)]()
+[![Supported Python Versions](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4)](https://www.python.org/downloads/) [![Rich version](https://img.shields.io/badge/rich-13.9.4-%2332CD32)](https://pypi.org/project/rich/) [![Rich version](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)]() [![Release date](https://img.shields.io/github/release-date/Rayness/YouTube-Downloader)]()
+
 
 # YouTube Downloader --Classic
 
