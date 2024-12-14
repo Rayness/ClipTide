@@ -1,6 +1,6 @@
 ## General Information: 
 > [!NOTE]
-> This small program is designed to download video content in audio and video formats from YouTube video hosting. It all runs in Python using the [ydl](https://github.com/ytdl-org/youtube-dl) bibilio for downloading videos, and [rich]() for the console interface.
+> This small program is designed to download video content in audio and video formats from YouTube video hosting. It all runs in Python using the [ydl](https://github.com/ytdl-org/youtube-dl) bibilio for downloading videos, and [rich](https://github.com/Textualize/rich) for the console interface.
 
 > [!IMPORTANT] 
 > ### Please note!
