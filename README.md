@@ -40,3 +40,8 @@
 - [ ] Add download queue
 - [ ] Add auto-update
 - [ ] Create a complete GUI
+
+
+## License
+
+Project YouTube Downloader is distributed under the MIT license.
