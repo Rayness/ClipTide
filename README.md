@@ -15,7 +15,7 @@
 
 > [!IMPORTANT] 
 > ### Please note!
-> The application requires **[Python](https://www.python.org/downloads/)** installed. If it is not, an automatic installation will be performed. By downloading the applications you agree to the installation of **Python** on your personal computer.
+> The application requires **[Python](https://www.python.org/downloads/)** installed. If it is not, an automatic installation will be performed. By downloading the applications you agree to the installation of **Python** on your personal computer. If you already have a version of Python lower than 3.12 installed, you need to install this version, or higher. Or delete the installed Python and the program will download the latest version
 
 ## Download
 
