@@ -3,8 +3,18 @@
 [English Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.md)
  • [Русский Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
 
+<p align="center">
+    <a href="https://www.python.org/downloads/" alt="Backers on Open Collective">
+        <img src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4">
+    </a>
+    <a href="https://www.python.org/downloads/" alt="Backers on Open Collective">
+        <img src="https://img.shields.io/badge/rich-13.9.4-%2332CD32">
+    </a>
+</p>
+
 ## General Information: 
 ![Screenshot 2024-12-14 200941](https://github.com/user-attachments/assets/9b14f2e2-299f-4740-bcfa-a9d411f701ed)
+
 > [!NOTE]
 > This small program is designed to download video content in audio and video formats from YouTube video hosting. It all runs in Python using the [ydl](https://github.com/ytdl-org/youtube-dl) library for downloading videos, and [rich](https://github.com/Textualize/rich) for the console interface.
 
