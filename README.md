@@ -1,5 +1,4 @@
-[![Supported Python Versions](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4)](https://www.python.org/downloads/) [![Downloads](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)](https://github.com/Rayness/YouTube-Downloader/releases) [![Release date](https://img.shields.io/github/release-date/Rayness/YouTube-Downloader)]() [![Version tag](https://img.shields.io/github/v/tag/Rayness/YouTube-Downloader
-)]()
+[![Supported Python Versions](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20-%234682B4)](https://www.python.org/downloads/) [![Downloads](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)](https://github.com/Rayness/YouTube-Downloader/releases) [![Release date](https://img.shields.io/github/release-date/Rayness/YouTube-Downloader)]() [![Version tag](https://img.shields.io/github/v/tag/Rayness/YouTube-Downloader)]()
 
 
 # YouTube Downloader --Classic
