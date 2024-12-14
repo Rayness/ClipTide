@@ -7,7 +7,7 @@
 [English Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.md)
  • [Русский Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
 
-## General Information: 
+## General Information
 ![Screenshot 2024-12-14 200941](https://github.com/user-attachments/assets/9b14f2e2-299f-4740-bcfa-a9d411f701ed)
 
 > [!NOTE]
@@ -17,13 +17,13 @@
 > ### Please note!
 > The application requires **[Python](https://www.python.org/downloads/)** installed. If it is not, an automatic installation will be performed. By downloading the applications you agree to the installation of **Python** on your personal computer.
 
-## Download:
+## Download
 
 **[Actual version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1.3-beta)** - console application, quite stable;
 
 **[Test Version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.2-beta)** - first test version of GUI, highly unstable.
 
-## Development progress: ( yes, nobody needs this item, but that's the way I wanted it )
+## Development progress ( yes, nobody needs this item, but that's the way I wanted it )
 
 - [x] Create first version in .bat
 - [x] Add the ability to download audiowe
