@@ -3,6 +3,7 @@ import tkinter as tk
 import os
 sys.path.insert(0, "./libs")
 from tkinter import IntVar, ttk, filedialog
+import webview
 import threading
 import yt_dlp
 from scripts.utils import load_translations
@@ -15,15 +16,84 @@ translations = load_translations('en')
 
 audio_dl = False
 
+import webview
+
+# HTML-код для отображения в окне
+html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyWebview Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            color: #4a56c6;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4a56c6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3a43a6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать в PyWebview!</h1>
+    <p>Это пример графического интерфейса, созданного с помощью PyWebview.</p>
+    <button id="greetBtn">Нажмите меня</button>
+    <p id="message"></p>
+
+    <script>
+        // Добавляем обработчик события для кнопки
+        document.getElementById('greetBtn').addEventListener('click', function() {
+            // Отправляем сообщение в Python через API
+            pywebview.api.greet('Hello from JavaScript!').then(response => {
+                document.getElementById('message').innerText = response;
+            });
+        });
+
+        // Определяем API для взаимодействия с Python
+        window.pywebview = {
+            api: {
+                greet: function(message) {
+                    return new Promise(function(resolve, reject) {
+                        resolve(`Python says: ${message}`);
+                    });
+                }
+            }
+        };
+    </script>
+</body>
+</html>
+"""
+
+# Функция для обработки вызова из JavaScript
+def greet(message):
+    print(f"Получено сообщение из JavaScript: {message}")
+    return f"Python получил ваше сообщение: {message}"
+
 # Добавляем FFmpeg в PATH
 ffmpeg_bin_path = str(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin")
 os.environ["PATH"] += os.pathsep + ffmpeg_bin_path
 
 class VideoDownloaderApp:
     def __init__(self, root):
-        self.root = root
-        self.root.title("YouTube Downloader")
-        self.root.geometry("500x500")
+
+        webview.create_window('Hello world', 'https://pywebview.flowrl.com/hello')
+        webview.start()
 
         # Очередь загрузок
         self.download_queue = []
