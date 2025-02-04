@@ -4,9 +4,6 @@ body {
     background-color: #f4f4f9;
     color: #333;
 }
-h1 {
-    color: #4a56c6;
-}
 input[type="text"] {
     width: 80%;
     padding: 10px;
@@ -29,8 +26,17 @@ button:hover {
     margin-top: 20px;
     font-weight: bold;
 }
-progress {
-    width: 80%;
-    margin-top: 10px;
-    height: 20px;
+#queue-list {
+    margin-top: 20px;
+    font-size: 14px;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    background-color: #e0e0e0;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
 }
