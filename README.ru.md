@@ -18,7 +18,7 @@
 
 **[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.1.3-beta)** - консольное приложение, достаточно стабильное;
 
-**[Тестовая версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.2-beta)** - первая тестовая версия графического интерфейса, крайне не стабильное.
+**[Тестовая версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.0-beta)** - приложение с удобным интерфейсом, на ранней стадии разработки.
 
 ## Прогресс разработки ( да, этот пункт никому не нужен, но я так захотел )
 
