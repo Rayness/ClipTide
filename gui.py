@@ -81,6 +81,7 @@ class Api:
                 'format': 'bestvideo+bestaudio/best',  # Лучшее качество видео и аудио
                 'merge_output_format': 'mp4',  # Объединяем видео и аудио в один файл
                 'outtmpl': 'downloads/%(title)s.%(ext)s',  # Путь для сохранения
+                'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
             }
 
             # Загружаем видео
@@ -96,6 +97,42 @@ class Api:
         # Сбрасываем флаг загрузки и запускаем следующую загрузку
         self.is_downloading = False
         self.start_next_download()
+
+    # Хук для отслеживания прогресса
+    # Хук для отслеживания прогресса
+    def progress_hook(self, d):
+        if d['status'] == 'downloading':
+            # Получаем данные о прогрессе
+            downloaded_bytes = d.get('downloaded_bytes', 0)
+            total_bytes = d.get('total_bytes', 1)  # Избегаем деления на ноль
+            speed = d.get('speed', '0B/s')
+            eta = d.get('eta', 0)  # Оставшееся время в секундах
+
+            # Вычисляем прогресс
+            progress = (downloaded_bytes / total_bytes) * 100 if total_bytes > 0 else 0
+            progress = round(progress, 2)  # Округляем до двух знаков после запятой
+
+            # Преобразуем ETA в читаемый формат
+            eta_minutes = eta // 60
+            eta_seconds = eta % 60
+            eta_formatted = f"{int(eta_minutes)} мин {int(eta_seconds)} сек"
+
+ # Преобразуем скорость в Мбайты/сек
+            speed_mbps = speed / (1024 * 1024) if speed else 0
+            speed_formatted = f"{speed_mbps:.2f} MB/s"  # Форматируем до двух знаков после запятой
+
+            # Выводим отладочную информацию
+            print(f"Progress: {progress}%, Speed: {speed_formatted}, ETA: {eta_formatted}")
+
+            # Обновляем интерфейс
+            window.evaluate_js(f'document.getElementById("progress").innerText = "Прогресс: {progress}%"')
+            window.evaluate_js(f'document.getElementById("speed").innerText = "Скорость: {speed_formatted}"')
+            window.evaluate_js(f'document.getElementById("eta").innerText = "Осталось: {eta_formatted}"')
+        elif d['status'] == 'finished':
+            # Загрузка завершена
+            window.evaluate_js('document.getElementById("progress").innerText = "Прогресс: 100%"')
+            window.evaluate_js('document.getElementById("speed").innerText = "Скорость: 0B/s"')
+            window.evaluate_js('document.getElementById("eta").innerText = "Осталось: 0 мин 0 сек"')
 
 if __name__ == "__main__":
     # Создаем экземпляр API

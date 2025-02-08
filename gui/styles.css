@@ -40,3 +40,9 @@ li {
     padding: 10px;
     border-radius: 5px;
 }
+.progress-info {
+    margin-top: 20px;
+}
+.progress-info div {
+    margin: 5px 0;
+}

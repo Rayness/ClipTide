@@ -25,7 +25,6 @@ document.getElementById('startBtn').addEventListener('click', function() {
 window.addVideoToList = function(videoTitle) {
     const queueList = document.getElementById('queue');
     const listItem = document.createElement('li');
-    const videoUrl = document.getElementById('videoUrl').value;
     listItem.innerText = videoTitle;
     queueList.appendChild(listItem);
 };
