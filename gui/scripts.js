@@ -1,14 +1,16 @@
 // Добавляем обработчик события для кнопки "Добавить в очередь"
 document.getElementById('addBtn').addEventListener('click', function() {
     const videoUrl = document.getElementById('videoUrl').value;
+    const selectedFormat = document.getElementById('format').value; // Получаем выбранный формат
+    const selectedResolution = document.getElementById('resolution').value; // Получаем выбранное разрешение
 
     if (!videoUrl) {
         document.getElementById('status').innerText = 'Ошибка: Введите URL видео';
         return;
     }
 
-    // Вызываем функцию addVideoToQueue из Python через API
-    pywebview.api.addVideoToQueue(videoUrl).then(function(response) {
+    // Вызываем функцию addVideoToQueue из Python через API и передаем выбранный формат
+    pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution).then(function(response) {
         document.getElementById('status').innerText = response;
     });
 });

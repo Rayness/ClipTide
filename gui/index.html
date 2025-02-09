@@ -9,6 +9,24 @@
 <body>
     <h1>YT-Downloader</h1>
     <input type="text" id="videoUrl" placeholder="Введите URL видео">
+    <div class="download_settings">
+        <label for="format">Формат: </label>
+        <select id="format">
+            <option value="mp4">MP4</option>
+            <option value="mkv">MKV</option>
+            <option value="webm">WEBM</option>
+        </select>
+        <label for="resolution">Разрешение: </label>
+        <select id="resolution">
+            <option value="240">SD (240p)</option>
+            <option value="360">SD (360p)</option>
+            <option value="480">SD (480p)</option>
+            <option selected value="720">HD (720p)</option>
+            <option value="1080">FullHD (1080p)</option>
+            <option value="1440">2K (1440p)</option>
+            <option value="2160">4K (2160p)</option>
+        </select>
+    </div>
     <button id="addBtn">Добавить в очередь</button>
     <button id="startBtn">Начать загрузку</button>
     <div id="status">Статус: Ожидание...</div>

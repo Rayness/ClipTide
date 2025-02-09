@@ -24,7 +24,7 @@ class Api:
         self.download_queue = []  # Очередь для загрузки видео
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
 
-    def addVideoToQueue(self, video_url):
+    def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
             # Извлекаем информацию о видео (название)
             with yt_dlp.YoutubeDL() as ydl:
@@ -32,13 +32,13 @@ class Api:
                 video_title = info.get('title', 'Неизвестное видео')
 
             # Добавляем видео в очередь
-            self.download_queue.append((video_url, video_title))
-            print(f"Видео добавлено в очередь: {video_title}")
+            self.download_queue.append((video_url, video_title, selected_format, selectedResolution))
+            print(f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
             # Обновляем интерфейс
             window.evaluate_js(f'addVideoToList("{video_title}")')
 
-            return f"Видео добавлено в очередь: {video_title}"
+            return f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p"
         except Exception as e:
             print(f"Ошибка при добавлении видео в очередь: {str(e)}")
             return f"Ошибка при добавлении видео: {str(e)}"
@@ -64,23 +64,23 @@ class Api:
         self.is_downloading = True
 
         # Извлекаем следующее видео из очереди
-        video_url, video_title = self.download_queue.pop(0)
-        print(f"Начинаю загрузку видео: {video_title}")
+        video_url, video_title, selected_format, selectedResolution = self.download_queue.pop(0)
+        print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
         # Обновляем статус в интерфейсе
         window.evaluate_js(f'document.getElementById("status").innerText = "Загружаю: {video_title}"')
         window.evaluate_js(f'removeVideoFromList("{video_title}")')
 
         # Запускаем загрузку видео
-        threading.Thread(target=self.download_video, args=(video_url, video_title)).start()
+        threading.Thread(target=self.download_video, args=(video_url, video_title, selected_format, selectedResolution)).start()
 
-    def download_video(self, video_url, video_title):
+    def download_video(self, video_url, video_title, selected_format, selectedResolution):
         try:
             # Настройки для yt-dlp
             ydl_opts = {
-                'format': 'bestvideo+bestaudio/best',  # Лучшее качество видео и аудио
-                'merge_output_format': 'mp4',  # Объединяем видео и аудио в один файл
-                'outtmpl': 'downloads/%(title)s.%(ext)s',  # Путь для сохранения
+                'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
+                'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
+                'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
                 'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
             }
 
