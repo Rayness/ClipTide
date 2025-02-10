@@ -15,6 +15,12 @@ document.getElementById('addBtn').addEventListener('click', function() {
     });
 });
 
+document.getElementById('apply').addEventListener('click', function() {
+    const lang = document.getElementById('language').value;
+
+    pywebview.api.switch_language(lang);
+})
+
 // Добавляем обработчик события для кнопки "Начать загрузку"
 document.getElementById('startBtn').addEventListener('click', function() {
     // Вызываем функцию startDownload из Python через API
@@ -41,4 +47,24 @@ window.removeVideoFromList = function(videoTitle) {
             break;
         }
     }
+};
+
+// Функция для обновления текста интерфейса
+window.updateTranslations = function(translations) {
+    document.getElementById('language_title').innerText = translations.settings.language || 'Add video';
+    document.getElementById('apply').innerText = translations.settings.button_apply || 'Apply:';
+
+    document.getElementById('videoUrl').placeholder = translations.video_URL || 'Add video';
+    document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
+    document.getElementById('startBtn').innerText = translations.start_download || 'Start download';
+
+    document.getElementById('queue-title').innerText = translations.queue || 'Queue: ';
+    document.getElementById('format_title').innerText = translations.format || 'Format: ';
+    document.getElementById('resolution_title').innerText = translations.resolution || 'Resolution: ';
+   
+    document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
+
+    document.getElementById('progress').innerText = translations.progress + " 0% " || 'Progress: ';
+    document.getElementById('speed').innerText = translations.speed + " 0 " + translations.bs || 'Speed: ';
+    document.getElementById('eta').innerText = translations.eta + " 0 " + translations.min + " 0 " + translations.sec || 'Eta: ';
 };

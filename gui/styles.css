@@ -68,3 +68,9 @@ li {
     border-radius: 5px;
     padding: 4px;
 }
+
+
+.download_settings {
+    display: flex;
+    flex-direction: row;
+}

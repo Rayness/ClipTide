@@ -1,0 +1,42 @@
+{
+    "video_URL" : "Введите URL видео",
+    "audio_only" : "Только аудио",
+    "format": "Формат: ",
+    "resolution": "Разрешение: ",
+    "add_to_queue" : "Добавить в очередь",
+    "start_downloading" : "Начать загрузку",
+    "status" : {
+        "status_text" : "Статус: Ожидание...",
+        "unknown video" : "Неизвестное видео",
+        "download_success" : "Видео успешно загружено",
+        "download_error" : "Ошибка при загрузке",
+        "to_queue" : "Видео добавлено в очередь:",
+        "in_format" : "в формате",
+        "in_resolution" : "в разрешении",
+        "error_adding" : "Ошибка при добавлении видео:",
+        "downloading_already" : "Загрузка уже запущена.",
+        "the_queue_is_empty" : "Очередь пуста. Нечего загружать.",
+        "the_queue_is_empty_download_success" : "Очередь пуста. Нечего загружать.",
+        "download_started" : "Загрузка начата.",
+        "downloading" : "Загружаю"
+    },
+    "queue" : "Очередь: ",
+    "progress" : "Прогресс: ",
+    "speed" : "Скорость: ",
+    "eta" : "Осталось: 0 мин 0 сек",
+    "bs" : "Б/с",
+    "mbs" : "МБ/с",
+    "min" : "мин",
+    "sec" : "сек",
+
+    "settings" : {
+        "settings_text" : "Настройки",
+        "language" : "Язык: ",
+        "Russian" : "Русский",
+        "English" : "Английский",
+        "folder" : "Папка для загрузки: ",
+        "choose_folder" : "Выбрать папку",
+        "auto_update" : "Автоматическое обновление",
+        "button_apply" : "Применить"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "video_URL" : "Enter video URL",
+    "audio_only" : "Audio only",
+    "format": "Format: ",
+    "resolution": "Resolution: ",
+    "add_to_queue" : "Add to queue",
+    "start downloading" : "Start downloading",
+    "status" : {
+        "status_text" : "Status: Waiting...",
+        "unknown_video" : "Unknown video",
+        "download_success" : "Video downloaded successfully",
+        "download_error" : "Error while downloading",
+        "to_queue" : "Video added to queue:",
+        "in_format" : "in format",
+        "in_resolution" : "in resolution",
+        "error_adding" : "Error adding video:",
+        "downloading_already" : "Downloading already started.",
+        "the_queue_is_empty" : "The queue is empty. There is nothing to download.",
+        "the_queue_is_empty_download_success" : "The queue is empty. There is nothing to download.",
+        "download_started" : "Downloading started.",
+        "downloading" : "Downloading"
+    },
+    "queue" : "Queue: ",
+    "progress" : "Progress: ",
+    "speed" : "Speed: ",
+    "bs" : "B/s",
+    "mbs" : "MB/s",
+    "eta" : "Time left: ",
+    "min" : "min",
+    "sec" : "sec",
+
+    "settings" : {
+        "settings_text" : "Settings",
+        "language" : "Language: ",
+        "Russian" : "Russian",
+        "English" : "English",
+        "folder" : "Download folder: ",
+        "choose_folder" : "Select folder",
+        "auto_update" : "Automatic update",
+        "button_apply" : "Apply"
+    }
+}

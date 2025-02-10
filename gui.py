@@ -4,6 +4,7 @@ import threading
 sys.path.insert(0, "./libs")
 import yt_dlp
 import webview
+import json
 import time
 import queue
 import configparser
@@ -11,7 +12,7 @@ from pathlib import Path
 
 
 # ФАЙЛ КОНФИГУРАЦИИ
-# -------------------------
+# -------------------------------------------------------------------------
 CONFIG_FILE = "./gui/config.ini"
 
 # Настройки по умолчанию
@@ -51,6 +52,27 @@ def save_config(config):
 
 # -------------------------------------------------------------------------
 
+# ФАЙЛ С ЛОКАЛИЗАЦИЕЙ
+# -------------------------------------------------------------------------
+
+# Путь к папке с переводами
+TRANSLATIONS_DIR = "./gui/localization"
+
+def load_translations(language):
+    file_path = os.path.join(TRANSLATIONS_DIR, f"{language}.json")
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                print(file)
+                return json.load(file)
+        except Exception as e:
+            print(f"Ошибка при загрузке переводов: {e}")
+    print(f"Файл переводов для языка '{language}' не найден.")
+    return {}
+
+
+# --------------------------------------------------------------------------
+
 # HTML-контент для отображения в окне
 html_file_path = os.path.abspath("gui/index.html")
 
@@ -67,6 +89,14 @@ class Api:
         self.download_queue = []  # Очередь для загрузки видео
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
 
+    def switch_language(self, language):
+        self.current_language = language
+        translations = load_translations(language)
+        config.set("Settings", "language", self.current_language)
+        save_config(config)
+        window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
+
+
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
             # Извлекаем информацию о видео (название)
@@ -81,27 +111,27 @@ class Api:
             # Обновляем интерфейс
             window.evaluate_js(f'addVideoToList("{video_title}")')
 
-            return f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p"
+            return f"{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"
         except Exception as e:
             print(f"Ошибка при добавлении видео в очередь: {str(e)}")
-            return f"Ошибка при добавлении видео: {str(e)}"
+            return f"{translations.get('status', {}).get('error_adding')}: {str(e)}"
 
     def startDownload(self):
         if self.is_downloading:
-            return "Загрузка уже запущена."
+            return f"{translations.get('status', {}).get('downloading_already')}"
 
         if not self.download_queue:
-            return "Очередь пуста. Нечего загружать."
+            return f"{translations.get('status', {}).get('the_queue_is_empty')}"
 
         # Запускаем загрузку
         self.start_next_download()
-        return "Загрузка начата."
+        return f"{translations.get('status', {}).get('download_started')}"
 
     def start_next_download(self):
         if not self.download_queue:
             os.startfile('downloads')
             print("Очередь пуста. Загрузка завершена.")
-            window.evaluate_js('document.getElementById("status").innerText = "Очередь пуста. Загрузка завершена."')
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
             return
 
         # Устанавливаем флаг загрузки
@@ -112,7 +142,7 @@ class Api:
         print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
         # Обновляем статус в интерфейсе
-        window.evaluate_js(f'document.getElementById("status").innerText = "Загружаю: {video_title}"')
+        window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"')
         window.evaluate_js(f'removeVideoFromList("{video_title}")')
 
         # Запускаем загрузку видео
@@ -146,10 +176,10 @@ class Api:
                 ydl.download([video_url])
 
             print(f"Видео успешно загружено: {video_title}")
-            window.evaluate_js(f'document.getElementById("status").innerText = "Видео успешно загружено: {video_title}"')
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при загрузке: {str(e)}")
-            window.evaluate_js(f'document.getElementById("status").innerText = "Ошибка при загрузке: {str(e)}')
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_error')}: {str(e)}')
 
         # Сбрасываем флаг загрузки и запускаем следующую загрузку
         self.is_downloading = False
@@ -171,19 +201,19 @@ class Api:
             # Преобразуем ETA в читаемый формат
             eta_minutes = eta // 60
             eta_seconds = eta % 60
-            eta_formatted = f"{int(eta_minutes)} мин {int(eta_seconds)} сек"
+            eta_formatted = f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
 
  # Преобразуем скорость в Мбайты/сек
             speed_mbps = speed / (1024 * 1024) if speed else 0
-            speed_formatted = f"{speed_mbps:.2f} MB/s"  # Форматируем до двух знаков после запятой
+            speed_formatted = f"{speed_mbps:.2f} {translations['mbs']}"  # Форматируем до двух знаков после запятой
 
             # Выводим отладочную информацию
             print(f"Progress: {progress}%, Speed: {speed_formatted}, ETA: {eta_formatted}")
 
             # Обновляем интерфейс
-            window.evaluate_js(f'document.getElementById("progress").innerText = "Прогресс: {progress}%"')
-            window.evaluate_js(f'document.getElementById("speed").innerText = "Скорость: {speed_formatted}"')
-            window.evaluate_js(f'document.getElementById("eta").innerText = "Осталось: {eta_formatted}"')
+            window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
+            window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
+            window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
         elif d['status'] == 'finished':
             # Загрузка завершена
             window.evaluate_js('document.getElementById("progress").innerText = "Прогресс: 100%"')
@@ -205,7 +235,17 @@ if __name__ == "__main__":
 
     # Используем настройки
     language = config.get("Settings", "language", fallback="ru")
-    download_folder = config.get("Settings", "download_folder", fallback="downloads")
+    download_folder = config.get("Settings", "folder_path", fallback="downloads")
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
+
+    print(f"Язык интерфейса: {language}")
+    print(f"Папка загрузки: {download_folder}")
+    print(f"Автоматическое обновление: {'Включено' if auto_update else 'Выключено'}")
+
+    # Загружаем переводы по умолчанию
+    translations = load_translations(language)
+    window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
+
+    print(translations)
 
     webview.start()
