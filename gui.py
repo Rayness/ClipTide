@@ -157,6 +157,7 @@ class Api:
                     'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
                     'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
+                    'cookiefile': 'cookies.txt',
                 }
             else:
                 ydl_opts = {
@@ -190,8 +191,8 @@ class Api:
         if d['status'] == 'downloading':
             # Получаем данные о прогрессе
             downloaded_bytes = d.get('downloaded_bytes', 0)
-            total_bytes = d.get('total_bytes', 1)  # Избегаем деления на ноль
-            speed = d.get('speed', '0B/s')
+            total_bytes = d.get('total_bytes') or d.get('total_bytes_estimate', 1)  # Избегаем деления на ноль
+            speed = d.get('speed', 0)  # Скорость в байтах/сек
             eta = d.get('eta', 0)  # Оставшееся время в секундах
 
             # Вычисляем прогресс
@@ -199,8 +200,8 @@ class Api:
             progress = round(progress, 2)  # Округляем до двух знаков после запятой
 
             # Преобразуем ETA в читаемый формат
-            eta_minutes = eta // 60
-            eta_seconds = eta % 60
+            eta_minutes = eta // 60 if eta is not None else 0
+            eta_seconds = eta % 60 if eta is not None else 0
             eta_formatted = f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
 
  # Преобразуем скорость в Мбайты/сек
@@ -211,14 +212,22 @@ class Api:
             print(f"Progress: {progress}%, Speed: {speed_formatted}, ETA: {eta_formatted}")
 
             # Обновляем интерфейс
-            window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
-            window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
-            window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
+            try:
+                window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
+                window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
+                window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
+            except Exception as e:
+                print(f"Ошибка при обновлении интерфейса: {e}")
         elif d['status'] == 'finished':
             # Загрузка завершена
-            window.evaluate_js('document.getElementById("progress").innerText = "Прогресс: 100%"')
-            window.evaluate_js('document.getElementById("speed").innerText = "Скорость: 0B/s"')
-            window.evaluate_js('document.getElementById("eta").innerText = "Осталось: 0 мин 0 сек"')
+            try:
+                window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} 100%"')
+                window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} 0B/s"')
+                window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} 0 мин 0 сек"')
+            except Exception as e:
+                print(f"Ошибка при обновлении интерфейса: {e}")
+
+ICON_PATH = "./src/YT-downloader-logo.ico"
 
 if __name__ == "__main__":
     # Создаем экземпляр API
@@ -226,7 +235,7 @@ if __name__ == "__main__":
 
     # Создаем окно с HTML-контентом
     window = webview.create_window(
-        'YouTube Video Downloader',
+        'YT Downloader',
         html_file_path,
         js_api=api  # Передаем API для взаимодействия с JavaScript
     )

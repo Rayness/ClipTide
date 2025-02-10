@@ -7,3 +7,6 @@ config.ini
 /scripts/__pycache__
 /python
 run.vbs
+src
+YT-Downloader.spec
+cookies.txt
