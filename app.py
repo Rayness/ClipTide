@@ -12,7 +12,7 @@ from rich.align import Align
 from rich.text import Text
 from pathlib import Path
 
-config_file = "config.ini"
+config_file = "./classic/config.ini"
 
 # Функция для записи данных в INI-файл
 def save_config(language, folder_path):
@@ -47,7 +47,7 @@ ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем
 ffmpeg_exe = ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe"
 
 def load_translations(language):
-    with open(f"localization/{language}.json", "r", encoding="utf-8") as file:
+    with open(f"./classic/localization/{language}.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
 translations = load_translations(lang)

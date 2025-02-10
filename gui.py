@@ -6,7 +6,50 @@ import yt_dlp
 import webview
 import time
 import queue
+import configparser
 from pathlib import Path
+
+
+# ФАЙЛ КОНФИГУРАЦИИ
+# -------------------------
+CONFIG_FILE = "./gui/config.ini"
+
+# Настройки по умолчанию
+DEFAULT_CONFIG = {
+    "language": "ru",
+    "folder_path": "downloads",
+    "auto_update": "False"
+}
+
+def load_config():
+    config = configparser.ConfigParser()
+    if os.path.exists(CONFIG_FILE):
+        try:
+            config.read(CONFIG_FILE, encoding="utf-8")
+            print("Конфигурация загружена.")
+        except Exception as e:
+            print(f"Ошибка при чтении конфигурации: {e}")
+            config = create_default_config()
+    else:
+        print("Файл конфигурации не найден. Создаю новый...")
+        config = create_default_config()
+    return config
+
+def create_default_config():
+    config = configparser.ConfigParser()
+    config["Settings"] = DEFAULT_CONFIG
+    save_config(config)
+    return config
+
+def save_config(config):
+    try:
+        with open(CONFIG_FILE, "w", encoding="utf-8") as file:
+            config.write(file)
+            print("Конфигурация сохранена.")
+    except Exception as e:
+        print(f"Ошибка при сохранении конфигурации: {e}")
+
+# -------------------------------------------------------------------------
 
 # HTML-контент для отображения в окне
 html_file_path = os.path.abspath("gui/index.html")
@@ -157,5 +200,12 @@ if __name__ == "__main__":
         html_file_path,
         js_api=api  # Передаем API для взаимодействия с JavaScript
     )
+    # Загружаем конфигурацию
+    config = load_config()
+
+    # Используем настройки
+    language = config.get("Settings", "language", fallback="ru")
+    download_folder = config.get("Settings", "download_folder", fallback="downloads")
+    auto_update = config.getboolean("Settings", "auto_update", fallback=False)
 
     webview.start()
