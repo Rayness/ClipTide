@@ -5,9 +5,11 @@ body {
     color: #333;
 }
 input[type="text"] {
-    width: 80%;
+    width: 95%;
     padding: 10px;
     margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: #333 0px 1px;
     font-size: 16px;
 }
 button {
@@ -45,4 +47,24 @@ li {
 }
 .progress-info div {
     margin: 5px 0;
+}
+
+.download_settings {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 95%;
+    gap: 10px;
+    margin: 5px 0;
+    background-color: #4a56c6;
+    padding: 10px;
+    color: #e0e0e0;
+    border-radius: 5px;
+}
+
+.download_settings select {
+    left: 10px;
+    width: 150px;
+    border-radius: 5px;
+    padding: 4px;
 }

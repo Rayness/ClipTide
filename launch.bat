@@ -21,4 +21,4 @@ if %errorlevel% neq 0 (
     echo Python уже установлен.
 )
 
-python app.py
+python\python.exe app.py

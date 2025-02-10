@@ -5,3 +5,5 @@
 config.ini
 /libs
 /scripts/__pycache__
+/python
+run.vbs

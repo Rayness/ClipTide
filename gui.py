@@ -56,6 +56,7 @@ class Api:
 
     def start_next_download(self):
         if not self.download_queue:
+            os.startfile('downloads')
             print("Очередь пуста. Загрузка завершена.")
             window.evaluate_js('document.getElementById("status").innerText = "Очередь пуста. Загрузка завершена."')
             return
@@ -76,13 +77,26 @@ class Api:
 
     def download_video(self, video_url, video_title, selected_format, selectedResolution):
         try:
-            # Настройки для yt-dlp
-            ydl_opts = {
-                'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
-                'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
-                'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
-                'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-            }
+            if (selected_format != 'mp3'):
+                # Настройки для yt-dlp
+                ydl_opts = {
+                    'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
+                    'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
+                    'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
+                    'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
+                }
+            else:
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'mp3',
+                        'preferredquality': '192',
+                    }],
+                    'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
+                    'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
+                }
+
 
             # Загружаем видео
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -98,7 +112,6 @@ class Api:
         self.is_downloading = False
         self.start_next_download()
 
-    # Хук для отслеживания прогресса
     # Хук для отслеживания прогресса
     def progress_hook(self, d):
         if d['status'] == 'downloading':
