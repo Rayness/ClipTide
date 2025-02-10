@@ -202,7 +202,7 @@ class Api:
             # Преобразуем ETA в читаемый формат
             eta_minutes = eta // 60 if eta is not None else 0
             eta_seconds = eta % 60 if eta is not None else 0
-            eta_formatted = f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
+            eta_formatted = "Расчет времени..." if eta == 0 else f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
 
  # Преобразуем скорость в Мбайты/сек
             speed_mbps = speed / (1024 * 1024) if speed else 0
@@ -212,20 +212,15 @@ class Api:
             print(f"Progress: {progress}%, Speed: {speed_formatted}, ETA: {eta_formatted}")
 
             # Обновляем интерфейс
-            try:
-                window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
-                window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
-                window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
-            except Exception as e:
-                print(f"Ошибка при обновлении интерфейса: {e}")
+            window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
+            window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
+            window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
         elif d['status'] == 'finished':
             # Загрузка завершена
-            try:
-                window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} 100%"')
-                window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} 0B/s"')
-                window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} 0 мин 0 сек"')
-            except Exception as e:
-                print(f"Ошибка при обновлении интерфейса: {e}")
+            window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} 100%"')
+            window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} 0B/s"')
+            window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} 0 мин 0 сек"')
+
 
 ICON_PATH = "./src/YT-downloader-logo.ico"
 
