@@ -4,7 +4,7 @@
     "format": "Format: ",
     "resolution": "Resolution: ",
     "add_to_queue" : "Add to queue",
-    "start downloading" : "Start downloading",
+    "start_downloading" : "Start downloading",
     "status" : {
         "status_text" : "Status: Waiting...",
         "unknown_video" : "Unknown video",

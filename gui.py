@@ -165,6 +165,9 @@ class Api:
                     'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
                     'cookiefile': 'cookies.txt',
+                    'retries': 10,  # Увеличиваем количество попыток
+                    'socket_timeout': 30,  # Устанавливаем таймаут для сокета
+                    'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
                 }
             else:
                 ydl_opts = {
@@ -176,6 +179,9 @@ class Api:
                     }],
                     'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
+                    'retries': 10,  # Увеличиваем количество попыток
+                    'socket_timeout': 30,  # Устанавливаем таймаут для сокета
+                    'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
                 }
 
 
@@ -222,6 +228,8 @@ class Api:
             window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
             window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
             window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
+
+            window.evaluate_js(f'document.getElementById("progress-fill").style.width = "{progress}%"')
         elif d['status'] == 'finished':
             # Загрузка завершена
             window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} 100%"')

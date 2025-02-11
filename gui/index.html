@@ -7,16 +7,17 @@
     <title>PyWebview Example</title>
 </head>
 <body>
-    <h1>YT-Downloader</h1>
-    <label for="language" id="language_title">Язык: </label>
-    <select id="language">
-        <option value="ru">Русский</option>
-        <option value="en">Английский</option>
-    </select>
-    </label>
-    <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
-    <input class="input__folder" type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
-    <button class="additional__button" id="apply">Применить</button>
+    <div id="app_settings" class="app__settings">
+        <label for="language" id="language_title"></label>
+        <select id="language">
+            <option value="ru">Русский</option>
+            <option value="en">Английский</option>
+        </select>
+        </label>
+        <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
+        <input class="input__folder" type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
+        <button class="additional__button" id="apply">Применить</button>
+    </div>
     <input class="input__url" type="text" id="videoUrl" placeholder="Введите URL видео">
     <div class="download_settings">
         <div>
@@ -52,6 +53,9 @@
         <div id="progress">Прогресс: 0%</div>
         <div id="speed">Скорость: 0B/s</div>
         <div id="eta">Осталось: 0 мин 0 сек</div>
+    </div>
+    <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
     </div>
     <script src="scripts.js"></script>
 </body>

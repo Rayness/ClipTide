@@ -58,7 +58,7 @@ window.updateTranslations = function(translations) {
 
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Add video';
     document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
-    document.getElementById('startBtn').innerText = translations.start_download || 'Start download';
+    document.getElementById('startBtn').innerText = translations.start_downloading || 'Start download';
 
     document.getElementById('queue-title').innerText = translations.queue || 'Queue: ';
     document.getElementById('format_title').innerText = translations.format || 'Format: ';

@@ -4,6 +4,40 @@ body {
     background-color: #f4f4f9;
     color: #333;
 }
+
+.name__block {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 25px;
+    max-width: 900px;
+    max-height: 80px;
+}
+
+.name__block img {
+    width: 50px;
+    height: 50px;
+}
+
+.app__settings {
+    width: 95%;
+    padding: 10px;
+    background-color: #4a56c6;
+    color: #e0e0e0;
+    border-radius: 5px;
+}
+
+.app__settings input[type="text"] {
+    height: 25px;
+    border-radius: 5px;
+}
+
+.app__settings select {
+    height: 25px;
+    border-radius: 5px;
+}
+
 .input__url[type="text"] {
     width: 95%;
     padding: 10px;
@@ -30,6 +64,10 @@ body {
     background-color: #3a43a6;
 }
 
+.additional__button {
+    height: 25px;
+    border-radius: 5px;
+}
 
 #status {
     margin-top: 20px;
@@ -80,4 +118,21 @@ li {
 .download_settings {
     display: flex;
     flex-direction: row;
+}
+
+/* Прогресс-бар */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #2d2d2d;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #ff5733;
+    transition: width 0.3s ease;
 }
