@@ -13,11 +13,11 @@
 
 > [!IMPORTANT] 
 > ### Please note!
-> The application requires **[Python](https://www.python.org/downloads/)** installed. If it is not, an automatic installation will be performed. By downloading the applications you agree to the installation of **Python** on your personal computer. If you already have a version of **Python** lower than _3.12_ installed, you need to install this version, or higher. Or delete the installed Python and the program will download the latest version
+> The application requires **[Python](https://www.python.org/downloads/)** installed. If it is not, an automatic installation will be performed. By downloading the applications you agree to the installation of **Python** on your personal computer. If you already have a version of **Python** lower than _3.13_ installed, you need to install this version, or higher. Or delete the installed Python and the program will download the latest version
 
 ## Download
 
-**[Actual version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.0.2-beta)** - console application and testable graphical interface;
+**[Actual version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.1.0-beta)** - console application and testable graphical interface;
 
 ## Development progress ( yes, nobody needs this item, but that's the way I wanted it )
 
