@@ -37,6 +37,7 @@
         "folder" : "Download folder: ",
         "choose_folder" : "Select folder",
         "auto_update" : "Automatic update",
-        "button_apply" : "Apply"
+        "button_apply" : "Apply",
+        "placeholder" : "Specify the path to the download folder"
     }
 }

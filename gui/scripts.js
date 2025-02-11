@@ -17,8 +17,10 @@ document.getElementById('addBtn').addEventListener('click', function() {
 
 document.getElementById('apply').addEventListener('click', function() {
     const lang = document.getElementById('language').value;
+    const folder_path = document.getElementById('folder_path').value || document.getElementById('folder_path').placeholder
 
     pywebview.api.switch_language(lang);
+    pywebview.api.switch_download_folder(folder_path)
 })
 
 // Добавляем обработчик события для кнопки "Начать загрузку"
@@ -68,3 +70,7 @@ window.updateTranslations = function(translations) {
     document.getElementById('speed').innerText = translations.speed + " 0 " + translations.bs || 'Speed: ';
     document.getElementById('eta').innerText = translations.eta + " 0 " + translations.min + " 0 " + translations.sec || 'Eta: ';
 };
+
+window.updateDownloadFolder = function(folder_path) {
+    document.getElementById('folder_path').placeholder = folder_path;
+}

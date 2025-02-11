@@ -4,7 +4,7 @@ body {
     background-color: #f4f4f9;
     color: #333;
 }
-input[type="text"] {
+.input__url[type="text"] {
     width: 95%;
     padding: 10px;
     margin: 10px 0;
@@ -12,7 +12,12 @@ input[type="text"] {
     box-shadow: #333 0px 1px;
     font-size: 16px;
 }
-button {
+
+.input__folder {
+    width: 250px;
+}
+
+.main__button {
     padding: 10px 20px;
     font-size: 16px;
     color: #fff;
@@ -21,9 +26,11 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover {
+.main__button:hover {
     background-color: #3a43a6;
 }
+
+
 #status {
     margin-top: 20px;
     font-weight: bold;

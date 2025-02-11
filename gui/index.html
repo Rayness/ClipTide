@@ -8,14 +8,16 @@
 </head>
 <body>
     <h1>YT-Downloader</h1>
-    <label id="language_title">Язык: </label>
+    <label for="language" id="language_title">Язык: </label>
     <select id="language">
         <option value="ru">Русский</option>
         <option value="en">Английский</option>
     </select>
     </label>
-    <button id="apply">Применить</button>
-    <input type="text" id="videoUrl" placeholder="Введите URL видео">
+    <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
+    <input class="input__folder" type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
+    <button class="additional__button" id="apply">Применить</button>
+    <input class="input__url" type="text" id="videoUrl" placeholder="Введите URL видео">
     <div class="download_settings">
         <div>
             <label id="format_title" class="label_format">Формат: </label>
@@ -38,9 +40,9 @@
             </select>
         </div>
     </div>
-    <button id="addBtn">Добавить в очередь</button>
-    <button id="startBtn">Начать загрузку</button>
-    <button aria-disabled="" id="stopBtn">STOP</button>
+    <button class="main__button" id="addBtn">Добавить в очередь</button>
+    <button class="main__button" id="startBtn">Начать загрузку</button>
+    <button class="main__button" disabled id="stopBtn">STOP</button>
     <div id="status">Статус: Ожидание...</div>
     <div id="queue-list">
         <h3 id="queue-title">Очередь:</h3>
