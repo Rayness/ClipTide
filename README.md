@@ -17,7 +17,7 @@
 
 ## Download
 
-**[Actual version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.0.2-beta)** - console application and testable graphical interface;
+**[Actual version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.1.0-beta)** - console application and testable graphical interface;
 
 ## Development progress ( yes, nobody needs this item, but that's the way I wanted it )
 
