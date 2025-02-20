@@ -2,16 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const elements = document.querySelectorAll(".fade-in");
     const buttons = document.querySelectorAll(".main__button");
 
-    elements.forEach((el) => {
-        el.style.opacity = 0;
-        el.style.transform = "translateY(20px)";
-        setTimeout(() => {
-            el.style.transition = "opacity 0.2s ease-out, transform 0.2s ease-out";
-            el.style.opacity = 1;
-            el.style.transform = "translateY(0)";
-        }, 100);
-    });
-
     buttons.forEach(button => {
         button.addEventListener("mouseenter", () => {
             button.style.transform = "scale(1.1)";
@@ -33,6 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 button.style.boxShadow = "none";
             }, 150);
         });
+    });
+
+    elements.forEach((el) => {
+        el.style.opacity = 0;
+        el.style.transform = "translateY(20px)";
+        setTimeout(() => {
+            el.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+            el.style.opacity = 1;
+            el.style.transform = "translateY(0)";
+        }, 100);
     });
 });
 
