@@ -165,8 +165,8 @@ class Api:
                     'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
                     'cookiefile': 'cookies.txt',
-                    'retries': 10,  # Увеличиваем количество попыток
-                    'socket_timeout': 30,  # Устанавливаем таймаут для сокета
+                    'retries': 25,  # Увеличиваем количество попыток
+                    'socket_timeout': 5,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
                 }
             else:
@@ -179,8 +179,8 @@ class Api:
                     }],
                     'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-                    'retries': 10,  # Увеличиваем количество попыток
-                    'socket_timeout': 30,  # Устанавливаем таймаут для сокета
+                    'retries': 25,  # Увеличиваем количество попыток
+                    'socket_timeout': 5,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
                 }
 
@@ -215,7 +215,7 @@ class Api:
             # Преобразуем ETA в читаемый формат
             eta_minutes = eta // 60 if eta is not None else 0
             eta_seconds = eta % 60 if eta is not None else 0
-            eta_formatted = "Расчет времени..." if eta == 0 else f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
+            eta_formatted = "Завершение загрузки..." if eta == 0 else f"{int(eta_minutes)} {translations['min']} {int(eta_seconds)} {translations['sec']}"
 
  # Преобразуем скорость в Мбайты/сек
             speed_mbps = speed / (1024 * 1024) if speed else 0
@@ -235,6 +235,7 @@ class Api:
             window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} 100%"')
             window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} 0B/s"')
             window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} 0 мин 0 сек"')
+            window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
 
 
 ICON_PATH = "./src/YT-downloader-logo.ico"
@@ -247,7 +248,8 @@ if __name__ == "__main__":
     window = webview.create_window(
         'YT Downloader',
         html_file_path,
-        js_api=api  # Передаем API для взаимодействия с JavaScript
+        js_api=api,
+        height=900,  # Передаем API для взаимодействия с JavaScript
     )
     # Загружаем конфигурацию
     config = load_config()

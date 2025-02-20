@@ -1,138 +1,72 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #1e1e2e;
+    color: #ffffff;
 }
 
-.name__block {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    gap: 25px;
-    max-width: 900px;
-    max-height: 80px;
+.app__settings, .download_settings, .progress-info, #queue-list {
+    background-color: #2d2d3a;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
 }
 
-.name__block img {
-    width: 50px;
-    height: 50px;
-}
-
-.app__settings {
-    width: 95%;
-    padding: 10px;
-    background-color: #4a56c6;
-    color: #e0e0e0;
-    border-radius: 5px;
-}
-
-.app__settings input[type="text"] {
-    height: 25px;
-    border-radius: 5px;
-}
-
-.app__settings select {
-    height: 25px;
-    border-radius: 5px;
-}
-
-.input__url[type="text"] {
-    width: 95%;
+.input__url[type="text"], .input__folder, select {
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: #333 0px 1px;
-    font-size: 16px;
-}
-
-.input__folder {
-    width: 250px;
-}
-
-.main__button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #4a56c6;
+    border-radius: 8px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.main__button:hover {
-    background-color: #3a43a6;
+    background-color: #3a3a4d;
+    color: #ffffff;
+    font-size: 16px;
 }
 
-.additional__button {
-    height: 25px;
-    border-radius: 5px;
+.main__button, .additional__button {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6a5acd, #483d8b);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.main__button:hover, .additional__button:hover {
+    background: linear-gradient(135deg, #483d8b, #6a5acd);
+}
+
+.main__button:disabled {
+    background: #555;
+    cursor: not-allowed;
 }
 
 #status {
     margin-top: 20px;
     font-weight: bold;
-}
-#queue-list {
-    margin-top: 20px;
-    font-size: 14px;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-li {
-    background-color: #e0e0e0;
-    margin: 5px 0;
+    text-align: center;
     padding: 10px;
     border-radius: 5px;
-}
-.progress-info {
-    margin-top: 20px;
-}
-.progress-info div {
-    margin: 5px 0;
-}
-
-.download_settings {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 95%;
-    gap: 10px;
-    margin: 5px 0;
-    background-color: #4a56c6;
-    padding: 10px;
-    color: #e0e0e0;
-    border-radius: 5px;
-}
-
-.download_settings select {
-    left: 10px;
-    width: 150px;
-    border-radius: 5px;
-    padding: 4px;
-}
-
-
-.download_settings {
-    display: flex;
-    flex-direction: row;
+    background-color: #3a3a4d;
 }
 
 /* Прогресс-бар */
 .progress-bar {
     width: 100%;
-    height: 10px;
+    height: 12px;
     background-color: #2d2d2d;
-    border-radius: 5px;
+    border-radius: 6px;
     overflow: hidden;
     margin-top: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .progress-fill {
     height: 100%;
     width: 0%;
-    background-color: #ff5733;
+    background: linear-gradient(90deg, #ff5733, #ffbd33);
     transition: width 0.3s ease;
 }
