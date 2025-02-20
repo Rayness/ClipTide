@@ -35,7 +35,7 @@
 - [x] Add translation into different languages
 - [ ] Add download queue
 - [ ] Add auto-update
-- [ ] Create a complete GUI
+- [x] Create a complete GUI
 
 
 ## License
