@@ -249,7 +249,7 @@ if __name__ == "__main__":
         'YT Downloader',
         html_file_path,
         js_api=api,
-        height=900,  # Передаем API для взаимодействия с JavaScript
+        height=910,  # Передаем API для взаимодействия с JavaScript
     )
     # Загружаем конфигурацию
     config = load_config()

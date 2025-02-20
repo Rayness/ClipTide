@@ -13,6 +13,15 @@ body {
     margin-bottom: 15px;
 }
 
+#queue-list {
+    border-radius: 0 0 10px 10px;
+}
+
+.app__settings {
+    display: flex;
+    flex-direction: column;
+}
+
 .input__url[type="text"], .input__folder, select {
     width: 100%;
     padding: 10px;
@@ -24,7 +33,51 @@ body {
     font-size: 16px;
 }
 
-.main__button, .additional__button {
+.input__url {
+    max-width: 97%; /* Ограничиваем максимальную ширину */
+    padding: 12px;
+    margin: 10px auto; /* Центрируем и добавляем отступы */
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    display: block; /* Убираем возможные лишние отступы */
+}
+
+.input__folder {
+    max-width: 97%;
+    margin: 10px auto;
+    border-radius: 8px;
+    display: block;
+}
+
+.main__button {
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4a56c6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.3s ease;
+    margin: 5px; /* Добавили пространство между кнопками */
+}
+
+.main__button:hover {
+    transform: scale(1.08); /* Увеличение кнопки при наведении */
+    background-color: #3a43a6;
+}
+
+.main__button:active {
+    transform: scale(0.95); /* Лёгкий эффект нажатия */
+    box-shadow: 0px 0px 15px rgba(74, 86, 198, 0.5); /* Свечение при нажатии */
+}
+
+.main__button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+.additional__button {
     padding: 12px 20px;
     font-size: 16px;
     color: #ffffff;
@@ -35,13 +88,8 @@ body {
     transition: 0.3s;
 }
 
-.main__button:hover, .additional__button:hover {
+.additional__button:hover {
     background: linear-gradient(135deg, #483d8b, #6a5acd);
-}
-
-.main__button:disabled {
-    background: #555;
-    cursor: not-allowed;
 }
 
 #status {
@@ -49,7 +97,7 @@ body {
     font-weight: bold;
     text-align: center;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px 10px 0 0;
     background-color: #3a3a4d;
 }
 

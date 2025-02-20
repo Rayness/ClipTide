@@ -7,7 +7,7 @@
     <title>PyWebview Example</title>
 </head>
 <body>
-    <div id="app_settings" class="app__settings">
+    <div id="app_settings" class="app__settings fade-in">
         <label for="language" id="language_title"></label>
         <select id="language">
             <option value="ru">Русский</option>
@@ -18,8 +18,8 @@
         <input class="input__folder" type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
         <button class="additional__button" id="apply">Применить</button>
     </div>
-    <input class="input__url" type="text" id="videoUrl" placeholder="Введите URL видео">
-    <div class="download_settings">
+    <input class="input__url fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
+    <div class="download_settings fade-in">
         <div>
             <label id="format_title" class="label_format">Формат: </label>
             <select id="format">
@@ -41,20 +41,20 @@
             </select>
         </div>
     </div>
-    <button class="main__button" id="addBtn">Добавить в очередь</button>
-    <button class="main__button" id="startBtn">Начать загрузку</button>
-    <button class="main__button" disabled id="stopBtn">STOP</button>
-    <div id="status">Статус: Ожидание...</div>
-    <div id="queue-list">
+    <button class="main__button fade-in" id="addBtn">Добавить в очередь</button>
+    <button class="main__button fade-in" id="startBtn">Начать загрузку</button>
+    <button class="main__button fade-in" disabled id="stopBtn">STOP</button>
+    <div id="status" class="fade-in">Статус: Ожидание...</div>
+    <div id="queue-list" class="fade-in">
         <h3 id="queue-title">Очередь:</h3>
         <ul id="queue"></ul>
     </div>
-    <div class="progress-info">
+    <div class="progress-info fade-in">
         <div id="progress">Прогресс: 0%</div>
         <div id="speed">Скорость: 0B/s</div>
         <div id="eta">Осталось: </div>
     </div>
-    <div class="progress-bar">
+    <div class="progress-bar fade-in">
         <div id="progress-fill" class="progress-fill"></div>
     </div>
     <script src="scripts.js"></script>
