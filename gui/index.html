@@ -26,7 +26,13 @@
                 <option value="mp4">MP4</option>
                 <option value="mkv">MKV</option>
                 <option value="webm">WEBM</option>
+                <option value="avi">AVI</option>
+                <option disabled >-------------------------------------------</option>
                 <option value="mp3">MP3 (Только аудио)</option>
+                <option disabled value="m4a">M4A (Только аудио)</option>
+                <option disabled value="opus">OPUS (Только аудио)</option>
+                <option disabled value="aac">AAC (Только аудио)</option>
+                <option disabled value="flac">FLAC (Только аудио)</option>
             </select>
             <label id="resolution_title">Разрешение:</label>
             <select id="resolution">
@@ -44,6 +50,9 @@
     <button class="main__button fade-in" id="addBtn">Добавить в очередь</button>
     <button class="main__button fade-in" id="startBtn">Начать загрузку</button>
     <button class="main__button fade-in" disabled id="stopBtn">STOP</button>
+    <div id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>    
     <div id="status" class="fade-in">Статус: Ожидание...</div>
     <div id="queue-list" class="fade-in">
         <h3 id="queue-title">Очередь:</h3>

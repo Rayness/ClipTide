@@ -9,11 +9,25 @@ document.getElementById('addBtn').addEventListener('click', function() {
         return;
     }
 
+    document.getElementById('status').innerText = 'Добавление в очередь...';
+    showSpinner();
+
     // Вызываем функцию addVideoToQueue из Python через API и передаем выбранный формат
     pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution).then(function(response) {
         document.getElementById('status').innerText = response;
+        hideSpinner();
     });
 });
+
+function showSpinner() {
+    document.getElementById('loading-spinner').style.display = 'block';
+    document.getElementById('addBtn').ariaDisabled = true;
+}
+
+function hideSpinner() {
+    document.getElementById('loading-spinner').style.display = 'none';
+    document.getElementById('addBtn').ariaDisabled = false;
+}
 
 document.getElementById('apply').addEventListener('click', function() {
     const lang = document.getElementById('language').value;

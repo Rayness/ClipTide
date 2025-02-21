@@ -10,7 +10,7 @@
         "unknown_video" : "Unknown video",
         "download_success" : "Video downloaded successfully",
         "download_error" : "Error while downloading",
-        "to_queue" : "Video added to queue:",
+        "to_queue" : "Video added to queue",
         "in_format" : "in format",
         "in_resolution" : "in resolution",
         "error_adding" : "Error adding video:",

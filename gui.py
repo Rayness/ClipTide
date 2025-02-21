@@ -157,7 +157,7 @@ class Api:
 
     def download_video(self, video_url, video_title, selected_format, selectedResolution, download_folder='downloads'):
         try:
-            if (selected_format != 'mp3'):
+            if (selected_format != 'mp3' or 'm4a' or 'opus' or 'aac' or 'flac'):
                 # Настройки для yt-dlp
                 ydl_opts = {
                     'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
@@ -174,10 +174,10 @@ class Api:
                     'format': 'bestaudio/best',
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
+                        'preferredcodec': f'mp3',
                         'preferredquality': '192',
                     }],
-                    'outtmpl': f'downloads/%(title)s.{selected_format}',  # Путь для сохранения
+                    'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
                     'retries': 25,  # Увеличиваем количество попыток
                     'socket_timeout': 5,  # Устанавливаем таймаут для сокета
@@ -249,7 +249,7 @@ if __name__ == "__main__":
         'YT Downloader',
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
-        height=910,
+        height=1000,
     )
     # Загружаем конфигурацию
     config = load_config()
