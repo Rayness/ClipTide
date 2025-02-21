@@ -69,10 +69,14 @@ window.removeVideoFromList = function(videoTitle) {
 
 // Функция для обновления текста интерфейса
 window.updateTranslations = function(translations) {
-    document.getElementById('language_title').innerText = translations.settings.language || 'Add video';
+    document.getElementById('language_title').innerText = translations.settings.language || 'Language';
+    document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
     document.getElementById('apply').innerText = translations.settings.button_apply || 'Apply:';
 
-    document.getElementById('videoUrl').placeholder = translations.video_URL || 'Add video';
+    document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
+    document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';
+
+    document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
     document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
     document.getElementById('startBtn').innerText = translations.start_downloading || 'Start download';
 

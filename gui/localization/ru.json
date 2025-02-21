@@ -32,8 +32,8 @@
     "settings" : {
         "settings_text" : "Настройки",
         "language" : "Язык: ",
-        "Russian" : "Русский",
-        "English" : "Английский",
+        "russian" : "Русский",
+        "english" : "Английский",
         "folder" : "Папка для загрузки: ",
         "choose_folder" : "Выбрать папку",
         "auto_update" : "Автоматическое обновление",

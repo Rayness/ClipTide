@@ -32,8 +32,8 @@
     "settings" : {
         "settings_text" : "Settings",
         "language" : "Language: ",
-        "Russian" : "Russian",
-        "English" : "English",
+        "russian" : "Russian",
+        "english" : "English",
         "folder" : "Download folder: ",
         "choose_folder" : "Select folder",
         "auto_update" : "Automatic update",
