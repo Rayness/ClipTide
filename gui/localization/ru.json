@@ -18,7 +18,9 @@
         "the_queue_is_empty" : "Очередь пуста. Нечего загружать.",
         "the_queue_is_empty_download_success" : "Очередь пуста. Нечего загружать.",
         "download_started" : "Загрузка начата.",
-        "downloading" : "Загружаю"
+        "downloading" : "Загружаю",
+        "removed_from_queue" : "Видео удалено из очереди: ",
+        "error_removing" : "Видео удалено из очереди: "
     },
     "queue" : "Очередь: ",
     "progress" : "Прогресс: ",

@@ -18,7 +18,9 @@
         "the_queue_is_empty" : "The queue is empty. There is nothing to download.",
         "the_queue_is_empty_download_success" : "The queue is empty. There is nothing to download.",
         "download_started" : "Downloading started.",
-        "downloading" : "Downloading"
+        "downloading" : "Downloading",
+        "removed_from_queue" : "Видео удалено из очереди: ",
+        "error_removing" : "Видео удалено из очереди: "
     },
     "queue" : "Queue: ",
     "progress" : "Progress: ",

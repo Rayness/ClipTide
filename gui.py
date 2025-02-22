@@ -8,12 +8,23 @@ import json
 import time
 import queue
 import configparser
+import atexit
 from pathlib import Path
 
+# Функция для сохранения очереди перед завершением программы
+def on_program_exit():
+    if api_instance.download_queue:
+        save_queue_to_file(api_instance.download_queue)
+        print("Очередь загрузки сохранена перед завершением программы.")
+
+# Регистрация обработчика завершения программы
+api_instance = None  # Глобальная переменная для экземпляра Api
 
 # ФАЙЛ КОНФИГУРАЦИИ
 # -------------------------------------------------------------------------
 CONFIG_FILE = "./gui/config.ini"
+
+QUEUE_FILE = "./gui/queue.json"
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
@@ -70,6 +81,26 @@ def load_translations(language):
     print(f"Файл переводов для языка '{language}' не найден.")
     return {}
 
+def load_queue_from_file():
+    """ Загружаем очередь из JSON-файла. """
+    if os.path.exists(QUEUE_FILE):
+        with open(QUEUE_FILE, "r", encoding="utf-8") as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                return []
+    return []
+
+def save_queue_to_file(queue):
+    """
+    Сохраняет очередь загрузки в JSON-файл.
+    """
+    try:
+        with open(QUEUE_FILE, "w", encoding="utf-8") as file:
+            json.dump(queue, file, ensure_ascii=False, indent=4)
+            print("Очередь загрузки сохранена.")
+    except Exception as e:
+        print(f"Ошибка при сохранении очереди: {e}")
 
 # --------------------------------------------------------------------------
 
@@ -86,10 +117,10 @@ os.environ["PATH"] += os.pathsep + ffmpeg_bin_path
 # Класс для определения API
 class Api:
     def __init__(self):
-        self.download_queue = []  # Очередь для загрузки видео
-        self.is_downloading = False  # Флаг для отслеживания состояния загрузки
+        self.download_queue = load_queue_from_file()
         self.download_folder = ''
-
+        self.is_downloading = False  # Флаг для отслеживания состояния загрузки
+    
     def switch_language(self, language):
         self.current_language = language
         translations = load_translations(language)
@@ -104,7 +135,29 @@ class Api:
         print(folder_path)
         window.evaluate_js(f'updateDownloadFolder({self.current_folder})')
 
-    def addVideoToQueue(self, video_url, selected_format, selectedResolution, download_folder='downloads'):
+    def removeVideoFromQueue(self, video_title):
+        try:
+            # Фильтруем очередь, удаляя видео с указанным названием
+            self.download_queue = [
+                (url, title, fmt, res)
+                for url, title, fmt, res in self.download_queue
+                if title != video_title
+            ]
+
+            # Сохраняем обновленную очередь в файл
+            save_queue_to_file(self.download_queue)
+
+            print(f"Видео удалено из очереди: {video_title}")
+            print(video_title)
+            # Обновляем интерфейс
+            window.evaluate_js(f'removeVideoFromList("{video_title}")')
+
+            return f"{translations.get('status', {}).get('removed_from_queue')}: {video_title}"
+        except Exception as e:
+            print(f"Ошибка при удалении видео из очереди: {str(e)}", video_title)
+            return f"{translations.get('status', {}).get('error_removing')}: {str(e)}"
+
+    def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
             # Извлекаем информацию о видео (название)
             with yt_dlp.YoutubeDL() as ydl:
@@ -112,8 +165,11 @@ class Api:
                 video_title = info.get('title', 'Неизвестное видео')
 
             # Добавляем видео в очередь
-            self.download_queue.append((video_url, video_title, selected_format, selectedResolution, download_folder))
+            self.download_queue.append((video_url, video_title, selected_format, selectedResolution))
             print(f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
+
+            # Сохраняем очередь в файл
+            save_queue_to_file(self.download_queue)
 
             # Обновляем интерфейс
             window.evaluate_js(f'addVideoToList("{video_title}")')
@@ -144,8 +200,10 @@ class Api:
         # Устанавливаем флаг загрузки
         self.is_downloading = True
 
+        save_queue_to_file(self.download_queue)
+
         # Извлекаем следующее видео из очереди
-        video_url, video_title, selected_format, selectedResolution, download_folder = self.download_queue.pop(0)
+        video_url, video_title, selected_format, selectedResolution = self.download_queue.pop(0)
         print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
         # Обновляем статус в интерфейсе
@@ -243,6 +301,7 @@ ICON_PATH = "./src/YT-downloader-logo.ico"
 if __name__ == "__main__":
     # Создаем экземпляр API
     api = Api()
+    api_instance = Api()
 
     # Создаем окно с HTML-контентом
     window = webview.create_window(
@@ -264,11 +323,13 @@ if __name__ == "__main__":
     print(f"Автоматическое обновление: {'Включено' if auto_update else 'Выключено'}")
 
     api.download_folder = download_folder
+    download_queue = api.download_queue
 
     # Загружаем переводы по умолчанию
     translations = load_translations(language)
     window.events.loaded += lambda: window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
     window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
+    window.events.loaded += lambda: window.evaluate_js(f"window.loadQueue({json.dumps(download_queue)})")
 
     print(translations, download_folder)
 

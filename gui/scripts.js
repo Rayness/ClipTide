@@ -48,24 +48,80 @@ document.getElementById('startBtn').addEventListener('click', function() {
 });
 
 // Функция для добавления видео в список
-window.addVideoToList = function(videoTitle) {
-    const queueList = document.getElementById('queue');
-    const listItem = document.createElement('li');
-    listItem.innerText = videoTitle;
+//window.addVideoToList = function(videoTitle) {
+//    const queueList = document.getElementById('queue');
+//    const listItem = document.createElement('li');
+//    listItem.innerText = videoTitle;
+//    queueList.appendChild(listItem);
+//};
+
+// Функция для добавления видео в список очереди
+function addVideoToList(videoTitle) {
+    const queueList = document.getElementById("queue");
+    const listItem = document.createElement("li");
+
+    // Создаем текстовое содержимое
+    const textNode = document.createTextNode(videoTitle);
+
+    // Создаем кнопку удаления
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Удалить";
+    deleteButton.classList.add("delete-button");
+    deleteButton.onclick = function () {
+        removeVideoFromQueue(videoTitle); // Вызываем функцию для удаления видео
+    };
+
+    // Добавляем текст и кнопку в элемент списка
+    listItem.appendChild(textNode);
+    listItem.appendChild(deleteButton);
+
+    // Добавляем элемент в очередь
     queueList.appendChild(listItem);
+}
+
+// Функция для удаления видео из очереди
+function removeVideoFromQueue(videoTitle) {
+    window.pywebview.api.removeVideoFromQueue(videoTitle); // Вызываем API для удаления
+}
+
+window.loadQueue = function(queue) {
+    const queueList = document.getElementById('queue');
+    queueList.innerHTML = ""; // Очищаем перед загрузкой
+
+    queue.forEach(video => {
+        const listItem = document.createElement('li');
+            // Создаем текстовое содержимое
+        const textNode = document.createTextNode(video[1]);
+
+        // Создаем кнопку удаления
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Удалить";
+        deleteButton.classList.add("delete-button");
+        deleteButton.onclick = function () {
+            removeVideoFromQueue(video); // Вызываем функцию для удаления видео
+        };
+
+        // Добавляем текст и кнопку в элемент списка
+        listItem.appendChild(textNode);
+        listItem.appendChild(deleteButton);
+
+        // Добавляем элемент в очередь
+        queueList.appendChild(listItem);
+    });
 };
 
-// Функция для удаления видео из списка
-window.removeVideoFromList = function(videoTitle) {
-    const queueList = document.getElementById('queue');
-    const items = queueList.getElementsByTagName('li');
+// Функция для удаления видео из интерфейса
+function removeVideoFromList(videoTitle) {
+    const queueList = document.getElementById("queue");
+    const items = queueList.getElementsByTagName("li");
+
     for (let i = 0; i < items.length; i++) {
-        if (items[i].innerText === videoTitle) {
+        if (items[i].innerText.includes(videoTitle)) {
             queueList.removeChild(items[i]);
             break;
         }
     }
-};
+}
 
 // Функция для обновления текста интерфейса
 window.updateTranslations = function(translations) {
