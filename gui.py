@@ -139,8 +139,8 @@ class Api:
         try:
             # Фильтруем очередь, удаляя видео с указанным названием
             self.download_queue = [
-                (url, title, fmt, res)
-                for url, title, fmt, res in self.download_queue
+                (url, title, fmt, res, thumb)
+                for url, title, fmt, res, thumb in self.download_queue
                 if title != video_title
             ]
 
@@ -163,16 +163,18 @@ class Api:
             with yt_dlp.YoutubeDL() as ydl:
                 info = ydl.extract_info(video_url, download=False)
                 video_title = info.get('title', 'Неизвестное видео')
+                thumbnail_url = info.get('thumbnail', '')
 
             # Добавляем видео в очередь
-            self.download_queue.append((video_url, video_title, selected_format, selectedResolution))
+            self.download_queue.append((video_url, video_title, selected_format, selectedResolution, thumbnail_url))
             print(f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
             # Сохраняем очередь в файл
             save_queue_to_file(self.download_queue)
 
             # Обновляем интерфейс
-            window.evaluate_js(f'addVideoToList("{video_title}")')
+            window.evaluate_js(f'addVideoToList("{video_title}", "{thumbnail_url}")')
+            
 
             return f"{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"
         except Exception as e:
@@ -203,7 +205,7 @@ class Api:
         save_queue_to_file(self.download_queue)
 
         # Извлекаем следующее видео из очереди
-        video_url, video_title, selected_format, selectedResolution = self.download_queue.pop(0)
+        video_url, video_title, selected_format, selectedResolution, thumbl = self.download_queue.pop(0)
         print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
         # Обновляем статус в интерфейсе

@@ -19,6 +19,44 @@ body {
     border-radius: 0 0 10px 10px;
 }
 
+
+#queue {
+    list-style-type: none;
+    padding: 0;
+}
+
+#queue li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #3d3d3d;
+    border-radius: 5px;
+}
+
+#queue li img {
+    width: 80px;
+    height: 45px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+#queue li .video-info {
+    flex-grow: 1;
+}
+
+#queue li .delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
 /* Дополнение к блоку с настройками */
 .app__settings {
     display: flex;

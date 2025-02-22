@@ -10,4 +10,4 @@ run.vbs
 src
 YT-Downloader.spec
 cookies.txt
-gui/queue.json
+/gui/queue.json

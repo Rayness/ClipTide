@@ -12,6 +12,7 @@ document.getElementById('addBtn').addEventListener('click', function() {
     document.getElementById('status').innerText = 'Добавление в очередь...';
     showSpinner();
     document.getElementById('addBtn').disabled = true;
+    document.getElementById('startBtn').disabled = true;
     
 
     // Вызываем функцию addVideoToQueue из Python через API и передаем выбранный формат
@@ -19,6 +20,7 @@ document.getElementById('addBtn').addEventListener('click', function() {
         document.getElementById('status').innerText = response;
         hideSpinner();
         document.getElementById('addBtn').disabled = false;
+        document.getElementById('startBtn').disabled = false;
         document.getElementById('videoUrl').value = '';
     });
 });
@@ -56,12 +58,19 @@ document.getElementById('startBtn').addEventListener('click', function() {
 //};
 
 // Функция для добавления видео в список очереди
-function addVideoToList(videoTitle) {
+function addVideoToList(videoTitle, thumbnailUrl) {
     const queueList = document.getElementById("queue");
     const listItem = document.createElement("li");
 
-    // Создаем текстовое содержимое
-    const textNode = document.createTextNode(videoTitle);
+    // Создаем элемент для превью
+    const thumbnail = document.createElement("img");
+    thumbnail.src = thumbnailUrl || "src/default_thumbnail.png"; // Если превью отсутствует, используем дефолтное изображение
+    thumbnail.alt = "Превью видео";
+
+    // Создаем контейнер для информации о видео
+    const videoInfo = document.createElement("div");
+    videoInfo.classList.add("video-info");
+    videoInfo.innerText = videoTitle;
 
     // Создаем кнопку удаления
     const deleteButton = document.createElement("button");
@@ -71,8 +80,9 @@ function addVideoToList(videoTitle) {
         removeVideoFromQueue(videoTitle); // Вызываем функцию для удаления видео
     };
 
-    // Добавляем текст и кнопку в элемент списка
-    listItem.appendChild(textNode);
+    // Добавляем элементы в список
+    listItem.appendChild(thumbnail);
+    listItem.appendChild(videoInfo);
     listItem.appendChild(deleteButton);
 
     // Добавляем элемент в очередь
@@ -90,19 +100,28 @@ window.loadQueue = function(queue) {
 
     queue.forEach(video => {
         const listItem = document.createElement('li');
-            // Создаем текстовое содержимое
-        const textNode = document.createTextNode(video[1]);
+
+        // Создаем элемент для превью
+        const thumbnail = document.createElement("img");
+        thumbnail.src = video[4] || "src/default_thumbnail.png"; // Если превью отсутствует, используем дефолтное изображение
+        thumbnail.alt = "Превью видео";
+
+        // Создаем контейнер для информации о видео
+        const videoInfo = document.createElement("div");
+        videoInfo.classList.add("video-info");
+        videoInfo.innerText = video[1];
 
         // Создаем кнопку удаления
         const deleteButton = document.createElement("button");
         deleteButton.innerText = "Удалить";
         deleteButton.classList.add("delete-button");
         deleteButton.onclick = function () {
-            removeVideoFromQueue(video); // Вызываем функцию для удаления видео
+            removeVideoFromQueue(video[1]); // Вызываем функцию для удаления видео
         };
 
         // Добавляем текст и кнопку в элемент списка
-        listItem.appendChild(textNode);
+        listItem.appendChild(thumbnail);
+        listItem.appendChild(videoInfo);
         listItem.appendChild(deleteButton);
 
         // Добавляем элемент в очередь
