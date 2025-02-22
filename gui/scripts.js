@@ -11,26 +11,25 @@ document.getElementById('addBtn').addEventListener('click', function() {
 
     document.getElementById('status').innerText = 'Добавление в очередь...';
     showSpinner();
-    document.getElementById('addBtn').disabled = true;
-    document.getElementById('startBtn').disabled = true;
-    
 
     // Вызываем функцию addVideoToQueue из Python через API и передаем выбранный формат
     pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution).then(function(response) {
         document.getElementById('status').innerText = response;
         hideSpinner();
-        document.getElementById('addBtn').disabled = false;
-        document.getElementById('startBtn').disabled = false;
         document.getElementById('videoUrl').value = '';
     });
 });
 
 function showSpinner() {
     document.getElementById('loading-spinner').style.display = 'block';
+    document.getElementById('addBtn').disabled = true;
+    document.getElementById('startBtn').disabled = true;
 }
 
 function hideSpinner() {
     document.getElementById('loading-spinner').style.display = 'none'; 
+    document.getElementById('addBtn').disabled = false;
+    document.getElementById('startBtn').disabled = false;
 }
 
 document.getElementById('apply').addEventListener('click', function() {
@@ -58,7 +57,7 @@ document.getElementById('startBtn').addEventListener('click', function() {
 //};
 
 // Функция для добавления видео в список очереди
-function addVideoToList(videoTitle, thumbnailUrl) {
+function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
     const queueList = document.getElementById("queue");
     const listItem = document.createElement("li");
 
@@ -70,7 +69,7 @@ function addVideoToList(videoTitle, thumbnailUrl) {
     // Создаем контейнер для информации о видео
     const videoInfo = document.createElement("div");
     videoInfo.classList.add("video-info");
-    videoInfo.innerText = videoTitle;
+    videoInfo.innerText = videoTitle + " | " + format + " | " + resolution + "p";
 
     // Создаем кнопку удаления
     const deleteButton = document.createElement("button");
@@ -109,7 +108,7 @@ window.loadQueue = function(queue) {
         // Создаем контейнер для информации о видео
         const videoInfo = document.createElement("div");
         videoInfo.classList.add("video-info");
-        videoInfo.innerText = video[1];
+        videoInfo.innerText = video[1] + " | " + video[2] + " | " + video[3]+"p" ;
 
         // Создаем кнопку удаления
         const deleteButton = document.createElement("button");

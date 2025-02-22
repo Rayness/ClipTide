@@ -11,6 +11,7 @@ import configparser
 import atexit
 from pathlib import Path
 
+
 # Функция для сохранения очереди перед завершением программы
 def on_program_exit():
     if api_instance.download_queue:
@@ -173,7 +174,7 @@ class Api:
             save_queue_to_file(self.download_queue)
 
             # Обновляем интерфейс
-            window.evaluate_js(f'addVideoToList("{video_title}", "{thumbnail_url}")')
+            window.evaluate_js(f'addVideoToList("{video_title}", "{thumbnail_url}", "{selected_format}","{selectedResolution}")')
             
 
             return f"{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"
@@ -190,6 +191,7 @@ class Api:
 
         # Запускаем загрузку
         self.start_next_download()
+        window.evaluate_js(f'showSpinner()')
         return f"{translations.get('status', {}).get('download_started')}"
 
     def start_next_download(self):
@@ -249,6 +251,7 @@ class Api:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
 
+            window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
@@ -288,7 +291,6 @@ class Api:
             window.evaluate_js(f'document.getElementById("progress").innerText = "{translations['progress']} {progress}%"')
             window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} {speed_formatted}"')
             window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} {eta_formatted}"')
-
             window.evaluate_js(f'document.getElementById("progress-fill").style.width = "{progress}%"')
         elif d['status'] == 'finished':
             # Загрузка завершена
@@ -296,9 +298,6 @@ class Api:
             window.evaluate_js(f'document.getElementById("speed").innerText = "{translations['speed']} 0B/s"')
             window.evaluate_js(f'document.getElementById("eta").innerText = "{translations['eta']} 0 мин 0 сек"')
             window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
-
-
-ICON_PATH = "./src/YT-downloader-logo.ico"
 
 if __name__ == "__main__":
     # Создаем экземпляр API
@@ -311,7 +310,9 @@ if __name__ == "__main__":
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
         height=1000,
+        resizable=True
     )
+
     # Загружаем конфигурацию
     config = load_config()
 
@@ -334,5 +335,4 @@ if __name__ == "__main__":
     window.events.loaded += lambda: window.evaluate_js(f"window.loadQueue({json.dumps(download_queue)})")
 
     print(translations, download_folder)
-
     webview.start()
