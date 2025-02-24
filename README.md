@@ -21,10 +21,10 @@
 
 ## How to run:
 - If the "installer" (YT-Downloader.exe) was used, a launch shortcut will appear on the desktop and you can use it;
-- There are three files for launching in the program folder:
-- launch --Classic.bat - launches the classic console application;
-- launch gui.bat - launches the graphical interface together with the console;
-- run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
+    - There are three files for launching in the program folder:
+    - launch --Classic.bat - launches the classic console application;
+    - launch gui.bat - launches the graphical interface together with the console;
+    - run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
 
 ## How to use:
 After launching the graphical interface, you need to:
