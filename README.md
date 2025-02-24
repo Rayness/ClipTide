@@ -45,7 +45,7 @@ After launching the graphical interface, you need to:
 ## Future plans:
 - [ ] Add auto-update;
 - [ ] Transfer the project to Electron (someday);
-- [ ] Make a mobile application (very soon).
+- [ ] Make a mobile application (very not soon).
 
 ## License
 
