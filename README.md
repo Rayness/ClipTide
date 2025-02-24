@@ -37,6 +37,9 @@
 - [ ] Add auto-update
 - [x] Create a complete GUI
 
+## Known bugs:
+- Videos with quotes ("") in their titles will not be able to be added to the download queue;
+- After downloading a video, it is not removed from the local queue (queue.json file).
 
 ## License
 
