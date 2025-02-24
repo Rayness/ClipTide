@@ -250,7 +250,7 @@ class Api:
             # Загружаем видео
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
-
+            self.removeVideoFromQueue(video_title)
             window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
