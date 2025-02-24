@@ -40,4 +40,4 @@
 
 ## License
 
-Project YouTube Downloader is distributed under the MIT license.
+Project YT-Downloader is distributed under the MIT license.
