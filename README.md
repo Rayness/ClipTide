@@ -22,9 +22,9 @@
 ## How to run:
 - If the "installer" (YT-Downloader.exe) was used, a launch shortcut will appear on the desktop and you can use it;
 - There are three files for launching in the program folder:
-- launch --Classic.bat - launches the classic console application;
-- launch gui.bat - launches the graphical interface together with the console;
-- run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
+    - launch --Classic.bat - launches the classic console application;
+    - launch gui.bat - launches the graphical interface together with the console;
+    - run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
 
 ## How to use:
 After launching the graphical interface, you need to:
@@ -45,7 +45,7 @@ After launching the graphical interface, you need to:
 ## Future plans:
 - [ ] Add auto-update;
 - [ ] Transfer the project to Electron (someday);
-- [ ] Make a mobile application (very soon).
+- [ ] Make a mobile application (very not soon).
 
 ## License
 
