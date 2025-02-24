@@ -191,7 +191,6 @@ class Api:
 
         # Запускаем загрузку
         self.start_next_download()
-        window.evaluate_js(f'showSpinner()')
         return f"{translations.get('status', {}).get('download_started')}"
 
     def start_next_download(self):
@@ -209,7 +208,8 @@ class Api:
         # Извлекаем следующее видео из очереди
         video_url, video_title, selected_format, selectedResolution, thumbl = self.download_queue.pop(0)
         print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
-
+        window.evaluate_js(f'showSpinner()')
+        
         # Обновляем статус в интерфейсе
         window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"')
         window.evaluate_js(f'removeVideoFromList("{video_title}")')
@@ -250,6 +250,7 @@ class Api:
             # Загружаем видео
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
+
             self.removeVideoFromQueue(video_title)
             window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
