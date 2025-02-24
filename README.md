@@ -19,13 +19,33 @@
 
 **[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.2.0-beta)** - console application and graphical interface.
 
-## Future plans:
-- [ ] Add auto-update;
-- [ ] Move the project to Electron (someday).
+## How to run:
+- If the "installer" (YT-Downloader.exe) was used, a launch shortcut will appear on the desktop and you can use it;
+- There are three files for launching in the program folder:
+- launch --Classic.bat - launches the classic console application;
+- launch gui.bat - launches the graphical interface together with the console;
+- run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
+
+## How to use:
+After launching the graphical interface, you need to:
+1. Paste the link to the video (copy from the url line in the browser);
+2. Select the desired video format and quality (by default, the video will be downloaded in mp4 in FullHD);
+3. Click the "Add to queue" button;
+4. Repeat the first three steps as many times as necessary, or go to the fifth;
+5. Click the "Start download" button;
+6. Wait until all videos are downloaded, or close the program if you want, the queue will be saved;
+    - If you closed the program, then launch it and repeat the action from point 5, but this time without closing the program.
+7. After downloading, the folder with the downloaded videos will open and you can close the program.
 
 ## Known bugs:
-- Videos with quotes ("") in their titles will not be able to be added to the download queue;
+- Videos with quotes ("") in their names cannot be added to the download queue;
 - After downloading a video, it is not removed from the local queue (file queue.json).
+- The video can be removed from the queue using the "Delete" button next to the video the next time it is launched.
+
+## Future plans:
+- [ ] Add auto-update;
+- [ ] Transfer the project to Electron (someday);
+- [ ] Make a mobile application (very soon).
 
 ## License
 
