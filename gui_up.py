@@ -22,7 +22,6 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-
 # Функция для сохранения очереди перед завершением программы
 def on_program_exit():
     if api_instance.download_queue:
@@ -34,9 +33,9 @@ api_instance = None  # Глобальная переменная для экзе
 
 # ФАЙЛ КОНФИГУРАЦИИ
 # -------------------------------------------------------------------------
-CONFIG_FILE = "./data/config.ini"
+CONFIG_FILE = "./config.ini"
 
-QUEUE_FILE = "./data/queue.json"
+QUEUE_FILE = "./queue.json"
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
@@ -50,9 +49,7 @@ def load_config():
     if os.path.exists(CONFIG_FILE):
         try:
             config.read(CONFIG_FILE, encoding="utf-8")
-            print("Конфигурация загружена.")
         except Exception as e:
-            print(f"Ошибка при чтении конфигурации: {e}")
             config = create_default_config()
     else:
         print("Файл конфигурации не найден. Создаю новый...")
@@ -79,7 +76,7 @@ def save_config(config):
 # -------------------------------------------------------------------------
 
 # Путь к папке с переводами
-TRANSLATIONS_DIR = "./data/localization"
+TRANSLATIONS_DIR = resource_path("./gui/localization")
 
 def load_translations(language):
     file_path = os.path.join(TRANSLATIONS_DIR, f"{language}.json")
@@ -117,7 +114,7 @@ def save_queue_to_file(queue):
 # --------------------------------------------------------------------------
 
 # HTML-контент для отображения в окне
-html_file_path = os.path.abspath("data/index.html")
+html_file_path = resource_path("gui/index.html")
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = resource_path(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe")
@@ -145,7 +142,6 @@ class Api:
         config.set("Settings", "folder_path", self.current_folder)
         save_config(config)
         self.download_folder = self.current_folder
-        print("Folder_path: " + folder_path, "download_folder: " + download_folder)
         window.evaluate_js(f'updateDownloadFolder({json.dumps(self.current_folder)})')
 
     def choose_folder(self):
@@ -169,14 +165,11 @@ class Api:
             # Сохраняем обновленную очередь в файл
             save_queue_to_file(self.download_queue)
 
-            print(f"Видео удалено из очереди: {video_title}")
-            print(video_title)
             # Обновляем интерфейс
             window.evaluate_js(f'removeVideoFromList("{video_title}")')
 
             return f"{translations.get('status', {}).get('removed_from_queue')}: {video_title}"
         except Exception as e:
-            print(f"Ошибка при удалении видео из очереди: {str(e)}", video_title)
             return f"{translations.get('status', {}).get('error_removing')}: {str(e)}"
 
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
@@ -189,7 +182,6 @@ class Api:
 
             # Добавляем видео в очередь
             self.download_queue.append((video_url, video_title, selected_format, selectedResolution, thumbnail_url))
-            print(f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
 
             # Сохраняем очередь в файл
             save_queue_to_file(self.download_queue)
@@ -200,7 +192,6 @@ class Api:
 
             return f"{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"
         except Exception as e:
-            print(f"Ошибка при добавлении видео в очередь: {str(e)}")
             return f"{translations.get('status', {}).get('error_adding')}: {str(e)}"
 
     def startDownload(self):
@@ -216,8 +207,7 @@ class Api:
 
     def start_next_download(self):
         if not self.download_queue:
-            os.startfile(f"{self.download_folder}")
-            print("Очередь пуста. Загрузка завершена.")
+            os.startfile(f"{download_folder}")
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
             return
 
@@ -228,7 +218,6 @@ class Api:
 
         # Извлекаем следующее видео из очереди
         video_url, video_title, selected_format, selectedResolution, thumbl = self.download_queue.pop(0)
-        print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
         window.evaluate_js(f'showSpinner()')
 
         # Обновляем статус в интерфейсе
@@ -274,10 +263,8 @@ class Api:
 
             self.removeVideoFromQueue(video_title)
             window.evaluate_js(f'hideSpinner()')
-            print(f"Видео успешно загружено: {video_title}")
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
-            print(f"Ошибка при загрузке: {str(e)}")
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_error')}: {str(e)}')
 
         # Сбрасываем флаг загрузки и запускаем следующую загрузку
@@ -343,10 +330,6 @@ if __name__ == "__main__":
     download_folder = config.get("Settings", "folder_path", fallback="downloads")
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
 
-    print(f"Язык интерфейса: {language}")
-    print(f"Папка загрузки: {download_folder}")
-    print(f"Автоматическое обновление: {'Включено' if auto_update else 'Выключено'}")
-
     api.download_folder = download_folder
     download_queue = api.download_queue
 
@@ -356,5 +339,4 @@ if __name__ == "__main__":
     window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
     window.events.loaded += lambda: window.evaluate_js(f"window.loadQueue({json.dumps(download_queue)})")
 
-    print(translations, download_folder)
     webview.start()

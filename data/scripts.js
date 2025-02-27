@@ -145,6 +145,8 @@ function removeVideoFromList(videoTitle) {
 window.updateTranslations = function(translations) {
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
     document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
+    document.getElementById('chooseButton').innerText = translations.settings.choose_folder || 'Select folder';
+    document.getElementById('byDefoult').innerText = translations.settings.by_defoult || 'By default';
     document.getElementById('apply').innerText = translations.settings.button_apply || 'Apply:';
 
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
