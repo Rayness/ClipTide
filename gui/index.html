@@ -15,7 +15,11 @@
         </select>
         </label>
         <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
-        <input class="input__folder" type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
+        <div class="folder__block">
+            <input class="input__folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
+            <button class="additional__button" id="byDefoult" >По умолчанию</button>
+            <button class="additional__button" id="chooseButton">Выбрать папку</button>
+        </div>
         <button class="additional__button" id="apply">Применить</button>
     </div>
     <input class="input__url fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">

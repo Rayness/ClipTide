@@ -9,6 +9,8 @@ import time
 import queue
 import configparser
 import atexit
+import tkinter as tk
+from tkinter import filedialog
 from pathlib import Path
 
 
@@ -134,7 +136,16 @@ class Api:
         config.set("Settings", "folder_path", self.current_folder)
         save_config(config)
         print(folder_path)
-        window.evaluate_js(f'updateDownloadFolder({self.current_folder})')
+        window.evaluate_js(f'updateDownloadFolder({json.dumps(self.current_folder)})')
+
+    def choose_folder(self):
+        # Открытие диалогового окна для выбора папки
+        from tkinter import Tk, filedialog
+        root = Tk()
+        root.withdraw()  # Скрываем главное окно tkinter
+        folder_path = filedialog.askdirectory()  # Открывает окно выбора папки
+        window.evaluate_js(f'updateDownloadFolder({json.dumps(folder_path)})')
+        root.destroy()
 
     def removeVideoFromQueue(self, video_title):
         try:
@@ -209,7 +220,7 @@ class Api:
         video_url, video_title, selected_format, selectedResolution, thumbl = self.download_queue.pop(0)
         print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
         window.evaluate_js(f'showSpinner()')
-        
+
         # Обновляем статус в интерфейсе
         window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"')
         window.evaluate_js(f'removeVideoFromList("{video_title}")')
@@ -219,7 +230,7 @@ class Api:
 
     def download_video(self, video_url, video_title, selected_format, selectedResolution, download_folder='downloads'):
         try:
-            if (selected_format != 'mp3' or 'm4a' or 'opus' or 'aac' or 'flac'):
+            if (selected_format != 'mp3'):
                 # Настройки для yt-dlp
                 ydl_opts = {
                     'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио

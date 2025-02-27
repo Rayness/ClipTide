@@ -208,3 +208,14 @@ body {
     background-color: #e64a19;
 }
 
+.folder__block {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.folder__block button {
+    width: 280px;
+    height: 40px;
+}

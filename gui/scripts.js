@@ -168,3 +168,12 @@ window.updateTranslations = function(translations) {
 window.updateDownloadFolder = function(folder_path) {
     document.getElementById('folder_path').placeholder = folder_path;
 }
+
+document.getElementById("chooseButton").addEventListener("click", function() {
+    // Вызов метода Python через pywebview
+    window.pywebview.api.choose_folder();
+});
+
+document.getElementById("byDefoult").addEventListener("click", function() {
+    window.pywebview.api.switch_download_folder()
+})
