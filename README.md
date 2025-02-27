@@ -17,7 +17,7 @@
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.0.0)** - console application and graphical interface.
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.0.0)** - 1.0.0 Release
 
 ## How to run:
 - If the "installer" (YT-Downloader.exe) was used, a launch shortcut will appear on the desktop and you can use it;
