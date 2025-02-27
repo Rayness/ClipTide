@@ -117,7 +117,7 @@ def save_queue_to_file(queue):
 # --------------------------------------------------------------------------
 
 # HTML-контент для отображения в окне
-html_file_path = os.path.abspath("data/index.html")
+html_file_path = os.path.abspath("data/ui/index.html")
 
 ffmpeg_dir = Path("ffmpeg")  # Директория, куда распакуем FFmpeg
 ffmpeg_exe = resource_path(ffmpeg_dir / "ffmpeg-7.1-essentials_build" / "bin" / "ffmpeg.exe")
