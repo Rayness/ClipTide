@@ -16,7 +16,7 @@
 
 ## Загрузка
 
-**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.2.0-beta)** - консольное приложение и графический интерфейс.
+**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.0.0-beta)** - 1.0 релиз.
 
 ## Как запустить:
 - Как и любое другое приложение;
