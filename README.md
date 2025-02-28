@@ -6,25 +6,22 @@
 • [Russian Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
 
 ## General information
+This small program is designed to download video content in audio and video formats from the YouTube video hosting, but other platforms are also supported, such as: Rutube, Vkvideo, ok and many others. The full list can be found [here](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), most likely videos will be downloaded from all these sources if they (the sources) are not blocked in your country.
+
 > [!NOTE]
-> This small program is designed to download video content in audio and video formats from the YouTube video hosting, but other platforms are also supported, such as: Rutube, Vkvideo, ok and many others. Everything works in Python using the [ydl](https://github.com/ytdl-org/youtube-dl) library for loading videos, as well as [rich](https://github.com/Textualize/rich) for designing the console and [pywebview](https://github.com/r0x0r/pywebview) for the graphical interface. [FFMPEG](https://ffmpeg.org/) is used to work with codecs, it has already been downloaded and placed in the program folder.
+> Downloading video content is implemented using [yt-dlp](https://github.com/yt-dlp/yt-dlp). The graphical interface runs on [pywebview](https://github.com/r0x0r/pywebview). The program also has [FFMPEG](https://ffmpeg.org/) embedded in it.
 
 ### Current version with graphical interface:
-<img src="https://github.com/user-attachments/assets/f232632a-2167-4aca-9d9d-903567110e1d" width="600">
-
-### --Classic, console application:
-<img src="https://github.com/user-attachments/assets/9b14f2e2-299f-4740-bcfa-a9d411f701ed" width="600">
+<img src="https://github.com/user-attachments/assets/50653621-2a6c-44bd-b75e-0c81b438c9ce" width="600">
 
 ## Download
 
 **[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v3.2.0-beta)** - console application and graphical interface.
 
 ## How to run:
-- If the "installer" (YT-Downloader.exe) was used, a launch shortcut will appear on the desktop and you can use it;
-- There are three files for launching in the program folder:
-    - launch --Classic.bat - launches the classic console application;
-    - launch gui.bat - launches the graphical interface together with the console;
-    - run.vbs - launches the launch gui.bat file, but without the console (this file is launched using the shortcut on the desktop).
+- Like any other application;
+- If you downloaded the installer, then run it and follow the installation instructions;
+- If you downloaded the archive, then extract the contents to any folder and run "YT-Downloader"
 
 ## How to use:
 After launching the graphical interface, you need to:
@@ -33,19 +30,19 @@ After launching the graphical interface, you need to:
 3. Click the "Add to queue" button;
 4. Repeat the first three steps as many times as necessary, or go to the fifth;
 5. Click the "Start download" button;
-6. Wait until all videos are downloaded, or close the program if you want, the queue will be saved;
-    - If you closed the program, then launch it and repeat the action from point 5, but this time without closing the program.
+6. Wait until all the videos are downloaded, or close the program if you want, the queue will be saved;
+- If you closed the program, then launch it and repeat the action from the fifth step, but this time without closing the program.
 7. After downloading, the folder with the downloaded videos will open and you can close the program.
 
 ## Known bugs:
-- Videos with quotes ("") in their names cannot be added to the download queue;
-- After downloading a video, it is not removed from the local queue (file queue.json).
-- The video can be removed from the queue using the "Delete" button next to the video the next time it is launched.
+- Videos with quotation marks ("") in their titles will not be added to the download queue;
+- Sometimes the download folder may not be applied immediately after selection and you need to restart the program;
+- Incorrect display of playlist downloads, how to determine: the indicator spins for a very long time and nothing happens for a long time. If you wait, the playlist name will appear in the queue without a preview. The entire playlist will be downloaded.
 
 ## Future plans:
-- [ ] Add auto-update;
-- [ ] Transfer the project to Electron (someday);
-- [ ] Make a mobile application (very not soon).
+- [ ] Add auto-update ( coming soon );
+- [ ] Transfer the project to Electron ( someday );
+- [ ] Make a mobile application ( not very soon )
 
 ## License
 
