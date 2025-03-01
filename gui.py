@@ -38,26 +38,6 @@ CONFIG_FILE = "./data/config.ini"
 
 QUEUE_FILE = "./data/queue.json"
 
-def get_remote_version():
-    url = "https://your-server.com/version.txt"  # Укажите URL вашего файла с версией
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.text.strip()
-    return None
-
-def get_local_version():
-    # Версия может храниться в файле или в коде
-    return "1.0.0"  # Замените на текущую версию вашего приложения
-
-def check_for_updates():
-    remote_version = get_remote_version()
-    local_version = get_local_version()
-    if remote_version and remote_version != local_version:
-        print(f"Доступна новая версия: {remote_version}")
-        return True
-    print("Обновлений нет.")
-    return False
-
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
     "language": "ru",
