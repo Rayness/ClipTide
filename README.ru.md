@@ -16,7 +16,7 @@
 
 ## Загрузка
 
-**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.0.0-beta)** - 1.0 релиз.
+**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.1.0)** - 1.1 релиз.
 
 ## Как запустить:
 - Как и любое другое приложение;
