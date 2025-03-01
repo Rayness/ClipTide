@@ -16,7 +16,7 @@ This small program is designed to download video content in audio and video form
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.0.0-beta)** - 1.0 release.
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.1.0)** - 1.1 release.
 
 ## How to run:
 - Like any other application;
