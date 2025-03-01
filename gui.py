@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 import threading
 import yt_dlp
 import webview
@@ -37,6 +38,8 @@ api_instance = None  # Глобальная переменная для экзе
 CONFIG_FILE = "./data/config.ini"
 
 QUEUE_FILE = "./data/queue.json"
+
+UPDATER = "update.exe"
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
@@ -133,6 +136,13 @@ class Api:
         self.download_folder = ''
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
     
+    def launch_update(self):
+        result = subprocess.run(UPDATER, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("Код завершения:", result.returncode)
+        print("Вывод программы:", result.stdout.decode())
+        print("Ошибки:", result.stderr.decode())
+        return result
+
     def switch_language(self, language):
         self.current_language = language
         translations = load_translations(language)

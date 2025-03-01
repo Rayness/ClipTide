@@ -3,15 +3,23 @@ import sys
 import shutil
 import requests
 import zipfile
+import json
 import subprocess
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QTextEdit, QProgressBar
+from PyQt6.QtGui import QIcon
 
 # Настройки
 GITHUB_REPO = "Rayness/YT-Downloader"  # Укажи свой репозиторий
-VERSION_FILE = "version.txt"
+GITHUB_TOKEN = None  # Если нужно, укажи GitHub Token
+VERSION_FILE = "./data/version.txt"
 DOWNLOAD_DIR = "update_tmp"  # Временная папка для архива
 EXTRACT_DIR = "update_extract"  # Папка для распаковки
 APP_EXECUTABLE = "YT-Downloader.exe"  # Заменить на свою программу
+
+HEADERS = {
+    "User-Agent": "Updater-App",
+    "Accept": "application/vnd.github.v3+json"
+}
 
 class UpdaterGUI(QWidget):
     def __init__(self):
@@ -19,6 +27,7 @@ class UpdaterGUI(QWidget):
         self.setWindowTitle("Updater")
         self.setGeometry(500, 300, 400, 350)
         layout = QVBoxLayout()
+        self.setWindowIcon(QIcon("icon.ico"))
 
         self.label_status = QLabel("\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0439...")
         layout.addWidget(self.label_status)
@@ -51,40 +60,49 @@ class UpdaterGUI(QWidget):
         self.log_box.append(message)
         print(message)
 
-    """
-        def get_latest_release(self):
-        api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-        response = requests.get(api_url)
-
-        if response.status_code == 200:
-            release_data = response.json()
-            assets = release_data.get("assets", [])
-            if assets:
-                return assets[2]["browser_download_url"]
-        return None """
-
     def get_local_version(self):
         if os.path.exists(VERSION_FILE):
             with open(VERSION_FILE, "r") as file:
                 return file.read().strip()
         return "0.0.0"
 
+    def update_local_version(self, new_version):
+        with open(VERSION_FILE, "w") as file:
+            file.write(new_version)
+
     def get_latest_version(self):
         api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=HEADERS)
         if response.status_code == 200:
             return response.json().get("tag_name", "0.0.0")
+        self.log(f"\u041e\u0448\u0438\u0431\u043a\u0430 GitHub API: {response.status_code}")
+        print(response)
         return "0.0.0"
 
+    def get_latest_release(self):
+        api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+        response = requests.get(api_url, headers=HEADERS)
+
+        if response.status_code == 200:
+            release_data = response.json()
+            assets = release_data.get("assets", [])
+            if assets:
+                return assets[2]["browser_download_url"]
+        return None
+
     def check_for_update(self):
-        local_version = self.get_local_version()
-        latest_version = self.get_latest_version()
-        
-        if local_version < latest_version:
-            self.label_status.setText(f"\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 {latest_version}!")
-            self.btn_update.setEnabled(True)
+        local = self.get_local_version()
+        latest = self.get_latest_version()
+
+        if local != latest:
+            url = self.get_latest_release()
+            if url:
+                self.label_status.setText("\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435!")
+                self.btn_update.setEnabled(True)
+            else:
+                self.label_status.setText("\u0423 \u0432\u0430\u0441 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044f\u044f \u0432\u0435\u0440\u0441\u0438\u044f.")
         else:
-            self.label_status.setText("\u0423 \u0432\u0430\u0441 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044f\u044f \u0432\u0435\u0440\u0441\u0438\u044f.")
+            self.label_status.setText("У вас последняя версия")
 
     def download_file(self, url, filename):
         response = requests.get(url, stream=True)
@@ -101,7 +119,14 @@ class UpdaterGUI(QWidget):
             return True
         return False
 
+    def launch_program(self):
+        if os.path.exists(APP_EXECUTABLE):
+            subprocess.Popen([APP_EXECUTABLE], creationflags=subprocess.DETACHED_PROCESS)
+        else:
+            self.log("\u041d\u0435\u0442 \u0444\u0430\u0439\u043b\u0430 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b!")
+
     def update_program(self):
+        latest = self.get_latest_version()
         url = self.get_latest_release()
         if not url:
             return
@@ -128,15 +153,14 @@ class UpdaterGUI(QWidget):
             shutil.rmtree(EXTRACT_DIR, ignore_errors=True)
 
             self.label_status.setText("\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u043e!")
-
-    def launch_program(self):
-        if os.path.exists(APP_EXECUTABLE):
-            subprocess.Popen([APP_EXECUTABLE], creationflags=subprocess.DETACHED_PROCESS)
-        else:
-            self.log("\u041d\u0435\u0442 \u0444\u0430\u0439\u043b\u0430 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b!")
+            self.launch_program()
+            self.update_local_version(latest)
+            
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = UpdaterGUI()
     window.show()
+    print(window.get_latest_version())
+    print(window.get_local_version())
     sys.exit(app.exec())

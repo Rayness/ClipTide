@@ -152,6 +152,9 @@ window.updateTranslations = function(translations) {
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
     document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';
 
+    document.getElementById('update__text').innerHTML = translations.settings.update_text || 'Update';
+    document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
+
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
     document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
     document.getElementById('startBtn').innerText = translations.start_downloading || 'Start download';
@@ -178,4 +181,9 @@ document.getElementById("chooseButton").addEventListener("click", function() {
 
 document.getElementById("byDefoult").addEventListener("click", function() {
     window.pywebview.api.switch_download_folder()
+})
+
+
+document.getElementById("update").addEventListener("click", function(){
+    window.pywebview.api.launch_update();
 })

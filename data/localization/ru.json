@@ -36,6 +36,8 @@
         "language" : "Язык: ",
         "russian" : "Русский",
         "english" : "Английский",
+        "update_text" : "Обновление",
+        "update_button" : "Проверить",
         "folder" : "Папка для загрузки: ",
         "choose_folder" : "Выбрать папку",
         "by_defoult" : "По умолчанию",

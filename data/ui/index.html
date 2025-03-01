@@ -8,12 +8,15 @@
 </head>
 <body>
     <div id="app_settings" class="app__settings fade-in">
-        <label for="language" id="language_title"></label>
-        <select id="language">
-            <option id="lang_ru" value="ru">Русский</option>
-            <option id="lang_en" value="en">Английский</option>
-        </select>
-        </label>
+        <div class="first__settings__block">
+            <label for="language" id="language_title"></label>
+            <select id="language">
+                <option id="lang_ru" value="ru">Русский</option>
+                <option id="lang_en" value="en">Английский</option>
+            </select>
+            <label id="update__text">Обновление: </label>
+            <button class="additional__button" id="update">Проверить</button>
+        </div>
         <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
         <div class="folder__block">
             <input class="input__folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">

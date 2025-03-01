@@ -36,6 +36,8 @@
         "language" : "Language: ",
         "russian" : "Russian",
         "english" : "English",
+        "update_text" : "Update",
+        "update_button" : "Check",
         "folder" : "Download folder: ",
         "choose_folder" : "Select folder",
         "by_defoult" : "By default",

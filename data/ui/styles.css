@@ -15,10 +15,17 @@ body {
     margin-bottom: 15px;
 }
 
+.first__settings__block {
+    appearance: none;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
 #queue-list {
     border-radius: 0 0 10px 10px;
 }
-
 
 #queue {
     max-height: 300px;
