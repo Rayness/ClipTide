@@ -87,7 +87,7 @@ class UpdaterGUI(QWidget):
             release_data = response.json()
             assets = release_data.get("assets", [])
             if assets:
-                return assets[2]["browser_download_url"]
+                return assets[0]["browser_download_url"]
         return None
 
     def check_for_update(self):
