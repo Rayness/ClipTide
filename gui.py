@@ -222,7 +222,7 @@ class Api:
 
         # Запускаем загрузку
         self.start_next_download()
-        return f"{translations.get('status', {}).get('download_started')}"
+        return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"')
 
     def start_next_download(self):
         if not self.download_queue:

@@ -132,6 +132,7 @@ window.loadQueue = function(queue) {
 function removeVideoFromList(videoTitle) {
     const queueList = document.getElementById("queue");
     const items = queueList.getElementsByTagName("li");
+    console.log(videoTitle)
 
     for (let i = 0; i < items.length; i++) {
         if (items[i].innerText.includes(videoTitle)) {
