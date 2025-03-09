@@ -9,10 +9,18 @@ body {
 /* Блоки настроек, информации о загрузки и очереди*/
 .app__settings, .download_settings, .progress-info, #queue-list {
     background-color: #2d2d3a;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     margin-bottom: 15px;
+}
+
+.__for_res {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .first__settings__block {

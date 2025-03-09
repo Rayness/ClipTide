@@ -32,12 +32,9 @@ function hideSpinner() {
     document.getElementById('startBtn').disabled = false;
 }
 
-document.getElementById('apply').addEventListener('click', function() {
-    const lang = document.getElementById('language').value;
-    const folder_path = document.getElementById('folder_path').value || document.getElementById('folder_path').placeholder
-
+document.getElementById('language').addEventListener('change', function() {
+    const lang = document.getElementById('language').value || 'English';
     pywebview.api.switch_language(lang);
-    pywebview.api.switch_download_folder(folder_path)
 })
 
 // Добавляем обработчик события для кнопки "Начать загрузку"
@@ -146,9 +143,6 @@ function removeVideoFromList(videoTitle) {
 window.updateTranslations = function(translations) {
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
     document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
-    document.getElementById('chooseButton').innerText = translations.settings.choose_folder || 'Select folder';
-    document.getElementById('byDefoult').innerText = translations.settings.by_defoult || 'By default';
-    document.getElementById('apply').innerText = translations.settings.button_apply || 'Apply:';
 
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
     document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';

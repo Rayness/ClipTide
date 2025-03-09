@@ -137,11 +137,16 @@ class Api:
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
     
     def launch_update(self):
-        result = subprocess.run(UPDATER, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("Код завершения:", result.returncode)
-        print("Вывод программы:", result.stdout.decode())
-        print("Ошибки:", result.stderr.decode())
-        return result
+        try:
+            result = subprocess.run(UPDATER, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print("Код завершения:", result.returncode)
+            print("Вывод программы:", result.stdout.decode())
+            return result
+        except Exception as e:
+            print("Ошибки:", result.stderr.decode())
+            print(f"Ошибка при запуске апдейтера: {str(e)}")
+            
+
 
     def switch_language(self, language):
         self.current_language = language
@@ -163,9 +168,14 @@ class Api:
         from tkinter import Tk, filedialog
         root = Tk()
         root.withdraw()  # Скрываем главное окно tkinter
-        folder_path = filedialog.askdirectory()  # Открывает окно выбора папки
-        window.evaluate_js(f'updateDownloadFolder({json.dumps(folder_path)})')
+        try:
+            folder_path = filedialog.askdirectory()  # Открывает окно выбора папки
+            window.evaluate_js(f'updateDownloadFolder({json.dumps(folder_path)})')
+            self.switch_download_folder(folder_path)
+        except Exception as e:
+            print(f"Ошибка при выборе папки: {e}")
         root.destroy()
+
 
     def removeVideoFromQueue(self, video_title):
         try:
@@ -222,7 +232,7 @@ class Api:
 
         # Запускаем загрузку
         self.start_next_download()
-        return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"')
+        return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"') # type: ignore
 
     def start_next_download(self):
         if not self.download_queue:
