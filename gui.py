@@ -7,6 +7,7 @@ import webview
 import json
 import time
 import queue
+from plyer import notification
 import configparser
 import atexit
 import requests
@@ -146,8 +147,6 @@ class Api:
             print("Ошибки:", result.stderr.decode())
             print(f"Ошибка при запуске апдейтера: {str(e)}")
             
-
-
     def switch_language(self, language):
         self.current_language = language
         translations = load_translations(language)
@@ -238,6 +237,13 @@ class Api:
         if not self.download_queue:
             os.startfile(f"{self.download_folder}")
             print("Очередь пуста. Загрузка завершена.")
+                # Показываем уведомление
+            notification.notify(
+                title=f'{translations.get('notifications', {}).get('queue_title')}',
+                message=f'{translations.get('notifications', {}).get('queue_message')}',
+                app_name='YT-Downloader',
+                timeout=10  # Уведомление исчезнет через 10 секунд
+            )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
             return
 
@@ -295,6 +301,13 @@ class Api:
             self.removeVideoFromQueue(video_title)
             window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
+            # Показываем уведомление
+            notification.notify(
+                title=f'{translations.get('notifications', {}).get('video_title')}',
+                message=f'{translations.get('notifications', {}).get('video_message_1')} "{video_title}" {translations.get('notifications', {}).get('video_message_2')}',
+                app_name='YT-Downloader',
+                timeout=10  # Уведомление исчезнет через 10 секунд
+            )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при загрузке: {str(e)}")

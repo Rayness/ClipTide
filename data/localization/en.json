@@ -44,5 +44,13 @@
         "auto_update" : "Automatic update",
         "button_apply" : "Apply",
         "placeholder" : "Specify the path to the download folder"
+    },
+
+    "notifications" : {
+        "video_title" : "Download complete!",
+        "video_message_1": "Video",
+        "video_message_2": "successfully downloaded!",
+        "queue_title" : "Download complete",
+        "queue_message": "All videos in the queue have been downloaded"
     }
 }

@@ -44,5 +44,13 @@
         "auto_update" : "Автоматическое обновление",
         "button_apply" : "Применить",
         "placeholder" : "Укажите путь к папке загрузок"
+    },
+
+    "notifications" : {
+        "video_title" : "Загрузка завершена!",
+        "video_message_1" : "Видео ",
+        "video_message_2" : " успешно скачано!",
+        "queue_title" : "Загрузка завершена",
+        "queue_message" : "Все видео из очереди были загружены"
     }
 }
