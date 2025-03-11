@@ -36,7 +36,7 @@ body {
 }
 
 #queue {
-    max-height: 300px;
+    max-height: 230px;
     overflow: auto;
     list-style-type: none;
     padding: 0;

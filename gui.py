@@ -5,14 +5,12 @@ import threading
 import yt_dlp
 import webview
 import json
-import time
 import queue
 from plyer import notification
 import configparser
 import atexit
 import requests
-import tkinter as tk
-from tkinter import filedialog
+from tkinter import Tk, filedialog
 from pathlib import Path
 
 def resource_path(relative_path):
@@ -41,6 +39,14 @@ CONFIG_FILE = "./data/config.ini"
 QUEUE_FILE = "./data/queue.json"
 
 UPDATER = "update.exe"
+
+VERSION_FILE = "./data/version.txt"
+
+def get_local_version():
+    if os.path.exists(VERSION_FILE):
+        with open(VERSION_FILE, "r") as file:
+            return file.read().strip()
+    return "0.0.0"
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
@@ -164,7 +170,6 @@ class Api:
 
     def choose_folder(self):
         # Открытие диалогового окна для выбора папки
-        from tkinter import Tk, filedialog
         root = Tk()
         root.withdraw()  # Скрываем главное окно tkinter
         try:
@@ -238,12 +243,13 @@ class Api:
             os.startfile(f"{self.download_folder}")
             print("Очередь пуста. Загрузка завершена.")
                 # Показываем уведомление
-            notification.notify(
-                title=f'{translations.get('notifications', {}).get('queue_title')}',
-                message=f'{translations.get('notifications', {}).get('queue_message')}',
-                app_name='YT-Downloader',
-                timeout=10  # Уведомление исчезнет через 10 секунд
-            )
+            if len(self.download_queue) < 1:    
+                notification.notify(
+                    title=f'{translations.get('notifications', {}).get('queue_title')}',
+                    message=f'{translations.get('notifications', {}).get('queue_message')}',
+                    app_name='YT-Downloader',
+                    timeout=10  # Уведомление исчезнет через 10 секунд
+                )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
             return
 
@@ -302,12 +308,13 @@ class Api:
             window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
             # Показываем уведомление
-            notification.notify(
-                title=f'{translations.get('notifications', {}).get('video_title')}',
-                message=f'{translations.get('notifications', {}).get('video_message_1')} "{video_title}" {translations.get('notifications', {}).get('video_message_2')}',
-                app_name='YT-Downloader',
-                timeout=10  # Уведомление исчезнет через 10 секунд
-            )
+            if len(self.download_queue) > 0:
+                notification.notify(
+                    title=f'{translations.get('notifications', {}).get('video_title')}',
+                    message=f'{translations.get('notifications', {}).get('video_message_1')} "{video_title}" {translations.get('notifications', {}).get('video_message_2')}',
+                    app_name='YT-Downloader',
+                    timeout=10  # Уведомление исчезнет через 10 секунд
+                )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при загрузке: {str(e)}")
@@ -359,13 +366,15 @@ if __name__ == "__main__":
     api = Api()
     api_instance = Api()
 
+    version = get_local_version()
+
     # Создаем окно с HTML-контентом
     window = webview.create_window(
-        'YT Downloader',
+        f'YT Downloader {version}',
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
         height=1000,
-        resizable=True
+        resizable=False
     )
 
     # Загружаем конфигурацию
