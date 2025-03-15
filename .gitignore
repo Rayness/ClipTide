@@ -11,6 +11,7 @@ src
 /dist
 YT-Downloader.spec
 update.exe.spec
+updater.exe.spec
 cookies.txt
 /gui/queue.json
 queue.json
