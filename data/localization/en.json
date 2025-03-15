@@ -38,6 +38,7 @@
         "english" : "English",
         "update_text_ready" : "Update available",
         "update_text_not_ready" : "Update not required",
+        "update_text_error" : "Error getting version",
         "update_button" : "Run Updater",
         "folder" : "Download folder: ",
         "choose_folder" : "Select folder",

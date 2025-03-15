@@ -152,10 +152,12 @@ window.updateTranslations = function(translations, update) {
     if (update = true) {
         document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
         update_text.style.backgroundColor=  "#5d8a51";
-    } else {
+    } else if (update = false) {
         document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
         update_text.style.backgroundColor = "#3e4d3a";
-
+    } else {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_error || 'Update not available';
+        update_text.style.backgroundColor = "#7c363d";
     }
     document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
 

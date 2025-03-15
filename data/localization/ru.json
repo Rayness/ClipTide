@@ -38,6 +38,7 @@
         "english" : "Английский",
         "update_text_ready" : "Доступно обновление",
         "update_text_not_ready" : "Обновление не требуется",
+        "update_text_error" : "Ошибка получения версии",
         "update_button" : " Запустить Updater",
         "folder" : "Папка для загрузки: ",
         "choose_folder" : "Выбрать папку",
