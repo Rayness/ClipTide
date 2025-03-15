@@ -140,14 +140,23 @@ function removeVideoFromList(videoTitle) {
 }
 
 // Функция для обновления текста интерфейса
-window.updateTranslations = function(translations) {
+window.updateTranslations = function(translations, update) {
+    update_text = document.getElementById('update__text')
+
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
     document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
 
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
     document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';
 
-    document.getElementById('update__text').innerHTML = translations.settings.update_text || 'Update';
+    if (update = true) {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
+        update_text.style.backgroundColor=  "#5d8a51";
+    } else {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
+        update_text.style.backgroundColor = "#3e4d3a";
+
+    }
     document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
 
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';

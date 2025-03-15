@@ -80,6 +80,17 @@ body {
     flex-direction: column;
 }
 
+.language__select {
+    min-width: 120px;
+
+}
+
+#update__text {
+    padding: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
 /* Ввод ссылки, ввод папки, селект */
 .input__url[type="text"], .input__folder, select {
     width: 100%;
@@ -148,10 +159,19 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .additional__button:hover {
     background: linear-gradient(135deg, #483d8b, #6a5acd);
+}
+
+#byDefoult {
+    width: 60px;
+}
+
+#chooseButton{
+    width: 120px;
 }
 
 /* Статус */

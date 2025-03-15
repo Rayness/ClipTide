@@ -42,11 +42,36 @@ UPDATER = "update.exe"
 
 VERSION_FILE = "./data/version.txt"
 
+GITHUB_REPO = "Rayness/YT-Downloader"  # Укажи свой репозиторий
+
+HEADERS = {
+    "User-Agent": "Updater-App",
+    "Accept": "application/vnd.github.v3+json"
+}
+
+
+def get_latest_version():
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+    response = requests.get(api_url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json().get("tag_name", "0.0.0")
+    print(response)
+    return "0.0.0"
+
 def get_local_version():
     if os.path.exists(VERSION_FILE):
         with open(VERSION_FILE, "r") as file:
             return file.read().strip()
     return "0.0.0"
+
+def check_for_update():
+    local = get_local_version()
+    latest = get_latest_version()
+
+    if local != latest:
+        return True
+    else:
+        return False
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
@@ -380,6 +405,9 @@ if __name__ == "__main__":
     # Загружаем конфигурацию
     config = load_config()
 
+    update = check_for_update()
+    update_js = str(update).lower()
+
     # Используем настройки
     language = config.get("Settings", "language", fallback="ru")
     download_folder = config.get("Settings", "folder_path", fallback="downloads")
@@ -388,6 +416,7 @@ if __name__ == "__main__":
     print(f"Язык интерфейса: {language}")
     print(f"Папка загрузки: {download_folder}")
     print(f"Автоматическое обновление: {'Включено' if auto_update else 'Выключено'}")
+    print(str(update))
 
     api.download_folder = download_folder
     download_queue = api.download_queue
@@ -395,7 +424,7 @@ if __name__ == "__main__":
     # Загружаем переводы по умолчанию
     translations = load_translations(language)
     window.events.loaded += lambda: window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
-    window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
+    window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)}, {update_js})')
     window.events.loaded += lambda: window.evaluate_js(f"window.loadQueue({json.dumps(download_queue)})")
 
     print(translations, download_folder)
