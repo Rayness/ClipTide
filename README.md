@@ -48,7 +48,7 @@ After launching the graphical interface, you need to:
 - Solution: Run the file as an administrator.
 
 ## Future plans:
-- [ ] Add auto-update ( coming soon );
+- [x] Add auto-update ( coming soon );
 - [ ] Transfer the project to Electron ( someday );
 - [ ] Make a mobile application ( not very soon )
 
