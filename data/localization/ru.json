@@ -1,6 +1,7 @@
 {
     "video_URL" : "Введите URL видео",
     "audio_only" : "Только аудио",
+    "audio_text": "Аудио",
     "format": "Формат: ",
     "resolution": "Разрешение: ",
     "add_to_queue" : "Добавить в очередь",
@@ -30,6 +31,7 @@
     "mbs" : "МБ/с",
     "min" : "мин",
     "sec" : "сек",
+    "error": "Ошибка",
 
     "settings" : {
         "settings_text" : "Настройки",
@@ -41,8 +43,9 @@
         "update_text_error" : "Ошибка получения версии",
         "update_button" : " Запустить Updater",
         "folder" : "Папка для загрузки: ",
-        "choose_folder" : "Выбрать папку",
-        "by_defoult" : "По умолчанию",
+        "choose_folder" : "Изменить папку загрузки",
+        "open_folder" : "Открыть папку загрузки",
+        "by_defoult" : "Вернуть папку по умолчанию",
         "auto_update" : "Автоматическое обновление",
         "button_apply" : "Применить",
         "placeholder" : "Укажите путь к папке загрузок"

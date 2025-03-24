@@ -38,7 +38,7 @@ CONFIG_FILE = "./data/config.ini"
 
 QUEUE_FILE = "./data/queue.json"
 
-UPDATER = "update.exe"
+UPDATER = "updater.exe"
 
 VERSION_FILE = "./data/version.txt"
 
@@ -205,6 +205,11 @@ class Api:
             print(f"Ошибка при выборе папки: {e}")
         root.destroy()
 
+    def open_folder(self):
+        try:
+            os.startfile(f"{self.download_folder}")
+        except Exception as e:
+            print(f"Ошибка: {e}")
 
     def removeVideoFromQueue(self, video_title):
         try:
@@ -233,8 +238,9 @@ class Api:
             # Извлекаем информацию о видео (название)
             with yt_dlp.YoutubeDL() as ydl:
                 info = ydl.extract_info(video_url, download=False)
-                video_title = info.get('title', 'Неизвестное видео')
+                video_title_get = info.get('title', 'Неизвестное видео')
                 thumbnail_url = info.get('thumbnail', '')
+            video_title = video_title_get.replace('"',"'")
 
             # Добавляем видео в очередь
             self.download_queue.append((video_url, video_title, selected_format, selectedResolution, thumbnail_url))
@@ -261,20 +267,20 @@ class Api:
 
         # Запускаем загрузку
         self.start_next_download()
-        return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"') # type: ignore
-
+        window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"') # type: ignore
+        return
+    
     def start_next_download(self):
         if not self.download_queue:
             os.startfile(f"{self.download_folder}")
             print("Очередь пуста. Загрузка завершена.")
-                # Показываем уведомление
-            if len(self.download_queue) < 1:    
-                notification.notify(
-                    title=f'{translations.get('notifications', {}).get('queue_title')}',
-                    message=f'{translations.get('notifications', {}).get('queue_message')}',
-                    app_name='YT-Downloader',
-                    timeout=10  # Уведомление исчезнет через 10 секунд
-                )
+            # Показываем уведомление
+            notification.notify(
+                title=f'{translations.get('notifications', {}).get('queue_title')}',
+                message=f'{translations.get('notifications', {}).get('queue_message')}',
+                app_name='YT-Downloader',
+                timeout=4  # Уведомление исчезнет через 10 секунд
+            )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
             return
 
@@ -333,17 +339,17 @@ class Api:
             window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
             # Показываем уведомление
-            if len(self.download_queue) > 0:
+            if self.download_queue:
                 notification.notify(
                     title=f'{translations.get('notifications', {}).get('video_title')}',
                     message=f'{translations.get('notifications', {}).get('video_message_1')} "{video_title}" {translations.get('notifications', {}).get('video_message_2')}',
                     app_name='YT-Downloader',
-                    timeout=10  # Уведомление исчезнет через 10 секунд
+                    timeout=4 # Уведомление исчезнет через 10 секунд
                 )
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при загрузке: {str(e)}")
-            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_error')}: {str(e)}')
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('download_error')}: {str(e)}"')
 
         # Сбрасываем флаг загрузки и запускаем следующую загрузку
         self.is_downloading = False
@@ -416,7 +422,7 @@ if __name__ == "__main__":
     print(f"Язык интерфейса: {language}")
     print(f"Папка загрузки: {download_folder}")
     print(f"Автоматическое обновление: {'Включено' if auto_update else 'Выключено'}")
-    print(str(update))
+    print(str(update_js))
 
     api.download_folder = download_folder
     download_queue = api.download_queue

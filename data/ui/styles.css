@@ -1,17 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* Общее */
+:root {
+    --color-background: #1e1e2e;
+    --color-primary: #2d2d3a;
+    --color-white: #ffffff;
+    --color-shadows: 0 4px 10px rgba(0, 0, 0, 0.2);
+    --color-additional-button: ;
+    --color-progress: linear-gradient(270deg, #9082ff, #7a5acd, #483d8b, #7a5acd, #9082ff);
+
+
+    --border-radius-1: 0.3rem;
+}
+
+html {
+    font-size: 16px;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     margin: 20px;
-    background-color: #1e1e2e;
-    color: #ffffff;
+    background-color: var(--color-background);
+    color: var(--color-white);
 }
 
 /* Блоки настроек, информации о загрузки и очереди*/
 .app__settings, .download_settings, .progress-info, #queue-list {
-    background-color: #2d2d3a;
+    background-color: var(--color-primary);
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--color-shadows);
     margin-bottom: 15px;
 }
 
@@ -52,15 +72,37 @@ body {
 }
 
 #queue li img {
-    width: 80px;
-    height: 45px;
+    padding: 0;
+    width: 100px;
+    height: 65px;
     object-fit: cover;
     margin-right: 10px;
     border-radius: 5px;
 }
 
 #queue li .video-info {
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+#queue li .video-info .video_queue_text {
+    margin-left: 5px;
+}
+
+#queue li .video-info .video_queue_additional {
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+}
+
+#queue li .video-info .video_queue_additional p {
+    white-space: nowrap;
+    background-color: var(--color-primary);
+    padding: 5px 10px 5px 10px;
+    border-radius: var(--border-radius-1);
 }
 
 #queue li .delete-button {
@@ -82,7 +124,6 @@ body {
 
 .language__select {
     min-width: 120px;
-
 }
 
 #update__text {
@@ -170,7 +211,11 @@ body {
     width: 60px;
 }
 
-#chooseButton{
+#chooseButton {
+    width: 60px;
+}
+
+#openFolder {
     width: 120px;
 }
 
@@ -197,7 +242,7 @@ body {
 .progress-fill {
     width: 0%;
     height: 100%;
-    background: linear-gradient(270deg, #9082ff, #7a5acd, #483d8b, #7a5acd, #9082ff);
+    background: var(--color-progress);
     background-size: 200% 100%;
     transition: width 0.5s ease-in-out;
     animation: flowing 2s infinite linear;
@@ -255,4 +300,48 @@ body {
 .folder__block button {
     width: 280px;
     height: 40px;
+}
+
+
+
+
+/* Всплывающая подсказка */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 150px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    transition: opacity 0.3s, visibility 0.3s 2s; /* Задержка 2s перед появлением */
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }

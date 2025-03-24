@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>PyWebview Example</title>
 </head>
-<body>
+<body>  
+    <!-- Block with settigns -->
     <div id="app_settings" class="app__settings fade-in">
         <div class="first__settings__block">
             <label for="language" id="language_title"></label>
@@ -21,11 +22,26 @@
         <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
         <div class="folder__block">
             <input class="input__folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
-            <button class="additional__button" id="byDefoult" ><i class="fa-solid fa-clock-rotate-left"></i></button>
-            <button class="additional__button" id="chooseButton"><i class="fa-solid fa-folder"></i></svg></button>
+            <div class="tooltip-container">
+                <button class="additional__button" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+            </div>
+            <div class="tooltip-container">
+                <button class="additional__button" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
+                <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+            </div>
+            <div class="tooltip-container">
+                <button class="additional__button" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
+                <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+            </div>
         </div>
     </div>
+    <div class="cursor-tooltip" id="tooltip"></div>
+    <!-- End block with settings-->
+
+    <!-- Input URL link -->
     <input class="input__url fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
+    <!-- Block with downloading settings -->
     <div class="download_settings fade-in">
         <div class="__for_res">
             <label id="format_title" class="label_format">Формат: </label>
@@ -55,25 +71,35 @@
             </select>
         </div>
     </div>
+    <!-- End of block with downloading settings -->
+
+    <!-- Main selection -->
+    <!-- Buttons -->
     <button class="main__button fade-in" id="addBtn">Добавить в очередь</button>
     <button class="main__button fade-in" id="startBtn">Начать загрузку</button>
     <button class="main__button fade-in" disabled id="stopBtn">STOP</button>
+    <!-- Loading spinner -->
     <div id="loading-spinner" style="display: none;">
         <div class="spinner"></div>
     </div>    
+    <!-- Downloading status -->
     <div id="status" class="fade-in">Статус: Ожидание...</div>
+    <!-- Downloading queue -->
     <div id="queue-list" class="fade-in">
         <h3 id="queue-title"></h3>
         <ul id="queue"></ul>
     </div>
+    <!-- Download informations -->
     <div class="progress-info fade-in">
         <div id="progress">Прогресс: 0%</div>
         <div id="speed">Скорость: 0B/s</div>
         <div id="eta">Осталось: </div>
     </div>
+    <!-- Progress bar -->
     <div class="progress-bar fade-in">
         <div id="progress-fill" class="progress-fill"></div>
     </div>
+    <!-- Import JS scripts -->
     <script src="scripts.js"></script>
     <script src="ui-effects.js"></script>
 </body>

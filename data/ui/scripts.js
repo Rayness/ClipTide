@@ -45,13 +45,19 @@ document.getElementById('startBtn').addEventListener('click', function() {
     });
 });
 
-// Функция для добавления видео в список
-//window.addVideoToList = function(videoTitle) {
-//    const queueList = document.getElementById('queue');
-//    const listItem = document.createElement('li');
-//    listItem.innerText = videoTitle;
-//    queueList.appendChild(listItem);
-//};
+document.getElementById('format').addEventListener('change', ()=> {
+    element = document.getElementById('format');
+    res = document.getElementById('resolution');
+
+
+    if (element.value === 'mp3') {
+        res.selectedIndex = -1;
+        res.disabled = true;
+    } else {
+        res.disabled = false;
+        res.selectedIndex = 4
+    }
+})
 
 // Функция для добавления видео в список очереди
 function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
@@ -66,7 +72,29 @@ function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
     // Создаем контейнер для информации о видео
     const videoInfo = document.createElement("div");
     videoInfo.classList.add("video-info");
-    videoInfo.innerText = videoTitle + " | " + format + " | " + resolution + "p";
+    try {
+        if (format === "mp3") {
+            videoInfo.innerHTML = `
+                <div class="video_queue_text">${videoTitle}</div>
+                <div class="video_queue_additional">
+                    <p>Audio</p>
+                    <p>${format}</p>
+                </div>
+            `
+        } else {
+            videoInfo.innerHTML = `
+                <div class="video_queue_text">${videoTitle}</div>
+                <div class="video_queue_additional">
+                    <p>${resolution}p</p>
+                    <p>${format}</p>
+                </div>
+            `
+        }
+    } catch (error) {
+        console.log(error.message)
+        document.getElementById('status').innerText = error.message;
+    };
+
 
     // Создаем кнопку удаления
     const deleteButton = document.createElement("button");
@@ -105,7 +133,28 @@ window.loadQueue = function(queue) {
         // Создаем контейнер для информации о видео
         const videoInfo = document.createElement("div");
         videoInfo.classList.add("video-info");
-        videoInfo.innerText = video[1] + " | " + video[2] + " | " + video[3]+"p" ;
+        try {
+            if (video[2] === "mp3") {
+                videoInfo.innerHTML = `
+                    <div class="video_queue_text">${video[1]}</div>
+                    <div class="video_queue_additional">
+                        <p>Audio</p>
+                        <p>${video[2]}</p>
+                    </div>
+                `
+            } else {
+                videoInfo.innerHTML = `
+                <div class="video_queue_text">${video[1]}</div>
+                <div class="video_queue_additional">
+                    <p>${video[3]}p</p>
+                    <p>${video[2]}</p>
+                </div>
+                `
+            }
+        } catch (error) {
+            console.log(error.message)
+            document.getElementById('status').innerText = error.message;
+        };
 
         // Создаем кнопку удаления
         const deleteButton = document.createElement("button");
@@ -149,10 +198,14 @@ window.updateTranslations = function(translations, update) {
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
     document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';
 
-    if (update = true) {
+    document.getElementById('tooltip_defoult').innerHTML = translations.settings.by_defoult || 'Restore default folder'
+    document.getElementById('tooltip_choose').innerHTML = translations.settings.choose_folder || 'Change download folder'
+    document.getElementById('tooltip_open').innerHTML = translations.settings.open_folder || 'Open download folder'
+
+    if (update) {
         document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
         update_text.style.backgroundColor=  "#5d8a51";
-    } else if (update = false) {
+    } else if (!update) {
         document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
         update_text.style.backgroundColor = "#3e4d3a";
     } else {
@@ -189,6 +242,9 @@ document.getElementById("byDefoult").addEventListener("click", function() {
     window.pywebview.api.switch_download_folder()
 })
 
+document.getElementById("openFolder").addEventListener("click", () =>{
+    window.pywebview.api.open_folder();
+})
 
 document.getElementById("update").addEventListener("click", function(){
     window.pywebview.api.launch_update();

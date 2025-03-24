@@ -1,6 +1,7 @@
 {
     "video_URL" : "Enter video URL",
     "audio_only" : "Audio only",
+    "audio_text": "Audio",
     "format": "Format: ",
     "resolution": "Resolution: ",
     "add_to_queue" : "Add to queue",
@@ -30,6 +31,7 @@
     "eta" : "Time left: ",
     "min" : "min",
     "sec" : "sec",
+    "error": "Error",
 
     "settings" : {
         "settings_text" : "Settings",
@@ -41,8 +43,9 @@
         "update_text_error" : "Error getting version",
         "update_button" : "Run Updater",
         "folder" : "Download folder: ",
-        "choose_folder" : "Select folder",
-        "by_defoult" : "By default",
+        "choose_folder" : "Change download folder",
+        "open_folder" : "Open download folder",
+        "by_defoult" : "Restore default folder",
         "auto_update" : "Automatic update",
         "button_apply" : "Apply",
         "placeholder" : "Specify the path to the download folder"
