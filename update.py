@@ -3,36 +3,38 @@ import sys
 import shutil
 import requests
 import zipfile
-import json
+import time
 import subprocess
+import psutil
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QTextEdit, QProgressBar
 from PyQt6.QtGui import QIcon
 
 # Настройки
-GITHUB_REPO = "Rayness/YT-Downloader"  # Укажи свой репозиторий
-GITHUB_TOKEN = None  # Если нужно, укажи GitHub Token
+GITHUB_REPO = "Rayness/YT-Downloader"
 VERSION_FILE = "./data/version.txt"
-DOWNLOAD_DIR = "update_tmp"  # Временная папка для архива
-EXTRACT_DIR = "update_extract"  # Папка для распаковки
-APP_EXECUTABLE = "YT-Downloader.exe"  # Заменить на свою программу
+DOWNLOAD_DIR = "update_tmp"
+EXTRACT_DIR = "update_extract"
+APP_EXECUTABLE = "ClipTide.exe"
+MAX_WAIT_TIME = 10  # Максимальное время ожидания завершения процесса (сек)
 
-HEADERS = {
-    "User-Agent": "Updater-App",
-    "Accept": "application/vnd.github.v3+json"
-}
+HEADERS = {"User-Agent": "Updater-App", "Accept": "application/vnd.github.v3+json"}
 
 class UpdaterGUI(QWidget):
     def __init__(self):
         super().__init__()
+        self.setup_ui()
+        self.check_for_update()
+
+    def setup_ui(self):
         self.setWindowTitle("Updater")
         self.setGeometry(500, 300, 400, 350)
         layout = QVBoxLayout()
         self.setWindowIcon(QIcon("icon.ico"))
 
-        self.label_status = QLabel("\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0439...")
+        self.label_status = QLabel("Проверка обновлений...")
         layout.addWidget(self.label_status)
 
-        self.progress = QProgressBar(self)
+        self.progress = QProgressBar()
         self.progress.setValue(0)
         layout.addWidget(self.progress)
 
@@ -40,127 +42,197 @@ class UpdaterGUI(QWidget):
         self.log_box.setReadOnly(True)
         layout.addWidget(self.log_box)
 
-        self.btn_check = QPushButton("\ud83d\udd0d \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c")
+        self.btn_check = QPushButton("🔍 Проверить")
         self.btn_check.clicked.connect(self.check_for_update)
         layout.addWidget(self.btn_check)
 
-        self.btn_update = QPushButton("\u2b07\ufe0f \u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c")
+        self.btn_update = QPushButton("⏬ Обновить")
         self.btn_update.setEnabled(False)
         self.btn_update.clicked.connect(self.update_program)
         layout.addWidget(self.btn_update)
 
-        self.btn_launch = QPushButton("\ud83d\udd04 \u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c")
+        self.btn_launch = QPushButton("🔄 Запустить")
         self.btn_launch.clicked.connect(self.launch_program)
         layout.addWidget(self.btn_launch)
 
         self.setLayout(layout)
-        self.check_for_update()
 
     def log(self, message):
         self.log_box.append(message)
+        QApplication.processEvents()  # Обновляем GUI
         print(message)
 
     def get_local_version(self):
-        if os.path.exists(VERSION_FILE):
-            with open(VERSION_FILE, "r") as file:
-                return file.read().strip()
+        try:
+            if os.path.exists(VERSION_FILE):
+                with open(VERSION_FILE, "r") as file:
+                    return file.read().strip()
+        except Exception as e:
+            self.log(f"Ошибка чтения версии: {e}")
         return "0.0.0"
 
     def update_local_version(self, new_version):
-        with open(VERSION_FILE, "w") as file:
-            file.write(new_version)
+        try:
+            os.makedirs(os.path.dirname(VERSION_FILE), exist_ok=True)
+            with open(VERSION_FILE, "w") as file:
+                file.write(new_version)
+        except Exception as e:
+            self.log(f"Ошибка сохранения версии: {e}")
 
     def get_latest_version(self):
-        api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-        response = requests.get(api_url, headers=HEADERS)
-        if response.status_code == 200:
-            return response.json().get("tag_name", "0.0.0")
-        self.log(f"\u041e\u0448\u0438\u0431\u043a\u0430 GitHub API: {response.status_code}")
-        print(response)
+        try:
+            api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+            response = requests.get(api_url, headers=HEADERS, timeout=10)
+            if response.status_code == 200:
+                return response.json().get("tag_name", "0.0.0")
+            self.log(f"Ошибка GitHub API: {response.status_code}")
+        except Exception as e:
+            self.log(f"Ошибка проверки обновлений: {e}")
         return "0.0.0"
 
     def get_latest_release(self):
-        api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-        response = requests.get(api_url, headers=HEADERS)
-
-        if response.status_code == 200:
-            release_data = response.json()
-            assets = release_data.get("assets", [])
-            if assets:
-                return assets[0]["browser_download_url"]
+        try:
+            api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+            response = requests.get(api_url, headers=HEADERS, timeout=10)
+            if response.status_code == 200:
+                assets = response.json().get("assets", [])
+                if assets:
+                    return assets[0]["browser_download_url"]
+        except Exception as e:
+            self.log(f"Ошибка получения ссылки: {e}")
         return None
 
     def check_for_update(self):
+        self.btn_update.setEnabled(False)
         local = self.get_local_version()
         latest = self.get_latest_version()
 
         if local != latest:
             url = self.get_latest_release()
             if url:
-                self.label_status.setText("\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435!")
+                self.label_status.setText(f"Доступно обновление {latest}!")
                 self.btn_update.setEnabled(True)
+                self.log(f"Текущая версия: {local}, Новая версия: {latest}")
             else:
-                self.label_status.setText("\u0423 \u0432\u0430\u0441 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044f\u044f \u0432\u0435\u0440\u0441\u0438\u044f.")
+                self.label_status.setText("Не удалось получить обновление")
         else:
             self.label_status.setText("У вас последняя версия")
 
     def download_file(self, url, filename):
-        response = requests.get(url, stream=True)
-        total_size = int(response.headers.get("content-length", 0))
-        downloaded = 0
+        try:
+            response = requests.get(url, stream=True, timeout=30)
+            total_size = int(response.headers.get("content-length", 0))
+            downloaded = 0
+            chunk_size = 1024 * 1024  # 1MB chunks
 
-        if response.status_code == 200:
             with open(filename, "wb") as file:
-                for chunk in response.iter_content(chunk_size=1024):
-                    file.write(chunk)
-                    downloaded += len(chunk)
-                    progress = int((downloaded / total_size) * 100)
-                    self.progress.setValue(progress)
+                for chunk in response.iter_content(chunk_size=chunk_size):
+                    if chunk:
+                        file.write(chunk)
+                        downloaded += len(chunk)
+                        progress = int((downloaded / total_size) * 100)
+                        self.progress.setValue(progress)
+                        QApplication.processEvents()
             return True
-        return False
+        except Exception as e:
+            self.log(f"Ошибка загрузки: {e}")
+            return False
+
+    def terminate_process(self, process_name):
+        try:
+            for proc in psutil.process_iter(['name']):
+                if proc.info['name'] == process_name:
+                    proc.terminate()
+                    proc.wait(timeout=5)
+        except Exception as e:
+            self.log(f"Ошибка завершения процесса: {e}")
 
     def launch_program(self):
-        if os.path.exists(APP_EXECUTABLE):
-            subprocess.Popen([APP_EXECUTABLE], creationflags=subprocess.DETACHED_PROCESS)
-        else:
-            self.log("\u041d\u0435\u0442 \u0444\u0430\u0439\u043b\u0430 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b!")
+        self.terminate_process(APP_EXECUTABLE)
+        try:
+            if os.path.exists(APP_EXECUTABLE):
+                subprocess.Popen([APP_EXECUTABLE], shell=True)
+                self.log("Программа запущена")
+                self.close()
+            else:
+                self.log("Файл программы не найден!")
+        except Exception as e:
+            self.log(f"Ошибка запуска: {e}")
+
+    def safe_copy(self, src, dst):
+        try:
+            if os.path.isdir(src):
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+            else:
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                shutil.copy2(src, dst)
+            return True
+        except Exception as e:
+            self.log(f"Ошибка копирования {src}: {e}")
+            return False
 
     def update_program(self):
+        self.btn_update.setEnabled(False)
         latest = self.get_latest_version()
         url = self.get_latest_release()
+        
         if not url:
+            self.log("Не удалось получить ссылку на обновление")
             return
 
-        archive_path = os.path.join(DOWNLOAD_DIR, "update.zip")
+        # Создаем временные директории
         os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+        os.makedirs(EXTRACT_DIR, exist_ok=True)
+        
+        archive_path = os.path.join(DOWNLOAD_DIR, "update.zip")
+        self.log(f"Загрузка обновления {latest}...")
+        
+        if not self.download_file(url, archive_path):
+            return
 
-        if self.download_file(url, archive_path):
-            with zipfile.ZipFile(archive_path, "r") as zip_ref:
+        self.log("Распаковка архива...")
+        try:
+            with zipfile.ZipFile(archive_path, 'r') as zip_ref:
+                # Извлекаем в EXTRACT_DIR, сохраняя структуру
                 zip_ref.extractall(EXTRACT_DIR)
+        except Exception as e:
+            self.log(f"Ошибка распаковки: {e}")
+            return
 
-            for item in os.listdir(EXTRACT_DIR):
-                src_path = os.path.join(EXTRACT_DIR, item)
-                dst_path = os.path.join(os.getcwd(), item)
-                
-                if os.path.isdir(src_path):
-                    if os.path.exists(dst_path):
-                        shutil.rmtree(dst_path)
-                    shutil.copytree(src_path, dst_path)
-                else:
-                    shutil.copy2(src_path, dst_path)
+        # Закрываем основное приложение
+        self.terminate_process(APP_EXECUTABLE)
+        time.sleep(1)  # Даем время на завершение
 
+        self.log("Применение обновления...")
+        try:
+            # Копируем все файлы из EXTRACT_DIR в текущую директорию
+            for root, dirs, files in os.walk(EXTRACT_DIR):
+                for file in files:
+                    src_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(src_path, EXTRACT_DIR)
+                    dst_path = os.path.join(os.getcwd(), rel_path)
+                    
+                    # Пропускаем файлы, которые не должны обновляться
+                    if os.path.basename(dst_path) in ['config.ini', 'settings.json']:
+                        continue
+                        
+                    self.safe_copy(src_path, dst_path)
+            
+            self.log("Очистка временных файлов...")
             shutil.rmtree(DOWNLOAD_DIR, ignore_errors=True)
             shutil.rmtree(EXTRACT_DIR, ignore_errors=True)
-
-            self.label_status.setText("\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u043e!")
-            self.launch_program()
-            self.update_local_version(latest)
             
+            self.update_local_version(latest)
+            self.label_status.setText("Обновление завершено!")
+            self.btn_launch.setEnabled(True)
+            self.log(f"Успешно обновлено до версии {latest}")
+            
+        except Exception as e:
+            self.log(f"Критическая ошибка обновления: {e}")
+            self.label_status.setText("Ошибка обновления!")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = UpdaterGUI()
     window.show()
-    print(window.get_latest_version())
-    print(window.get_local_version())
     sys.exit(app.exec())

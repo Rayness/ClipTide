@@ -228,10 +228,10 @@ class Api:
             # Обновляем интерфейс
             window.evaluate_js(f'removeVideoFromList("{video_title}")')
 
-            return f"{translations.get('status', {}).get('removed_from_queue')}: {video_title}"
+            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('removed_from_queue')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при удалении видео из очереди: {str(e)}", video_title)
-            return f"{translations.get('status', {}).get('error_removing')}: {str(e)}"
+            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('error_removing')}: {str(e)}"')
 
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
@@ -401,7 +401,7 @@ if __name__ == "__main__":
 
     # Создаем окно с HTML-контентом
     window = webview.create_window(
-        f'YT Downloader {version}',
+        f'ClipTide {version}',
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
         height=1000,
@@ -430,8 +430,9 @@ if __name__ == "__main__":
     # Загружаем переводы по умолчанию
     translations = load_translations(language)
     window.events.loaded += lambda: window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
-    window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)}, {update_js})')
-    window.events.loaded += lambda: window.evaluate_js(f"window.loadQueue({json.dumps(download_queue)})")
+    window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
+    window.events.loaded += lambda: window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
+    window.events.loaded += lambda: window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
 
     print(translations, download_folder)
     webview.start()

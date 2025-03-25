@@ -76,7 +76,7 @@ function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
         if (format === "mp3") {
             videoInfo.innerHTML = `
                 <div class="video_queue_text">${videoTitle}</div>
-                <div class="video_queue_additional">
+                <div class="video-details">
                     <p>Audio</p>
                     <p>${format}</p>
                 </div>
@@ -84,7 +84,7 @@ function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
         } else {
             videoInfo.innerHTML = `
                 <div class="video_queue_text">${videoTitle}</div>
-                <div class="video_queue_additional">
+                <div class="video-details">
                     <p>${resolution}p</p>
                     <p>${format}</p>
                 </div>
@@ -137,7 +137,7 @@ window.loadQueue = function(queue) {
             if (video[2] === "mp3") {
                 videoInfo.innerHTML = `
                     <div class="video_queue_text">${video[1]}</div>
-                    <div class="video_queue_additional">
+                    <div class="video-details">
                         <p>Audio</p>
                         <p>${video[2]}</p>
                     </div>
@@ -145,7 +145,7 @@ window.loadQueue = function(queue) {
             } else {
                 videoInfo.innerHTML = `
                 <div class="video_queue_text">${video[1]}</div>
-                <div class="video_queue_additional">
+                <div class="video-details">
                     <p>${video[3]}p</p>
                     <p>${video[2]}</p>
                 </div>
@@ -188,8 +188,22 @@ function removeVideoFromList(videoTitle) {
     }
 }
 
+updateApp = function(update, translations) {
+    if (update) {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
+        update_text.style.backgroundColor=  "#5d8a51";
+    } else if (!update) {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
+        update_text.style.backgroundColor = "#3e4d3a";
+    } else {
+        document.getElementById('update__text').innerHTML = translations.settings.update_text_error || 'Update not available';
+        update_text.style.backgroundColor = "#7c363d";
+    }
+}
+
+
 // Функция для обновления текста интерфейса
-window.updateTranslations = function(translations, update) {
+window.updateTranslations = function(translations) {
     update_text = document.getElementById('update__text')
 
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
@@ -202,16 +216,6 @@ window.updateTranslations = function(translations, update) {
     document.getElementById('tooltip_choose').innerHTML = translations.settings.choose_folder || 'Change download folder'
     document.getElementById('tooltip_open').innerHTML = translations.settings.open_folder || 'Open download folder'
 
-    if (update) {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
-        update_text.style.backgroundColor=  "#5d8a51";
-    } else if (!update) {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
-        update_text.style.backgroundColor = "#3e4d3a";
-    } else {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_error || 'Update not available';
-        update_text.style.backgroundColor = "#7c363d";
-    }
     document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
 
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
@@ -219,8 +223,6 @@ window.updateTranslations = function(translations, update) {
     document.getElementById('startBtn').innerText = translations.start_downloading || 'Start download';
 
     document.getElementById('queue-title').innerText = translations.queue || 'Queue: ';
-    document.getElementById('format_title').innerText = translations.format || 'Format: ';
-    document.getElementById('resolution_title').innerText = translations.resolution || 'Resolution: ';
    
     document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
 

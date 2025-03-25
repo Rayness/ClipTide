@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Общее */
+:root {
+    --color-background: #0A0A0F;
+    --color-primary: #2d2d3a;
+    --color-white: #ffffff;
+    --color-shadows: 0 4px 10px rgba(0, 0, 0, 0.2);
+    --color-additional-button: ;
+    --color-progress: linear-gradient(270deg, #9082ff, #7a5acd, #483d8b, #7a5acd, #9082ff);
+
+
+    --border-radius-1: 0.3rem;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    margin: 20px;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+/* Блоки настроек, информации о загрузки и очереди*/
+.app__settings, .download_settings, .progress-info, #queue-list {
+    background-color: var(--color-primary);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: var(--color-shadows);
+    margin-bottom: 15px;
+}
+
+.__for_res {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.first__settings__block {
+    appearance: none;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+#queue-list {
+    border-radius: 0 0 5px 10px;
+}
+
+#queue {
+    max-height: 230px;
+    overflow: auto;
+    list-style-type: none;
+    padding: 0;
+}
+
+#queue li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #3d3d3d;
+    border-radius: 5px;
+}
+
+#queue li img {
+    padding: 0;
+    width: 100px;
+    height: 65px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+#queue li .video-info {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+#queue li .video-info .video_queue_text {
+    margin-left: 5px;
+}
+
+#queue li .video-info .video_queue_additional {
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+}
+
+#queue li .video-info .video_queue_additional p {
+    white-space: nowrap;
+    background-color: var(--color-primary);
+    padding: 5px 10px 5px 10px;
+    border-radius: var(--border-radius-1);
+}
+
+#queue li .delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/* Дополнение к блоку с настройками */
+.app__settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.language__select {
+    min-width: 120px;
+}
+
+#update__text {
+    padding: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Ввод ссылки, ввод папки, селект */
+.input__url[type="text"], .input__folder, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: none;
+    background-color: #3a3a4d;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* Только ввод ссылки */
+.input__url {
+    max-width: 97%; /* Ограничиваем максимальную ширину */
+    padding: 12px;
+    margin: 10px auto; /* Центрируем и добавляем отступы */
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    display: block; /* Убираем возможные лишние отступы */
+}
+
+/* Только ввод папки загрузок */
+.input__folder {
+    max-width: 97%;
+    margin: 10px auto;
+    border-radius: 4px;
+    display: block;
+}
+
+/* Основные кнопки */
+.main__button {
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #fff;
+    background: linear-gradient(135deg, #6a5acd, #483d8b);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.3s ease;
+    margin: 5px; /* Добавили пространство между кнопками */
+}
+
+.main__button:hover {
+    transform: scale(1.08); /* Увеличение кнопки при наведении */
+    background-color: #3a43a6;
+}
+
+.main__button:active {
+    transform: scale(0.95); /* Лёгкий эффект нажатия */
+    box-shadow: 0px 0px 15px rgba(74, 86, 198, 0.5); /* Свечение при нажатии */
+}
+
+.main__button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Дополнительные кнопки */
+.additional__button {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6a5acd, #483d8b);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.additional__button:hover {
+    background: linear-gradient(135deg, #483d8b, #6a5acd);
+}
+
+#byDefoult {
+    width: 60px;
+}
+
+#chooseButton {
+    width: 60px;
+}
+
+#openFolder {
+    width: 120px;
+}
+
+/* Статус */
+#status {
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    background-color: #3a3a4d;
+}
+
+/* Прогресс-бар */
+.progress-bar {
+    width: 100%;
+    background-color: #222;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 20px;
+    position: relative;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--color-progress);
+    background-size: 200% 100%;
+    transition: width 0.5s ease-in-out;
+    animation: flowing 2s infinite linear;
+}
+
+
+@keyframes flowing {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Загрузочный спиннер */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+/* Кнопка удаления */
+.delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #e64a19;
+}
+
+.folder__block {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.folder__block button {
+    width: 280px;
+    height: 40px;
+}
+
+
+
+
+/* Всплывающая подсказка */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 150px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    transition: opacity 0.3s, visibility 0.3s 2s; /* Задержка 2s перед появлением */
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}

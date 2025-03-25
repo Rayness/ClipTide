@@ -41,3 +41,9 @@ function updateProgress(value) {
     progressBar.style.transition = "width 0.5s ease-in-out";
     progressBar.style.width = value + "%";
 }
+
+document.getElementById('settings-toggle').addEventListener('click', function() {
+    const settings = document.getElementById('app_settings');
+    settings.style.display = settings.style.display === 'none' ? 'block' : 'none';
+    this.querySelector('i').classList.toggle('fa-spin');
+});

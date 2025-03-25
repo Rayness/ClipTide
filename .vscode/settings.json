@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
         "./libs"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }

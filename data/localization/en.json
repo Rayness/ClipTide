@@ -48,7 +48,7 @@
         "by_defoult" : "Restore default folder",
         "auto_update" : "Automatic update",
         "button_apply" : "Apply",
-        "placeholder" : "Specify the path to the download folder"
+        "placeholder" : "Path to the download folder"
     },
 
     "notifications" : {
