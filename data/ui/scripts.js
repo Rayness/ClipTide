@@ -251,3 +251,19 @@ document.getElementById("openFolder").addEventListener("click", () =>{
 document.getElementById("update").addEventListener("click", function(){
     window.pywebview.api.launch_update();
 })
+
+function showTooltip(message) {
+    alert(message); // Простое всплывающее окно
+    // Или более красивый вариант:
+    const toast = document.createElement('div');
+    toast.innerHTML = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.backgroundColor = 'black';
+    toast.style.color = 'white';
+    toast.style.padding = '10px';
+    toast.style.borderRadius = '5px';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }

@@ -8,10 +8,12 @@ import json
 import queue
 from plyer import notification
 import configparser
+from configparser import ConfigParser
 import atexit
 import requests
 from tkinter import Tk, filedialog
 from pathlib import Path
+import re
 
 def resource_path(relative_path):
     """ Возвращает корректный путь для доступа к ресурсам после упаковки PyInstaller """
@@ -34,21 +36,37 @@ api_instance = None  # Глобальная переменная для экзе
 
 # ФАЙЛ КОНФИГУРАЦИИ
 # -------------------------------------------------------------------------
-CONFIG_FILE = "./data/config.ini"
+appdata_local = os.path.join(os.environ['LOCALAPPDATA'], 'ClipTide')
+os.makedirs(appdata_local, exist_ok=True)
 
-QUEUE_FILE = "./data/queue.json"
+download_dir = Path.home() / 'Downloads' / 'ClipTide'
+os.makedirs(download_dir, exist_ok=True)
+
+CONFIG_FILE = os.path.join(appdata_local, "config.ini")
+
+QUEUE_FILE = os.path.join(appdata_local, "queue.json")
+
+COOKIES_FILE = os.path.join(appdata_local, "cookies.txt")
 
 UPDATER = "updater.exe"
 
 VERSION_FILE = "./data/version.txt"
 
-GITHUB_REPO = "Rayness/YT-Downloader"  # Укажи свой репозиторий
+GITHUB_REPO = "Rayness/YT-Downloader"
 
 HEADERS = {
     "User-Agent": "Updater-App",
     "Accept": "application/vnd.github.v3+json"
 }
 
+def get_appdata_path(app_name: str, roaming: bool = False) -> Path:
+    """Возвращает путь к папке приложения в AppData"""
+    appdata = os.getenv('APPDATA' if roaming else 'LOCALAPPDATA')
+    if not appdata:  # Для Linux/Mac
+        appdata = os.path.expanduser('~/.config')
+    path = Path(appdata) / app_name
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
 def get_latest_version():
     api_url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
@@ -76,7 +94,7 @@ def check_for_update():
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
     "language": "ru",
-    "folder_path": "downloads",
+    "folder_path": f"{download_dir}",
     "auto_update": "False"
 }
 
@@ -107,6 +125,8 @@ def save_config(config):
             print("Конфигурация сохранена.")
     except Exception as e:
         print(f"Ошибка при сохранении конфигурации: {e}")
+        window.evaluate_js(f'ERROR: {e}')
+
 
 # -------------------------------------------------------------------------
 
@@ -125,16 +145,19 @@ def load_translations(language):
                 return json.load(file)
         except Exception as e:
             print(f"Ошибка при загрузке переводов: {e}")
+            window.evaluate_js(f'ERROR: {e}')
     print(f"Файл переводов для языка '{language}' не найден.")
+    window.evaluate_js(f'Файл переводов для языка "{language}" не найден.')
     return {}
 
 def load_queue_from_file():
     """ Загружаем очередь из JSON-файла. """
     if os.path.exists(QUEUE_FILE):
-        with open(QUEUE_FILE, "r", encoding="utf-8") as file:
+        with open(QUEUE_FILE, "r", encoding="utf-8", errors="ignore") as file:
             try:
                 return json.load(file)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                window.evaluate_js(f'ERROR: {e}')
                 return []
     return []
 
@@ -143,11 +166,16 @@ def save_queue_to_file(queue):
     Сохраняет очередь загрузки в JSON-файл.
     """
     try:
-        with open(QUEUE_FILE, "w", encoding="utf-8") as file:
-            json.dump(queue, file, ensure_ascii=False, indent=4)
-            print("Очередь загрузки сохранена.")
+        try:
+            with open(QUEUE_FILE, "w", encoding="utf-8", errors="ignore") as file:
+                json.dump(queue, file, ensure_ascii=False, indent=4)
+                print("Очередь загрузки сохранена.")
+        except UnicodeEncodeError as e:
+            print(f"Ошибка кодировки: {e}. Проблемный символ: {e.object[e.start:e.end]}")
+            window.evaluate_js(f'ERROR: {e}')
     except Exception as e:
         print(f"Ошибка при сохранении очереди: {e}")
+        window.evaluate_js(f'ERROR: {e}')
 
 # --------------------------------------------------------------------------
 
@@ -167,10 +195,39 @@ class Api:
         self.download_queue = load_queue_from_file()
         self.download_folder = ''
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
-    
+        
+    def remove_emoji_simple(self, text):
+        emoji_pattern = re.compile("["
+            u"\U0001F600-\U0001F64F"  # emoticons
+            u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+            u"\U0001F680-\U0001F6FF"  # transport & map symbols
+            u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+            u"\U00002500-\U00002BEF"  # Chinese/Japanese/Korean characters
+            u"\U00002702-\U000027B0"
+            u"\U00002702-\U000027B0"
+            u"\U000024C2-\U0001F251"
+            u"\U0001f926-\U0001f937"
+            u"\U00010000-\U0010ffff"
+            u"\u2640-\u2642" 
+            u"\u2600-\u2B55"
+            u"\u200d"
+            u"\u23cf"
+            u"\u23e9"
+            u"\u231a"
+            u"\ufe0f"  # variation selector
+            u"\u3030"
+            u"\u0259"  # ə
+            u"\u0493"  # ғ
+            u"\u049B"  # қ
+            u"\u04E9"  # ө
+            u"\u04B1"  # ұ
+            u"\u04AF"  # ү
+            "]+", flags=re.UNICODE)
+        return emoji_pattern.sub(r'', text)
+
     def launch_update(self):
         try:
-            result = subprocess.run(UPDATER, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = subprocess.run(["powershell", "Start-Process", UPDATER, "-Verb", "runAs"], shell=True)
             print("Код завершения:", result.returncode)
             print("Вывод программы:", result.stdout.decode())
             return result
@@ -185,8 +242,8 @@ class Api:
         save_config(config)
         window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
 
-    def switch_download_folder(self, folder_path='downloads'):
-        self.current_folder = folder_path if folder_path is not None else 'downloads'
+    def switch_download_folder(self, folder_path=f'{download_dir}'):
+        self.current_folder = folder_path if folder_path is not None else download_dir
         config.set("Settings", "folder_path", self.current_folder)
         save_config(config)
         self.download_folder = self.current_folder
@@ -240,7 +297,8 @@ class Api:
                 info = ydl.extract_info(video_url, download=False)
                 video_title_get = info.get('title', 'Неизвестное видео')
                 thumbnail_url = info.get('thumbnail', '')
-            video_title = video_title_get.replace('"',"'")
+            video_title = self.remove_emoji_simple(video_title_get.replace('"',"'"))
+
 
             # Добавляем видео в очередь
             self.download_queue.append((video_url, video_title, selected_format, selectedResolution, thumbnail_url))
@@ -308,9 +366,9 @@ class Api:
                 ydl_opts = {
                     'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
                     'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
-                    'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
+                    'outtmpl': f'{download_folder}/{video_title}.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-                    'cookiefile': 'cookies.txt',
+                    'cookiefile': f'{COOKIES_FILE}',
                     'retries': 25,  # Увеличиваем количество попыток
                     'socket_timeout': 5,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
@@ -405,7 +463,7 @@ if __name__ == "__main__":
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
         height=1000,
-        resizable=False
+        resizable=True
     )
 
     # Загружаем конфигурацию
