@@ -18,6 +18,10 @@
     --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+    --titlebar-bg: #0078d7;
+    --titlebar-text: #ffffff;
+    --titlebar-btn-hover: #005a9e;
 }
 
 /* ===== Base Styles ===== */
@@ -288,6 +292,7 @@ body {
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     text-align: center;
     font-weight: bold;
+    user-select: text;
 }
 
 .progress-info {

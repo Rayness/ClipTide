@@ -195,7 +195,7 @@ class Api:
         self.download_queue = load_queue_from_file()
         self.download_folder = ''
         self.is_downloading = False  # Флаг для отслеживания состояния загрузки
-        
+
     def remove_emoji_simple(self, text):
         emoji_pattern = re.compile("["
             u"\U0001F600-\U0001F64F"  # emoticons
