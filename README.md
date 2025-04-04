@@ -11,7 +11,7 @@ This small program is designed to download video content in audio and video form
 > [!NOTE]
 > Downloading video content is implemented using [yt-dlp](https://github.com/yt-dlp/yt-dlp). The graphical interface runs on [pywebview](https://github.com/r0x0r/pywebview). The program also has [FFMPEG](https://ffmpeg.org/) embedded in it.
 
-### Current version with graphical interface:
+### Current version with graphical interface (Outdated):
 <img src="https://github.com/user-attachments/assets/50653621-2a6c-44bd-b75e-0c81b438c9ce" width="600">
 
 ## Download
