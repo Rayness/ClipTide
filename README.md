@@ -11,12 +11,12 @@ This small program is designed to download video content in audio and video form
 > [!NOTE]
 > Downloading video content is implemented using [yt-dlp](https://github.com/yt-dlp/yt-dlp). The graphical interface runs on [pywebview](https://github.com/r0x0r/pywebview). The program also has [FFMPEG](https://ffmpeg.org/) embedded in it.
 
-### Current version with graphical interface:
+### Current version with graphical interface (Outdated):
 <img src="https://github.com/user-attachments/assets/50653621-2a6c-44bd-b75e-0c81b438c9ce" width="600">
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.0.1)** - 2.0.1
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.0.2)** - 2.0.2
 
 ## How to run:
 - Like any other application;
@@ -35,17 +35,14 @@ After launching the graphical interface, you need to:
 7. After downloading, the folder with the downloaded videos will open and you can close the program.
 
 ## Known errors:
-1. Problem: Videos with quotation marks ("") in their titles will not be able to be added to the download queue.
-- Solution: missing;
-
-2. Problem: Sometimes the download folder may not be applied immediately after selection.
-- Solution: Restart the program;
-
-3. Problem: Incorrect display of playlist downloads, how to determine: the indicator spins for a very long time and nothing happens for a long time. If you wait, the playlist name will appear in the queue without a preview. The entire playlist will be downloaded.
+1. Problem: Incorrect display of playlist downloads, how to determine: the indicator spins for a very long time and nothing happens for a long time. If you wait, the playlist name will appear in the queue without a preview. The entire playlist will be downloaded.
 - Solution: Do not add playlists to the queue, or wait;
 
-4. Problem: Saving the selected folder and download queue does not work.
-- Solution: Run the file as an administrator.
+2. Some videos with certain symbols may not be added to the download queue.
+- Solution: Send the error to issue and wait for the problematic Unicode character to be added to the program exceptions, or enable a special setting in the system.
+
+3. After clicking the "delete" button, the video may not be deleted from the interface, although it is no longer in the queue itself.
+- Solution: Restarting the program.
 
 ## Future plans:
 - [x] Add auto-update ( Updater added );
