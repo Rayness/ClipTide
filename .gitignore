@@ -15,3 +15,4 @@ updater.exe.spec
 cookies.txt
 /gui/queue.json
 queue.json
+/logs

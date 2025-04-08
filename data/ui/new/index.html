@@ -80,6 +80,11 @@
                         <input type="checkbox" id="downloadThumbnail">
                         <span>Download thumbnail</span>
                     </label>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="downloadSubtitles">
+                        <span>Download subtitles</span>
+                    </label>
                 </div>
                 
                 <div class="action-buttons">
@@ -141,7 +146,7 @@
             <div class="user-controls">
                 <button class="icon-btn" id="notifications">
                     <i class="fas fa-bell"></i>
-                    <span class="badge">3</span>
+                    <span class="badge">0</span>
                 </button>
                 <button class="icon-btn" id="userProfile">
                     <i class="fas fa-user-circle"></i>
@@ -157,6 +162,7 @@
                 </button>
                 <button class="control-btn danger" id="cancelAll">
                     <i class="fas fa-stop"></i>
+                    <span class="badge">0</span>
                 </button>
             </div>
         </div>
@@ -178,14 +184,13 @@
                         </button>
                     </div>
                     <ul class="queue-list" id="queueItems">
-                        <!-- Элементы очереди будут здесь -->
+                        <li class="empty-queue">Queue is empty</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="scripts.js"></script>
-    <script src="ui-effects.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
