@@ -5,11 +5,9 @@ import threading
 import yt_dlp
 import webview
 import json
-import queue
 from plyer import notification
 import configparser
 from configparser import ConfigParser
-import atexit
 import requests
 from tkinter import Tk, filedialog
 from pathlib import Path
