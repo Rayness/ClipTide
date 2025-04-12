@@ -12,11 +12,11 @@ This small program is designed to download video content in audio and video form
 > Downloading video content is implemented using [yt-dlp](https://github.com/yt-dlp/yt-dlp). The graphical interface runs on [pywebview](https://github.com/r0x0r/pywebview). The program also has [FFMPEG](https://ffmpeg.org/) embedded in it.
 
 ### Current version with graphical interface (Outdated):
-<img src="https://github.com/user-attachments/assets/50653621-2a6c-44bd-b75e-0c81b438c9ce" width="600">
+<img src="https://github.com/user-attachments/assets/00d3f220-2c2a-4c5e-9899-a6123ff31bf1" width="600">
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.0.3)** - 2.0.3
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.3.0)** - 1.3.0
 
 ## How to run:
 - Like any other application;
