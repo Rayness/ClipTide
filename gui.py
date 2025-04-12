@@ -12,6 +12,7 @@ import requests
 from tkinter import Tk, filedialog
 from pathlib import Path
 import re
+import time
 
 def resource_path(relative_path):
     """ Возвращает корректный путь для доступа к ресурсам после упаковки PyInstaller """
@@ -282,11 +283,11 @@ class Api:
             print(video_title)
             # Обновляем интерфейс
             window.evaluate_js(f'removeVideoFromList("{video_title}")')
-
-            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('removed_from_queue')}: {video_title}"')
+            
+            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('removed_from_queue')}: {video_title}"'), time.sleep(3), window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('status_text')}"')
         except Exception as e:
             print(f"Ошибка при удалении видео из очереди: {str(e)}", video_title)
-            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('error_removing')}: {str(e)}"')
+            return window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('error_removing')}: {str(e)}"'), time.sleep(3), window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('status_text')}"')
 
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
@@ -308,19 +309,25 @@ class Api:
             # Обновляем интерфейс
             window.evaluate_js(f'addVideoToList("{video_title}", "{thumbnail_url}", "{selected_format}","{selectedResolution}")')
             
-
-            return f"{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('to_queue')}: {video_title} {translations.get('status', {}).get('in_format')} {selected_format} {translations.get('status', {}).get('in_resolution')} {selectedResolution}p"')
+            window.evaluate_js(f'hideSpinner()')
+            time.sleep(3)
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('status_text')}"')
+            return
         except Exception as e:
             print(f"Ошибка при добавлении видео в очередь: {str(e)}")
-            return f"{translations.get('status', {}).get('error_adding')}: {str(e)}"
-
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('error_adding')}: {str(e)}"')
+            time.sleep(3)
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('status_text')}"')
+            return 
+        
     def startDownload(self):
         if self.is_downloading:
             return f"{translations.get('status', {}).get('downloading_already')}"
 
         if not self.download_queue:
             return f"{translations.get('status', {}).get('the_queue_is_empty')}"
-
+        
         # Запускаем загрузку
         self.start_next_download()
         window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('downloading')}: {video_title}"') # type: ignore
@@ -337,7 +344,10 @@ class Api:
                 app_name='YT-Downloader',
                 timeout=4  # Уведомление исчезнет через 10 секунд
             )
+            # Обновляем статус
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
+            time.sleep(3)
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('status', {}).get('status_text')}"')
             return
 
         # Устанавливаем флаг загрузки
@@ -460,7 +470,8 @@ if __name__ == "__main__":
         f'ClipTide {version}',
         html_file_path,
         js_api=api, # Передаем API для взаимодействия с JavaScript
-        height=1000,
+        height=780,
+        width=1000,
         resizable=True
     )
 

@@ -33,6 +33,16 @@
     "sec" : "сек",
     "error": "Ошибка",
 
+    "sections": {
+        "coming_soon": "Скоро",
+        "video_downloader": "Видео загрузчик",
+        "converter": "Конвертер",
+        "queue": "Очередь",
+        "setting": "Настройки",
+        "profile": "Профиль",
+        "notifications": "Уведомления"
+    },
+
     "settings" : {
         "settings_text" : "Настройки",
         "language" : "Язык: ",

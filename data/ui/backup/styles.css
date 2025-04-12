@@ -10,8 +10,7 @@
     --danger-color: #ff5733;
     --danger-dark: #e64a19;
     --progress-gradient: linear-gradient(270deg, #9082ff, #7a5acd, #483d8b, #7a5acd, #9082ff);
-    --main-gradient: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
-
+    
     --border-radius-sm: 0.2rem;
     --border-radius-md: 0.4rem;
     --border-radius-lg: 0.6rem;
@@ -35,12 +34,8 @@ body {
     font-family: "Roboto", sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+    margin: 20px;
     line-height: 1.5;
-    display: flex;
-    height: 98vh;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-top: 0;
 }
 
 /* ===== Utility Classes ===== */
@@ -51,163 +46,6 @@ body {
 
 @keyframes fadeIn {
     to { opacity: 1; }
-}
-
-/* ===== Side Panel ===== */
-.left-panel, 
-.right-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    left: 0;
-    width: 6rem;
-    margin-top: 0.8rem;
-    max-height: 100vh;
-    overflow: hidden;
-    text-align: center;
-    background: var(--card-bg);
-    border-radius: var(--border-radius-sm);
-}
-
-.left-panel .utils,
-.right-panel .utils {
-    display: flex;
-    flex-direction: column;
-}
-
-.left-panel .utils div,
-.right-panel .utils div,
-.left-panel .settings div {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-
-.left-panel .utils div:hover,
-.right-panel .utils div:hover {
-    background: var(--main-gradient);
-}
-
-.left-panel .utils div.active::after, .left-panel .settings div.active::after {
-    display: var(--after-display, inline-block);
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 20%;
-    bottom: 20%;
-    border-radius: 0.2rem;
-    width: 0.2rem;
-    background-color: var(--titlebar-bg);
-}
-
-.right-panel .utils div.active::before {
-    display: var(--after-display, inline-block);
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 20%;
-    bottom: 20%;
-    border-radius: 0.2rem;
-    width: 0.2rem;
-    background-color: var(--titlebar-bg);
-}
-
-.left-panel .settings, .right-panel .controls .buttons {
-    display: flex;
-    flex-direction: column;
-}
-
-.left-panel .settings div:hover {
-    background: var(--main-gradient);
-}
-
-.right-panel .controls .buttons button {
-    appearance: none;
-    border: none;
-    background: var(--card-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 4rem;
-    color: wheat;
-}
-
-.right-panel .controls .buttons button:disabled {
-    cursor: not-allowed;
-}
-
-.right-panel .controls .buttons button:hover {
-    align-items: center;
-    background: var(--danger-color);
-    border-radius: var(--border-radius-lg);
-}
-
-.content {
-    display: none;
-}
-
-.content.active {
-    display: block;
-}
-
-.content .coming-soon {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--dark-bg);
-    height: 70vh;
-    border-radius: var(--border-radius-md);
-}
-
-.content .coming-soon i {
-    color: #555;
-    font-size: 5rem;
-}
-
-.content .coming-soon h1 {
-    color: #555;
-    font-size: 2rem;
-}
-
-.conteiner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    max-height: 100vh;
-    margin-top: 0.8rem;
-    border-radius: var(--border-radius-sm);
-    background: var(--card-bg);
-    width: 100%;
-    overflow: hidden;
-}
-
-.conteiner .name {
-    display: flex;
-    height: 3.5rem;
-    width: 100%;
-    border-radius: var(--border-radius-sm);
-    background-color: var(--dark-bg);
-}
-
-.conteiner .name h3{
-    margin: auto;
-    margin-left: 1rem;
-}
-
-.conteiner .main {
-    flex: 1;
-    margin: 0.5rem;
-    max-height: 70rem;
-}
-
-.conteiner .down-panel {
-    border-radius: var(--border-radius-md);
-    background-color: var(--input-bg);
 }
 
 /* ===== Components ===== */
@@ -306,6 +144,7 @@ body {
 .progress-info,
 .queue-container {
     background-color: var(--card-bg);
+    padding: 1rem;
     border-radius: var(--border-radius-md);
     margin-bottom: 1rem;
     box-shadow: var(--shadow-sm);
@@ -316,6 +155,7 @@ body {
 }
 
 .settings-block {
+    display: none;
     justify-content: space-around;
     margin-bottom: 0;
 }
@@ -423,7 +263,7 @@ body {
 
 /* Progress */
 .progress-bar {
-    margin: 0.5rem;
+    width: 100%;
     height: 20px;
     background-color: var(--dark-bg);
     border-radius: var(--border-radius-sm);
@@ -448,18 +288,16 @@ body {
 .status-info {
     margin: 0.75rem 0 0 0;
     padding: 0.75rem;
+    background-color: var(--input-bg);
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     text-align: center;
     font-weight: bold;
     user-select: text;
-    overflow: hidden;
 }
 
 .progress-info {
     display: flex;
     justify-content: space-between;
-    background-color: inherit;
-    margin: 0.5rem;
     font-size: 0.9rem;
 }
 

@@ -1,31 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.tab-btn');
-    const blocks = document.querySelectorAll('.content');
-    const name = document.getElementById('name');
-    
-    buttons.forEach(button => {
-      button.addEventListener('click', function() {
-        // Удаляем активный класс у всех кнопок и блоков
-        buttons.forEach(btn => btn.classList.remove('active'));
-        blocks.forEach(block => block.classList.remove('active'));
-        
-        // Добавляем активный класс нажатой кнопке
-        this.classList.add('active');
-        
-        // Находим соответствующий блок и показываем его
-        const tabId = this.getAttribute('data-tab');
-        const block = document.getElementById(tabId)
-        block.classList.add('active');
-
-        name.textContent = block.getAttribute('data-status');
-      });
-    });
-    
-    // По желанию: активировать первую вкладку при загрузке
-    buttons[0].click();
-});
-
-
 // Добавляем обработчик события для кнопки "Добавить в очередь"
 document.getElementById('addBtn').addEventListener('click', function() {
     const videoUrl = document.getElementById('videoUrl').value;
@@ -41,13 +13,11 @@ document.getElementById('addBtn').addEventListener('click', function() {
     showSpinner();
 
     // Вызываем функцию addVideoToQueue из Python через API и передаем выбранный формат
-    try {
-        pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution);
+    pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution).then(function(response) {
+        document.getElementById('status').innerText = response;
+        hideSpinner();
         document.getElementById('videoUrl').value = '';
-    } catch {
-        document.getElementById('status').innerHTML = 'Нет доступа'
-    }
-
+    });
 });
 
 function showSpinner() {
@@ -236,9 +206,6 @@ updateApp = function(update, translations) {
 window.updateTranslations = function(translations) {
     update_text = document.getElementById('update__text')
 
-    document.getElementById('9').setAttribute('data-status', translations.sections.queue);
-    document.getElementById('10').setAttribute('data-status', translations.sections.setting);
-
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
     document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
 
@@ -253,6 +220,9 @@ window.updateTranslations = function(translations) {
 
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
     document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
+    document.getElementById('startBtn').innerText = translations.start_downloading || 'Start download';
+
+    document.getElementById('queue-title').innerText = translations.queue || 'Queue: ';
    
     document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
 
@@ -264,10 +234,6 @@ window.updateTranslations = function(translations) {
 window.updateDownloadFolder = function(folder_path) {
     document.getElementById('folder_path').placeholder = folder_path;
 }
-
-document.getElementById("stopBtn").addEventListener('click', function() {
-    window.pywebview.api.download_stop();
-})
 
 document.getElementById("chooseButton").addEventListener("click", function() {
     // Вызов метода Python через pywebview

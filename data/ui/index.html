@@ -5,107 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>PyWebview Example</title>
+    <title>ClipTide Video Downloader</title>
 </head>
 <body>
-    <div id="app_settings" class="settings-block fade-in">
-        <div class="settings-row">
-            <div class="language-block">
-                <label for="language" id="language_title">Язык: </label>
-                <select id="language" class="select-control">
-                    <option id="lang_ru" value="ru">Русский</option>
-                    <option id="lang_en" value="en">Английский</option>
-                </select>
+    <div class="left-panel">
+        <div class="utils">
+            <div class="tab-btn" data-tab="1" id="video-downloader">
+                <i class="fa-solid fa-download"></i>
             </div>
-            <div class="update-block">
-                <span id="update__text">Обновление: </span>
-                <button class="icon-btn" id="update">Проверить</button>
+            <div class="tab-btn" data-tab="2" id="converter">
+                <i class="fa-solid fa-hourglass-half"></i>
             </div>
         </div>
+        <div class="settings">
+            <div class="tab-btn" data-tab="9">
+                <i class="fa-solid fa-list-ul"></i>
+            </div>
+            <div class="tab-btn" data-tab="10" id="settings">
+                <i class="fa-solid fa-gears"></i>
+            </div>
+        </div>
+    </div>
+    <div class="conteiner">
+        <div class="name">
+            <h3 id="name">
+                Video Downloader
+            </h3>
+        </div>
+        <div class="main">
+            <!-- Загрузчик видео -->
+            <div class="content active" id="1" data-status="Video Downloader">
+                <div class="download-settings fade-in">
+                    <input class="url-input fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
+                    <div class="settings-group">
+                        <select id="format" class="select-control">
+                            <option value="mp4">MP4</option>
+                            <option value="mkv">MKV</option>
+                            <option value="webm">WEBM</option>
+                            <option value="avi">AVI</option>
+                            <option disabled>-------------------------------------------</option>
+                            <option value="mp3">MP3 (Только аудио)</option>
+                            <option disabled>-------------------------------------------</option>
+                            <option disabled value="m4a">M4A (Только аудио)</option>
+                            <option disabled value="opus">OPUS (Только аудио)</option>
+                            <option disabled value="aac">AAC (Только аудио)</option>
+                            <option disabled value="flac">FLAC (Только аудио)</option>
+                        </select>
+                        
+                        <select id="resolution" class="select-control">
+                            <option value="240">SD (240p)</option>
+                            <option value="360">SD (360p)</option>
+                            <option value="480">SD (480p)</option>
+                            <option value="720">HD (720p)</option>
+                            <option selected value="1080">FullHD (1080p)</option>
+                            <option value="1440">2K (1440p)</option>
+                            <option value="2160">4K (2160p)</option>
+                            <option value="4320">8K (4320p)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="primary-btn fade-in" id="addBtn">Добавить в очередь</button>
+                    <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
+                    <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
+                </div>
+            </div>
+
+            <div class="content" id="11" data-status="Profile">
+                <div class="coming-soon">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h1 class="coming-soon_text">Coming Soon</h1>
+                </div>
+            </div>
+
+            <div class="content" id="12" data-status="Notification">
+                <div class="coming-soon">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h1>Coming Soon</h1>
+                </div>
+            </div>
+
+            <div class="content" id="2" data-status="Converter">
+                <div class="coming-soon">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h1>Coming Soon</h1>
+                </div>
+            </div>
+
+            <!-- Очередь -->
+            <div class="content" id="9" data-status="Queue">
+                <div id="queue-list" class="queue-container fade-in">
+                    <ul id="queue" class="queue-items"></ul>
+                </div>
+            </div>
+
+            <!-- Контент с настройками -->
+            <div class="content" id="10" data-status="Settings"> 
+                <div id="app_settings" class="settings-block fade-in">
+                    <div class="settings-row">
+                        <div class="language-block">
+                            <label for="language" id="language_title">Язык: </label>
+                            <select id="language" class="select-control">
+                                <option id="lang_ru" value="ru">Русский</option>
+                                <option id="lang_en" value="en">Английский</option>
+                            </select>
+                        </div>
+                        <div class="update-block">
+                            <span id="update__text">Обновление: </span>
+                            <button class="icon-btn" id="update">Проверить</button>
+                        </div>
+                    </div>
+                    
+                    <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
+                    <div class="folder-controls">
+                        <input class="input-folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
+                        
+                        <div class="folder-icons">
+                            <div class="tooltip-wrap">
+                                <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+                            </div>
+                            
+                            <div class="tooltip-wrap">
+                                <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
+                                <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+                            </div>
+                            
+                            <div class="tooltip-wrap">
+                                <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
+                                <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="down-panel">
+            <div id="status" class="status-info fade-in">
+                Статус: Ожидание...
+            </div>
+            <div id="loading-spinner" class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+            <div class="progress-info fade-in">
+                <div id="progress">Прогресс: 0%</div>
+                <div id="speed">Скорость: 0B/s</div>
+                <div id="eta">Осталось: </div>
+            </div>
+            
+            <div class="progress-bar fade-in">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>    
+        </div>
+    </div>
         
-        <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
-        <div class="folder-controls">
-            <input class="input-folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
-            
-            <div class="folder-icons">
-                <div class="tooltip-wrap">
-                    <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                    <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
-                </div>
-                
-                <div class="tooltip-wrap">
-                    <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
-                    <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
-                </div>
-                
-                <div class="tooltip-wrap">
-                    <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
-                    <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
-                </div>
+    <div class="right-panel">
+        <div class="utils">
+            <div class="tab-btn" data-tab="11">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+            <div class="tab-btn" data-tab="12">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="buttons">
+                <button id="startBtn"><i class="fa-solid fa-play"></i></button>
+                <!-- <button><i class="fa-solid fa-pause"></i></button> -->
+                <button id="stopBtn" disabled><i class="fa-solid fa-stop"></i></button>
             </div>
         </div>
     </div>
-
-    <div class="download-settings fade-in">
-        <input class="url-input fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
-        <div class="settings-group">
-            <select id="format" class="select-control">
-                <option value="mp4">MP4</option>
-                <option value="mkv">MKV</option>
-                <option value="webm">WEBM</option>
-                <option value="avi">AVI</option>
-                <option disabled>-------------------------------------------</option>
-                <option value="mp3">MP3 (Только аудио)</option>
-                <option disabled>-------------------------------------------</option>
-                <option disabled value="m4a">M4A (Только аудио)</option>
-                <option disabled value="opus">OPUS (Только аудио)</option>
-                <option disabled value="aac">AAC (Только аудио)</option>
-                <option disabled value="flac">FLAC (Только аудио)</option>
-            </select>
-            
-            <select id="resolution" class="select-control">
-                <option value="240">SD (240p)</option>
-                <option value="360">SD (360p)</option>
-                <option value="480">SD (480p)</option>
-                <option value="720">HD (720p)</option>
-                <option selected value="1080">FullHD (1080p)</option>
-                <option value="1440">2K (1440p)</option>
-                <option value="2160">4K (2160p)</option>
-                <option value="4320">8K (4320p)</option>
-            </select>
-            <button class="primary-btn" id="settings-toggle">
-                <i class="fas fa-cog"></i>
-            </button>
-        </div>
-    </div>
-
-    <div class="action-buttons">
-        <button class="primary-btn fade-in" id="addBtn">Добавить в очередь</button>
-        <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button>
-        <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button>
-    </div>
-
-    <div id="loading-spinner" class="spinner-container">
-        <div class="spinner"></div>
-    </div>
-
-    <div id="status" class="status-info fade-in">Статус: Ожидание...</div>
-    
-    <div id="queue-list" class="queue-container fade-in">
-        <h3 id="queue-title"></h3>
-        <ul id="queue" class="queue-items"></ul>
-    </div>
-
-    <div class="progress-info fade-in">
-        <div id="progress">Прогресс: 0%</div>
-        <div id="speed">Скорость: 0B/s</div>
-        <div id="eta">Осталось: </div>
-    </div>
-
-    <div class="progress-bar fade-in">
-        <div id="progress-fill" class="progress-fill"></div>
-    </div>
-
     <script src="scripts.js"></script>
     <script src="ui-effects.js"></script>
 </body>

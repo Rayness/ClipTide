@@ -33,6 +33,16 @@
     "sec" : "sec",
     "error": "Error",
 
+    "sections": {
+        "coming_soon": "Coming soon",
+        "video_downloader": "Video downloader",
+        "converter": "Converter",
+        "queue": "Queue",
+        "setting": "Settings",
+        "profile": "Profile",
+        "notifications": "Notifications"
+    },
+
     "settings" : {
         "settings_text" : "Settings",
         "language" : "Language: ",

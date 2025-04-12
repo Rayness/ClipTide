@@ -1,12 +1,7 @@
 /ffmpeg
-/YT-downloader.7z
 /path.yt
-/downloads
 config.ini
-/libs
 /scripts/__pycache__
-/python
-run.vbs
 src
 /dist
 YT-Downloader.spec
@@ -16,3 +11,4 @@ cookies.txt
 /gui/queue.json
 queue.json
 /logs
+icon2.ico
