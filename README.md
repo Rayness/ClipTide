@@ -49,6 +49,8 @@ After launching the graphical interface, you need to:
 - [ ] Transfer the project to Electron ( someday );
 - [ ] Make a mobile application ( not very soon )
 
-## License
+## Third-party licenses  
+This project uses the following libraries:  
+- **pywebview** (BSD 3-Clause) — [https://github.com/r0x0r/pywebview](https://github.com/r0x0r/pywebview)  
 
-The YT-Downloader project is distributed under the MIT license.
+- **yt-dlp** (Public Domain) — [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)  
