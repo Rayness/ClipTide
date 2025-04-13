@@ -1,6 +1,7 @@
 [![Supported Python Versions](https://img.shields.io/badge/python-3.12%20%7C%203.13-%234B8BBE)](https://www.python.org/downloads/) [![Downloads](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)](https://github.com/Rayness/YouTube-Downloader/releases) [![Release date](https://img.shields.io/github/release-date/Rayness/YouTube-Downloader)]() [![Version tag](https://img.shields.io/github/v/tag/Rayness/YouTube-Downloader)]()
-
-![YT-downloader](https://github.com/user-attachments/assets/6c9eaace-f0aa-4924-8498-bed1be55ca97)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fa32ee50-105d-4d10-8bb8-fb4fc58e300c" width="500">
+</p>
 
 [English Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.md)
 • [Russian Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
@@ -11,12 +12,12 @@ This small program is designed to download video content in audio and video form
 > [!NOTE]
 > Downloading video content is implemented using [yt-dlp](https://github.com/yt-dlp/yt-dlp). The graphical interface runs on [pywebview](https://github.com/r0x0r/pywebview). The program also has [FFMPEG](https://ffmpeg.org/) embedded in it.
 
-### Current version with graphical interface (Outdated):
-<img src="https://github.com/user-attachments/assets/50653621-2a6c-44bd-b75e-0c81b438c9ce" width="600">
+### Current version with graphical interface:
+<img src="https://github.com/user-attachments/assets/00d3f220-2c2a-4c5e-9899-a6123ff31bf1" width="600">
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.0.3)** - 2.0.3
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.3.0)** - 1.3.0
 
 ## How to run:
 - Like any other application;
@@ -50,5 +51,10 @@ After launching the graphical interface, you need to:
 - [ ] Make a mobile application ( not very soon )
 
 ## License
+This project is now licensed under **GNU GPLv3**. See [LICENSE](LICENSE) for details.  
 
-The YT-Downloader project is distributed under the MIT license.
+## Third-party licenses  
+This project uses the following libraries:  
+- **pywebview** (BSD 3-Clause) — [https://github.com/r0x0r/pywebview](https://github.com/r0x0r/pywebview)  
+- **yt-dlp** (Public Domain) — [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- **FFmpeg** (LGPL/GPL) — https://ffmpeg.org

@@ -11,12 +11,12 @@
 > [!NOTE]
 > Скачивание видеоконтента реализовано с помощью [yt-dlp](https://github.com/yt-dlp/yt-dlp). Графический интерфейс работает на [pywebview](https://github.com/r0x0r/pywebview). В программу также вшит [FFMPEG](https://ffmpeg.org/).
 
-### Актуальная версия с графическим интерфейсом (Устарело): 
-<img src="https://github.com/user-attachments/assets/0f9c4479-ae7c-46a3-b390-89b2e9d47132" width="600">
+### Актуальная версия с графическим интерфейсом: 
+<img src="https://github.com/user-attachments/assets/efa4b9b2-4525-4f4d-84f2-1aee667bc53a" width="600">
 
 ## Загрузка
 
-**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v2.0.3)** - 2.0.3
+**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.3.0)** - 1.3
 
 ## Как запустить:
 - Как и любое другое приложение;
