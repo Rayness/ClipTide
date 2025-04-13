@@ -11,7 +11,7 @@
 > [!NOTE]
 > Скачивание видеоконтента реализовано с помощью [yt-dlp](https://github.com/yt-dlp/yt-dlp). Графический интерфейс работает на [pywebview](https://github.com/r0x0r/pywebview). В программу также вшит [FFMPEG](https://ffmpeg.org/).
 
-### Актуальная версия с графическим интерфейсом (Устарело): 
+### Актуальная версия с графическим интерфейсом: 
 <img src="https://github.com/user-attachments/assets/efa4b9b2-4525-4f4d-84f2-1aee667bc53a" width="600">
 
 ## Загрузка
