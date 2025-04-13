@@ -52,5 +52,10 @@
 - [ ] Сделать мобильное приложение ( очень не скоро )
 
 ## Лицензия
+Этот проект теперь лицензирован под **GNU GPLv3**. Подробности см. в [LICENSE](LICENSE).
 
-Проект YT-Downloader распространяется по лицензии MIT.
+## Лицензии третьих лиц
+Этот проект использует следующие библиотеки:
+- **pywebview** (BSD 3-Clause) — [https://github.com/r0x0r/pywebview](https://github.com/r0x0r/pywebview)
+- **yt-dlp** (Public Domain) — [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- **FFmpeg** (LGPL/GPL) — https://ffmpeg.org
