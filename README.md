@@ -52,5 +52,5 @@ After launching the graphical interface, you need to:
 ## Third-party licenses  
 This project uses the following libraries:  
 - **pywebview** (BSD 3-Clause) — [https://github.com/r0x0r/pywebview](https://github.com/r0x0r/pywebview)  
-
-- **yt-dlp** (Public Domain) — [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)  
+- **yt-dlp** (Public Domain) — [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- **FFmpeg** (LGPL/GPL) — https://ffmpeg.org
