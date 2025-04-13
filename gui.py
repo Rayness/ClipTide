@@ -1,3 +1,6 @@
+# Copyright (C) 2025 Andrei Mamonov
+# This program is free software under GPLv3. See LICENSE for details.
+
 import os
 import sys
 import subprocess
