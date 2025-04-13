@@ -50,6 +50,9 @@ After launching the graphical interface, you need to:
 - [ ] Transfer the project to Electron ( someday );
 - [ ] Make a mobile application ( not very soon )
 
+## License
+This project is now licensed under **GNU GPLv3**. See [LICENSE](LICENSE) for details.  
+
 ## Third-party licenses  
 This project uses the following libraries:  
 - **pywebview** (BSD 3-Clause) — [https://github.com/r0x0r/pywebview](https://github.com/r0x0r/pywebview)  
