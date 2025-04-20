@@ -67,6 +67,7 @@ body {
     text-align: center;
     background: var(--card-bg);
     border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 .left-panel .utils,
@@ -183,7 +184,6 @@ body {
     border-radius: var(--border-radius-sm);
     background: var(--card-bg);
     width: 100%;
-    overflow: hidden;
 }
 
 .conteiner .name {
@@ -208,6 +208,226 @@ body {
 .conteiner .down-panel {
     border-radius: var(--border-radius-md);
     background-color: var(--input-bg);
+}
+
+
+/* Конвертер */
+.converter-app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Основной функционал */
+.converter-app .main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-bg);
+}
+
+.converter-app .main i {
+    font-size: 2rem;
+}
+
+.converter-app .main .video {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.converter-app .main .video .text .additional {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 0.5rem;
+    flex-wrap: wrap
+}
+
+.converter-app .main .video .text .additional div {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    background: var(--card-bg);
+    color: var(--titlebar-text);
+}
+
+.converter-app .main .video .text .additional div::before {
+    content: "";
+    position: absolute;
+    background: var(--danger-dark);
+    height: 100%;
+    border-radius: var(--border-radius-sm);
+    width: 0.2rem;
+    left: 0;
+    transition: left 0.5s ease, bottom 0.2s ease-in;
+}
+
+.converter-app .main .video .text .additional div:hover::before {
+    width: 100%;
+    height: 0.2rem;
+    bottom: 0;
+    animation: LeftToBottom 1s ease forwards;
+}
+
+.converter-app .video .text .additional div:not(:hover)::before {
+    bottom: 0;
+    animation: BottomToLeft 1s ease forwards;
+}
+
+@keyframes LeftToBottom {
+    from { height: 100%;}
+    to { height: 0;}
+    0% { width: 0.2rem; height: 100%;}
+    70% { width: 0.2rem; height: 0.2rem;}
+    100% { width: 100%; height: 0.2rem;}
+}
+
+@keyframes BottomToLeft {
+    from { height: 0; }
+    to { height: 100%; }
+    0% { width:  100%; height: 0.2rem;}
+    70% { width:  0.2rem; height: 0.2rem;}
+    100% { width:  0.2rem; height: 100%;}
+}
+
+.converter-app .main .video .text .additional-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.converter-app .main .video .text .additional-text i{
+    font-size: 0.6rem;
+}
+
+.converter-app .main .video .text .additional p{
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.converter-app .main .video .text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-wrap: anywhere;
+}
+
+.converter-app .main .video .text p {
+    font-size: 1rem;
+}
+
+.converter-app .main .video .text button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    appearance: none;
+    background-color: var(--accent-dark);
+    padding: 0.5rem;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    color: white;
+    box-shadow: var(--shadow-md);
+    transition: scale 0.3s ease;
+    cursor: pointer;
+}
+
+.converter-app .main .video .text button:hover {
+    scale: 1.1;
+}
+
+.converter-app .main img {
+    max-height: 8rem;
+    max-width: 15rem;
+    border-radius: var(--border-radius-md);
+}
+
+/* Настройки */
+.converter-app .settings {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.converter-app .settings .text {
+    display: flex;
+    flex-direction: column;
+}
+
+.converter-app .settings .format {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.converter-app .settings .format button {
+    height: 2.7rem;
+}
+
+.converter-app .settings .format select {
+    flex: 1;
+}
+
+.converter-app .input-file {
+    display: block;
+    /* display: none; */
+}
+
+.converter-app .app {
+    display: none;
+    /* display: block; */
+}
+
+/* Дроп зона */
+.converter-app .input-file .drop-zone{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 6rem 6rem 4rem 6rem;
+    padding: 5rem;
+    border: solid 0.1rem;
+    background-color: var(--dark-bg);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    scale: 1;
+    transition: background-color 0.4s ease, scale 0.4s ease, border-radius 0.4s ease;
+}
+
+.converter-app .input-file .drop-zone:hover {
+    border-radius: var(--border-radius-lg);
+    scale: 1.05;
+    background-color: var(--accent-dark);
+}
+
+.converter-app .input-file .drop-zone.highlight {
+    border-radius: var(--border-radius-lg);
+    background-color: var(--accent-dark);
+}
+
+.converter-app .input-file .drop-zone i{
+    font-size: 5rem;;
 }
 
 /* ===== Components ===== */

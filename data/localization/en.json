@@ -67,5 +67,11 @@
         "video_message_2": "successfully downloaded!",
         "queue_title" : "Download complete",
         "queue_message": "All videos in the queue have been downloaded"
+    },
+
+    "converter": {
+        "video_add": "Video was added",
+        "video_error": "Error adding video",
+        "video_adding": "Adding video"
     }
 }

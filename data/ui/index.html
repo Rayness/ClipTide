@@ -14,7 +14,7 @@
                 <i class="fa-solid fa-download"></i>
             </div>
             <div class="tab-btn" data-tab="2" id="converter">
-                <i class="fa-solid fa-hourglass-half"></i>
+                <i class="fa-solid fa-right-left"></i>
             </div>
         </div>
         <div class="settings">
@@ -86,9 +86,62 @@
             </div>
 
             <div class="content" id="2" data-status="Converter">
-                <div class="coming-soon">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <h1>Coming Soon</h1>
+                <div class="converter-app">
+                    <div class="input-file" id="input-file">
+                        <div class="drop-zone" id="dropZone">
+                            <i class="fa-solid fa-plus"></i>
+                            <p>Кликните для добавления видео</p>
+                        </div>
+                    </div>
+                    <div class="app" id="main-app">
+                        <div class="main">
+                            <div id="video-after" class="video">
+                                <img id="conv_image" src="https://i.ytimg.com/vi/kyVXhpRhg2U/maxresdefault.jpg" alt="Видео">
+                                <div class="text">
+                                    <button id="close-video">Отмена</button>
+                                    <p id="conv_name">Название</p>
+                                    <div class="additional-text"><p>Информация о видео:</p></div>
+                                    <div class="additional">
+                                        <div>
+                                            <p id="conv_duration_text">Длительность: </p><p id="conv_duration">312312</p>
+                                        </div>
+                                        <!-- <p id="conv_format">Формат: </p> -->
+                                         <div>
+                                            <p id="conv_framerate_text">Частота кадров: </p><p id="conv_framerate">3213213</p>
+                                         </div>
+                                        <div>
+                                            <p id="conv_video_codec_text">Видеокодек: <p id="conv_video_codec">321312</p></p>
+                                        </div>
+                                        <div>
+                                            <p id="conv_bit_rate-video_text">Битрейт видео: </p><p id="conv_bit_rate-video">3213</p>
+                                        </div>
+                                        <div>
+                                            <p id="conv_audio_codec_text">Аудиокодек: </p><p id="conv_audio_codec">31231</p>
+                                        </div>
+                                        <div>
+                                            <p id="conv_bit_rate-audio_text">Битрейт аудио: </p><p id="conv_bit_rate-audio">32131</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings">
+                            <div class="text">
+                                <h3>Настройки конвертации</h3>
+                            </div>
+                            <div class="format">
+                                <p>Формат: </p>
+                                <select name="format" id="conv-format" class="select-control">
+                                    <option value="mp4">mp4</option>
+                                    <option value="avi">avi</option>
+                                    <option value="mkv">mkv</option>
+                                    <option value="webm">webm</option>
+                                </select>
+                                <button class="primary-btn">Добавить в очередь</button>
+                                <button class="primary-btn">Конвертировать сразу</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -161,11 +214,11 @@
         
     <div class="right-panel">
         <div class="utils">
-            <div class="tab-btn" data-tab="11">
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
             <div class="tab-btn" data-tab="12">
                 <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="tab-btn" data-tab="11">
+                <i class="fa-solid fa-circle-user"></i>
             </div>
         </div>
         <div class="controls">

@@ -22,9 +22,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // По желанию: активировать первую вкладку при загрузке
-    buttons[0].click();
+    buttons[1].click();
 });
 
+dropArea = document.getElementById('dropZone');
+
+dropArea.addEventListener('click', () => {
+    window.pywebview.api.openFile();
+});
+
+document.getElementById("close-video").addEventListener('click', () => {
+    document.getElementById('input-file').style.display = 'block';
+    document.getElementById('main-app').style.display = 'none';
+})
+
+function file_is_input(data) {
+    document.getElementById('input-file').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+
+    if (data.error) {
+        console.error('Error:', data.error);
+        return;
+    }
+
+    document.getElementById('conv_name').textContent = data.file_name
+    document.getElementById('conv_duration').textContent = data.duration;
+    // document.getElementById('conv_format').textContent = format_info
+    document.getElementById('conv_bit_rate-video').textContent = data.bitrate
+    document.getElementById('conv_bit_rate-audio').textContent = data.audio_bitrate
+    document.getElementById('conv_framerate').textContent = data.fps
+    document.getElementById('conv_video_codec').textContent = data.codec
+    document.getElementById('conv_audio_codec').textContent = data.audio_codec;
+
+    document.getElementById('conv_image').src = data.thumbnail;
+
+    hideSpinner()
+}
 
 // Добавляем обработчик события для кнопки "Добавить в очередь"
 document.getElementById('addBtn').addEventListener('click', function() {
