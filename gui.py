@@ -17,7 +17,6 @@ from pathlib import Path
 import re
 import time
 import ffmpeg
-import tempfile
 
 def resource_path(relative_path):
     """ Возвращает корректный путь для доступа к ресурсам после упаковки PyInstaller """
@@ -239,6 +238,7 @@ def print_video_info(file_path):
         )
         audio_codec = audio_stream.get("codec_name", "нет") if audio_stream else "нет"
         audio_bitrate = int(audio_stream.get("bit_rate", 0)) / 1000 if audio_stream else 0
+        
         return round(duration), round(bitrate), width, height, codec, round(fps), audio_codec, round(audio_bitrate)
     except ffmpeg.Error as e:
         print(f"Ошибка FFmpeg: {e.stderr.decode()}")
@@ -248,19 +248,6 @@ def print_video_info(file_path):
         return f"Ошибка: {e}"
 
 def get_thumbnail_base64(video_path, use_first_frame_if_no_thumbnail=True):
-    """
-    Возвращает обложку видео в формате base64.
-    
-    Параметры:
-        video_path: путь к видеофайлу
-        use_first_frame_if_no_thumbnail: если True, генерирует превью из первого кадра,
-                                        когда встроенная обложка не найдена
-    
-    Возвращает:
-        tuple: (base64_str, error_message)
-        base64_str: строка с изображением в формате "data:image/jpeg;base64,..." или None
-        error_message: сообщение об ошибке или None
-    """
     import base64
     try:
         # Проверяем наличие встроенной обложки
@@ -418,6 +405,47 @@ class Api:
             os.startfile(f"{self.download_folder}")
         except Exception as e:
             print(f"Ошибка: {e}")
+
+    def convert_video(self, input_path, output_format):
+        try:
+            # Получаем имя файла без расширения
+            filename = os.path.splitext(os.path.basename(input_path))[0]
+            
+            # Формируем путь для выходного файла
+            output_path = os.path.join(self.download_folder, f"{filename}.{output_format}")
+            
+            # Создаем процесс конвертации
+            stream = ffmpeg.input(input_path)
+            stream = ffmpeg.output(stream, output_path)
+            
+            # Запускаем конвертацию
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get("status", {}).get("converting")}"')
+            
+            ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
+            
+            # Уведомляем об успешной конвертации
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get("status", {}).get("convert_success")}"')
+            notification.notify(
+                title=translations.get('notifications', {}).get('convert_title'),
+                message=f'{translations.get("notifications", {}).get("convert_message")} {filename}.{output_format}',
+                app_name='ClipTide',
+                timeout=4
+            )
+            time.sleep(2)
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get("status", {}).get("status_text")}"')
+            
+            return True, output_path
+            
+        except ffmpeg.Error as e:
+            error_message = e.stderr.decode() if e.stderr else str(e)
+            print(f"Ошибка FFmpeg: {error_message}")
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get("status", {}).get("convert_error")}: {error_message}"')
+            return False, error_message
+            
+        except Exception as e:
+            print(f"Ошибка при конвертации: {str(e)}")
+            window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get("status", {}).get("convert_error")}: {str(e)}"')
+            return False, str(e)
 
     def removeVideoFromQueue(self, video_title):
         try:

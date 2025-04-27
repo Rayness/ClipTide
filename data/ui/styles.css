@@ -4,13 +4,16 @@
     --card-bg: #2d2d3a;
     --dark-bg: #1a1a24;
     --input-bg: #3a3a4d;
+    --input-bg-transparent: rgba(58, 58, 77, 0.8);
     --text-color: #ffffff;
     --accent-color: #6a5acd;
     --accent-dark: #483d8b;
+    --accent-color-transparent: rgba(106, 90, 205, 0.8);
+    --accent-dark-transparent: rgba(72, 61, 139, 0.8);
     --danger-color: #ff5733;
     --danger-dark: #e64a19;
     --progress-gradient: linear-gradient(270deg, #9082ff, #7a5acd, #483d8b, #7a5acd, #9082ff);
-    --main-gradient: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+    --main-gradient: linear-gradient(135deg, var(--accent-color-transparent), var(--accent-dark-transparent));
 
     --border-radius-sm: 0.2rem;
     --border-radius-md: 0.4rem;
@@ -32,15 +35,15 @@ html {
 }
 
 body {
+    margin: 0;
     font-family: "Roboto", sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.5;
     display: flex;
-    height: 98vh;
+    height: 100vh;
     flex-direction: row;
-    gap: 0.5rem;
-    margin-top: 0;
+    gap: 0.3rem;
 }
 
 /* ===== Utility Classes ===== */
@@ -61,7 +64,6 @@ body {
     justify-content: space-between;
     left: 0;
     width: 6rem;
-    margin-top: 0.8rem;
     max-height: 100vh;
     overflow: hidden;
     text-align: center;
@@ -86,11 +88,13 @@ body {
     height: 2.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    transition: background 0.3s ease-out;
 }
 
 .left-panel .utils div:hover,
-.right-panel .utils div:hover {
-    background: var(--main-gradient);
+.right-panel .utils div:hover,
+.left-panel .settings div:hover {
+    background: var(--accent-dark);
 }
 
 .left-panel .utils div.active::after, .left-panel .settings div.active::after {
@@ -103,6 +107,7 @@ body {
     border-radius: 0.2rem;
     width: 0.2rem;
     background-color: var(--titlebar-bg);
+    overflow: visible;
 }
 
 .right-panel .utils div.active::before {
@@ -122,9 +127,6 @@ body {
     flex-direction: column;
 }
 
-.left-panel .settings div:hover {
-    background: var(--main-gradient);
-}
 
 .right-panel .controls .buttons button {
     appearance: none;
@@ -180,7 +182,6 @@ body {
     flex-direction: column;
     justify-content: space-between;
     max-height: 100vh;
-    margin-top: 0.8rem;
     border-radius: var(--border-radius-sm);
     background: var(--card-bg);
     width: 100%;
@@ -207,7 +208,8 @@ body {
 
 .conteiner .down-panel {
     border-radius: var(--border-radius-md);
-    background-color: var(--input-bg);
+    background: var(--input-bg-transparent);
+    backdrop-filter: blur(10px);
 }
 
 
@@ -440,10 +442,14 @@ body {
     margin: 0.5rem 0;
     border: none;
     border-radius: var(--border-radius-sm);
-    background-color: var(--input-bg);
+    background-color: var(--input-bg-transparent);
     color: var(--text-color);
     font-size: 1rem;
     box-shadow: var(--shadow-sm);
+}
+
+.select-control option {
+    background-color: var(--input-bg);
 }
 
 .url-input {
@@ -479,6 +485,7 @@ body {
     transition: all 0.3s ease;
     margin-right: 0.5rem;
     box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
 }
 
 #settings-toggle {

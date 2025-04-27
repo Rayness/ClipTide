@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // По желанию: активировать первую вкладку при загрузке
-    buttons[1].click();
+    buttons[0].click();
 });
 
 dropArea = document.getElementById('dropZone');
@@ -334,3 +334,78 @@ function showTooltip(message) {
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
   }
+
+document.getElementById('convert-btn').addEventListener('click', async function() {
+    if (!window.currentVideo) {
+        alert('Пожалуйста, выберите видео для конвертации');
+        return;
+    }
+
+    const format = document.getElementById('conv-format').value;
+    const quality = document.getElementById('conv-quality').value;
+
+    showSpinner();
+    document.getElementById('status').innerText = 'Конвертация...';
+
+    try {
+        const result = await window.pywebview.api.convertVideo({
+            path: window.currentVideo.path,
+            format: format,
+            quality: quality
+        });
+
+        if (result.success) {
+            document.getElementById('status').innerText = 'Конвертация завершена!';
+            alert(`Видео успешно конвертировано!\nСохранено в: ${result.output_path}`);
+        } else {
+            document.getElementById('status').innerText = 'Ошибка конвертации';
+            alert(`Ошибка при конвертации: ${result.error}`);
+        }
+    } catch (error) {
+        document.getElementById('status').innerText = 'Ошибка конвертации';
+        alert(`Произошла ошибка: ${error}`);
+    } finally {
+        hideSpinner();
+    }
+});
+
+// Обработчик для закрытия видео
+document.getElementById('close-video').addEventListener('click', function() {
+    document.getElementById('input-file').style.display = 'block';
+    document.getElementById('main-app').style.display = 'none';
+    window.currentVideo = null;
+});
+
+// Функция для отображения информации о видео
+function file_is_input(data) {
+    document.getElementById('input-file').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+
+    if (data.error) {
+        console.error('Error:', data.error);
+        return;
+    }
+
+    document.getElementById('conv_name').textContent = data.file_name;
+    document.getElementById('conv_duration').textContent = formatDuration(data.duration);
+    document.getElementById('conv_bit_rate-video').textContent = `${data.bitrate} kbps`;
+    document.getElementById('conv_bit_rate-audio').textContent = `${data.audio_bitrate} kbps`;
+    document.getElementById('conv_framerate').textContent = `${data.fps} fps`;
+    document.getElementById('conv_video_codec').textContent = data.codec;
+    document.getElementById('conv_audio_codec').textContent = data.audio_codec;
+
+    if (data.thumbnail) {
+        document.getElementById('conv_image').src = data.thumbnail;
+    }
+
+    hideSpinner();
+}
+
+// Функция для форматирования длительности
+function formatDuration(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
