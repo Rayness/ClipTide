@@ -483,7 +483,6 @@ body {
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-right: 0.5rem;
     box-shadow: var(--shadow-sm);
     backdrop-filter: blur(10px);
 }

@@ -17,7 +17,25 @@ from pathlib import Path
 import re
 import time
 import ffmpeg
+import io
+import logging
+from logging.handlers import RotatingFileHandler
 
+if sys.platform == "win32":
+    try:
+        # Способ 1 (Python 3.7+)
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        # Способ 2 (для старых версий Python)
+        import ctypes
+        kernel32 = ctypes.windll.kernel32
+        kernel32.SetConsoleOutputCP(65001)  # 65001 = UTF-8
+        # Альтернатива через io
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+        
 def resource_path(relative_path):
     """ Возвращает корректный путь для доступа к ресурсам после упаковки PyInstaller """
     if hasattr(sys, '_MEIPASS'):
@@ -37,6 +55,21 @@ def on_program_exit():
 # Регистрация обработчика завершения программы
 api_instance = None  # Глобальная переменная для экземпляра Api
 
+log_dir = Path.home() / 'AppData' / 'Local' / 'ClipTide' / 'Logs'
+log_dir.mkdir(parents=True, exist_ok=True)
+
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+handler = RotatingFileHandler(
+    log_dir / 'app.log',
+    maxBytes=1024*1024,  # 1 MB
+    backupCount=15  # Хранить 5 архивных копий
+)
+handler.setFormatter(formatter)
+
+logging.basicConfig(handlers=[handler], level=logging.INFO)
 # ФАЙЛ КОНФИГУРАЦИИ
 # -------------------------------------------------------------------------
 appdata_local = os.path.join(os.environ['LOCALAPPDATA'], 'ClipTide')
@@ -103,17 +136,31 @@ DEFAULT_CONFIG = {
 
 def load_config():
     config = configparser.ConfigParser()
-    if os.path.exists(CONFIG_FILE):
-        try:
-            config.read(CONFIG_FILE, encoding="utf-8")
-            print("Конфигурация загружена.")
-        except Exception as e:
-            print(f"Ошибка при чтении конфигурации: {e}")
-            config = create_default_config()
-    else:
+    
+    # Создаем дефолтную конфигурацию, если файла нет
+    if not os.path.exists(CONFIG_FILE):
         print("Файл конфигурации не найден. Создаю новый...")
-        config = create_default_config()
-    return config
+        return create_default_config()
+    
+    try:
+        # Читаем файл с явным указанием кодировки
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as configfile:
+            config.read_file(configfile)
+        return config
+    except UnicodeDecodeError:
+        # Пробуем альтернативную кодировку, если utf-8 не сработала
+        try:
+            with open(CONFIG_FILE, 'r', encoding='cp1251') as configfile:
+                config.read_file(configfile)
+            print("")
+            return config
+        except Exception as e:
+            print(f"ERROR: {e}")
+    except Exception as e:
+        print(f"ERROR: {e}")
+    
+    # Если все попытки чтения провалились, создаем дефолтную конфиг
+    return create_default_config()
 
 def create_default_config():
     config = configparser.ConfigParser()
@@ -476,7 +523,8 @@ class Api:
                 info = ydl.extract_info(video_url, download=False)
                 video_title_get = info.get('title', 'Неизвестное видео')
                 thumbnail_url = info.get('thumbnail', '')
-            video_title = self.remove_emoji_simple(video_title_get.replace('"',"'"))
+            # video_title = self.remove_emoji_simple(video_title_get.replace('"',"'"))
+            video_title = video_title_get.replace('"',"'")
 
 
             # Добавляем видео в очередь
@@ -652,7 +700,8 @@ if __name__ == "__main__":
         js_api=api, # Передаем API для взаимодействия с JavaScript
         height=780,
         width=1000,
-        resizable=True
+        resizable=True,
+        text_select=True
     )
 
     # Загружаем конфигурацию

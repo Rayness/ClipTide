@@ -47,7 +47,6 @@ function file_is_input(data) {
 
     document.getElementById('conv_name').textContent = data.file_name
     document.getElementById('conv_duration').textContent = data.duration;
-    // document.getElementById('conv_format').textContent = format_info
     document.getElementById('conv_bit_rate-video').textContent = data.bitrate
     document.getElementById('conv_bit_rate-audio').textContent = data.audio_bitrate
     document.getElementById('conv_framerate').textContent = data.fps
@@ -269,7 +268,6 @@ updateApp = function(update, translations) {
 window.updateTranslations = function(translations) {
     update_text = document.getElementById('update__text')
 
-    document.getElementById('9').setAttribute('data-status', translations.sections.queue);
     document.getElementById('10').setAttribute('data-status', translations.sections.setting);
 
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
@@ -285,7 +283,6 @@ window.updateTranslations = function(translations) {
     document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
 
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
-    document.getElementById('addBtn').innerText = translations.add_to_queue || 'Add video';
    
     document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
 
@@ -319,61 +316,10 @@ document.getElementById("update").addEventListener("click", function(){
     window.pywebview.api.launch_update();
 })
 
-function showTooltip(message) {
-    alert(message); // Простое всплывающее окно
-    // Или более красивый вариант:
-    const toast = document.createElement('div');
-    toast.innerHTML = message;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = 'black';
-    toast.style.color = 'white';
-    toast.style.padding = '10px';
-    toast.style.borderRadius = '5px';
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-  }
-
-document.getElementById('convert-btn').addEventListener('click', async function() {
-    if (!window.currentVideo) {
-        alert('Пожалуйста, выберите видео для конвертации');
-        return;
-    }
-
-    const format = document.getElementById('conv-format').value;
-    const quality = document.getElementById('conv-quality').value;
-
-    showSpinner();
-    document.getElementById('status').innerText = 'Конвертация...';
-
-    try {
-        const result = await window.pywebview.api.convertVideo({
-            path: window.currentVideo.path,
-            format: format,
-            quality: quality
-        });
-
-        if (result.success) {
-            document.getElementById('status').innerText = 'Конвертация завершена!';
-            alert(`Видео успешно конвертировано!\nСохранено в: ${result.output_path}`);
-        } else {
-            document.getElementById('status').innerText = 'Ошибка конвертации';
-            alert(`Ошибка при конвертации: ${result.error}`);
-        }
-    } catch (error) {
-        document.getElementById('status').innerText = 'Ошибка конвертации';
-        alert(`Произошла ошибка: ${error}`);
-    } finally {
-        hideSpinner();
-    }
-});
-
 // Обработчик для закрытия видео
 document.getElementById('close-video').addEventListener('click', function() {
     document.getElementById('input-file').style.display = 'block';
     document.getElementById('main-app').style.display = 'none';
-    window.currentVideo = null;
 });
 
 // Функция для отображения информации о видео

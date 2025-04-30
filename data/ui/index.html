@@ -18,9 +18,6 @@
             </div>
         </div>
         <div class="settings">
-            <div class="tab-btn" data-tab="9">
-                <i class="fa-solid fa-list-ul"></i>
-            </div>
             <div class="tab-btn" data-tab="10" id="settings">
                 <i class="fa-solid fa-gears"></i>
             </div>
@@ -51,7 +48,6 @@
                             <option disabled value="aac">AAC (Только аудио)</option>
                             <option disabled value="flac">FLAC (Только аудио)</option>
                         </select>
-                        
                         <select id="resolution" class="select-control">
                             <option value="240">SD (240p)</option>
                             <option value="360">SD (360p)</option>
@@ -62,12 +58,15 @@
                             <option value="2160">4K (2160p)</option>
                             <option value="4320">8K (4320p)</option>
                         </select>
+                        <div class="action-buttons">
+                            <button class="primary-btn fade-in" id="addBtn"><i class="fa-solid fa-plus"></i></button>
+                            <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
+                            <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
+                        </div>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <button class="primary-btn fade-in" id="addBtn">Добавить в очередь</button>
-                    <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
-                    <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
+                <div id="queue-list" class="queue-container fade-in">
+                    <ul id="queue" class="queue-items"></ul>
                 </div>
             </div>
 
@@ -145,13 +144,6 @@
                 </div>
             </div>
 
-            <!-- Очередь -->
-            <div class="content" id="9" data-status="Queue">
-                <div id="queue-list" class="queue-container fade-in">
-                    <ul id="queue" class="queue-items"></ul>
-                </div>
-            </div>
-
             <!-- Контент с настройками -->
             <div class="content" id="10" data-status="Settings"> 
                 <div id="app_settings" class="settings-block fade-in">
@@ -217,9 +209,9 @@
             <div class="tab-btn" data-tab="12">
                 <i class="fa-solid fa-bell"></i>
             </div>
-            <div class="tab-btn" data-tab="11">
+            <!-- <div class="tab-btn" data-tab="11">
                 <i class="fa-solid fa-circle-user"></i>
-            </div>
+            </div> -->
         </div>
         <div class="controls">
             <div class="buttons">
