@@ -21,7 +21,10 @@
         "download_started" : "Загрузка начата.",
         "downloading" : "Загружаю",
         "removed_from_queue" : "Видео удалено из очереди: ",
-        "error_removing" : "Видео удалено из очереди: "
+        "error_removing" : "Видео удалено из очереди: ",
+        "converting" : "Конвертация",
+        "convert_success" : "Конвертация успешно завершена",
+        "convert_stopped" : "Конвертация была отменена"
     },
     "queue" : "Очередь: ",
     "progress" : "Прогресс: ",
@@ -66,7 +69,8 @@
         "video_message_1" : "Видео ",
         "video_message_2" : " успешно скачано!",
         "queue_title" : "Загрузка завершена",
-        "queue_message" : "Все видео из очереди были загружены"
+        "queue_message" : "Все видео из очереди были загружены",
+        "convert_title" : "Конвертация завершена"
     },
 
     "converter": {

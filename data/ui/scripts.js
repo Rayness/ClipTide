@@ -86,12 +86,14 @@ function showSpinner() {
     document.getElementById('loading-spinner').style.display = 'block';
     document.getElementById('addBtn').disabled = true;
     document.getElementById('startBtn').disabled = true;
+    document.getElementById('convert_btn').disabled = true;
 }
 
 function hideSpinner() {
     document.getElementById('loading-spinner').style.display = 'none'; 
     document.getElementById('addBtn').disabled = false;
     document.getElementById('startBtn').disabled = false;
+    document.getElementById('convert_btn').disabled = false;
 }
 
 document.getElementById('language').addEventListener('change', function() {
@@ -296,7 +298,8 @@ window.updateDownloadFolder = function(folder_path) {
 }
 
 document.getElementById("stopBtn").addEventListener('click', function() {
-    window.pywebview.api.download_stop();
+    window.pywebview.api.stopDownload();
+    window.pywebview.api.stop_conversion()
 })
 
 document.getElementById("chooseButton").addEventListener("click", function() {
@@ -318,9 +321,13 @@ document.getElementById("update").addEventListener("click", function(){
 
 // Обработчик для закрытия видео
 document.getElementById('close-video').addEventListener('click', function() {
+    closeVideo()
+});
+
+function closeVideo() {
     document.getElementById('input-file').style.display = 'block';
     document.getElementById('main-app').style.display = 'none';
-});
+}
 
 // Функция для отображения информации о видео
 function file_is_input(data) {
@@ -346,6 +353,12 @@ function file_is_input(data) {
 
     hideSpinner();
 }
+
+document.getElementById('convert_btn').addEventListener('click', () => {
+    format = document.getElementById('conv-format').value
+
+    window.pywebview.api.convert_video(format)
+})
 
 // Функция для форматирования длительности
 function formatDuration(seconds) {
