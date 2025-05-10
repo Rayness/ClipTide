@@ -1,0 +1,101 @@
+{
+    "video_URL" : "Entrez l'URL de la vidéo",
+    "audio_only" : "Audio seulement",
+    "audio_text": "Audio",
+    "format": "Format : ",
+    "resolution": "Résolution : ",
+    "add_to_queue" : "Ajouter à la file",
+    "start_downloading" : "Commencer le téléchargement",
+    "status" : {
+        "status_text" : "Statut : En attente...",
+        "unknown_video" : "Vidéo inconnue",
+        "download_success" : "Vidéo téléchargée avec succès",
+        "download_error" : "Erreur lors du téléchargement",
+        "to_queue" : "Vidéo ajoutée à la file",
+        "in_format" : "au format",
+        "in_resolution" : "en résolution",
+        "error_adding" : "Erreur lors de l'ajout de la vidéo :",
+        "downloading_already" : "Le téléchargement a déjà commencé.",
+        "the_queue_is_empty" : "La file est vide. Rien à télécharger.",
+        "the_queue_is_empty_download_success" : "La file est vide. Rien à télécharger.",
+        "download_started" : "Téléchargement lancé.",
+        "downloading" : "Téléchargement en cours",
+        "removed_from_queue" : "Vidéo supprimée de la file : ",
+        "error_removing" : "Erreur lors de la suppression de la file : ",
+        "converting" : "Conversion en cours",
+        "convert_success" : "La conversion est terminée avec succès",
+        "convert_stopped" : "La conversion a été annulée"
+    },
+    "queue" : "File : ",
+    "progress" : "Progression : ",
+    "speed" : "Vitesse : ",
+    "bs" : "o/s",
+    "mbs" : "Mo/s",
+    "eta" : "Temps restant : ",
+    "min" : "min",
+    "sec" : "sec",
+    "error": "Erreur",
+
+    "sections": {
+        "coming_soon": "Bientôt disponible",
+        "video_downloader": "Téléchargeur de vidéos",
+        "converter": "Convertisseur",
+        "queue": "File",
+        "setting": "Paramètres",
+        "profile": "Profil",
+        "notifications": "Notifications"
+    },
+
+    "settings" : {
+        "settings_text" : "Paramètres",
+        "language" : "Langue : ",
+        "russian" : "Russe",
+        "english" : "Anglais",
+        "polish" : "Polonais",
+        "ukraine" : "Ukrainien",
+        "german" : "Allemand",
+        "french" : "Français",
+        "update_text_ready" : "Mise à jour disponible",
+        "update_text_not_ready" : "Mise à jour non requise",
+        "update_text_error" : "Erreur lors de la récupération de la version",
+        "update_button" : "Lancer le programme de mise à jour",
+        "folder" : "Dossier de téléchargement : ",
+        "choose_folder" : "Changer le dossier de téléchargement",
+        "open_folder" : "Ouvrir le dossier",
+        "by_defoult" : "Restaurer le dossier par défaut",
+        "auto_update" : "Mise à jour automatique",
+        "button_apply" : "Appliquer",
+        "placeholder" : "Chemin du dossier de téléchargement"
+    },
+
+    "notifications" : {
+        "video_title" : "Téléchargement terminé !",
+        "video_message_1": "Vidéo",
+        "video_message_2": "téléchargée avec succès !",
+        "queue_title" : "Téléchargement terminé",
+        "queue_message": "Toutes les vidéos de la file ont été téléchargées",
+        "convert_title" : "Conversion terminée"
+    },
+
+    "converter": {
+        "click_for_add_video" : "Cliquez pour sélectionner une vidéo",
+        "convertion_settings" : "Paramètres de conversion",
+        "conversion_button" : "Convertir",
+        "format" : "Format :",
+        "close_video": "Annuler",
+        
+        "video_info" : {
+            "title" : "Informations sur la vidéo :",
+            "duration": "Durée :",
+            "framerate": "Fréquence d’images :",
+            "video_codec" : "Codec vidéo :",
+            "video_bitrate": "Débit vidéo :",
+            "audio_codec": "Codec audio :",
+            "audio_bitrate" : "Débit audio :"
+        },
+
+        "video_add": "Vidéo ajoutée",
+        "video_error": "Erreur lors de l'ajout de la vidéo",
+        "video_adding": "Ajout de la vidéo"
+    }
+}

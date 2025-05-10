@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="/data/fontawesome/css/all.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>ClipTide Video Downloader</title>
 </head>
@@ -89,17 +90,17 @@
                     <div class="input-file" id="input-file">
                         <div class="drop-zone" id="dropZone">
                             <i class="fa-solid fa-plus"></i>
-                            <p>Кликните для выбора видео</p>
+                            <p id="converter_add_video">Кликните для выбора видео</p>
                         </div>
                     </div>
                     <div class="app" id="main-app">
                         <div class="main">
                             <div id="video-after" class="video">
-                                <img id="conv_image" src="https://i.ytimg.com/vi/kyVXhpRhg2U/maxresdefault.jpg" alt="Видео">
+                                <img id="conv_image" src="" alt="Видео">
                                 <div class="text">
                                     <button id="close-video">Отмена</button>
                                     <p id="conv_name">Название</p>
-                                    <div class="additional-text"><p>Информация о видео:</p></div>
+                                    <div class="additional-text"><p id="video_info">Информация о видео:</p></div>
                                     <div class="additional">
                                         <div>
                                             <p id="conv_duration_text">Длительность: </p><p id="conv_duration">312312</p>
@@ -126,10 +127,10 @@
                         </div>
                         <div class="settings">
                             <div class="text">
-                                <h3>Настройки конвертации</h3>
+                                <h3 id="convertion-settings">Настройки конвертации</h3>
                             </div>
                             <div class="format">
-                                <p>Формат: </p>
+                                <p id="convertion_format">Формат: </p>
                                 <select name="format" id="conv-format" class="select-control">
                                     <option value="mp4">mp4</option>
                                     <option value="avi">avi</option>
@@ -149,8 +150,13 @@
                         <div class="language-block">
                             <label for="language" id="language_title">Язык: </label>
                             <select id="language" class="select-control">
-                                <option id="lang_ru" value="ru">Русский</option>
                                 <option id="lang_en" value="en">Английский</option>
+                                <option id="lang_de" value="de">Немецкий</option>
+                                <option id="lang_pl" value="pl">Польский</option>
+                                <option id="lang_ru" value="ru">Русский</option>
+                                <option id="lang_ua" value="ua">Украинский</option>
+                                <option id="lang_fr" value="fr">Французский</option>
+                                <option id="lang_ja" value="ja">Японский</option>
                             </select>
                         </div>
                         <div class="update-block">
@@ -219,7 +225,7 @@
             </div>
         </div>
     </div>
-    <script src="scripts.js"></script>
+    <script src="scripts.js" defer></script>
     <script src="ui-effects.js"></script>
 </body>
 </html>

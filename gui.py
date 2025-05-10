@@ -401,6 +401,7 @@ class Api:
         try:
             window.evaluate_js(f'document.getElementById("status").innerText = "{translations.get('converter', {}).get('video_adding')}"')
             window.evaluate_js(f'showSpinner()')
+            window.evaluate_js(f'window.updateTranslations({translations})')
             thumbnail, error = get_thumbnail_base64(file_path)
             result = print_video_info(file_path)
             if result is None:
@@ -442,6 +443,7 @@ class Api:
         translations = load_translations(language)
         config.set("Settings", "language", self.current_language)
         save_config(config)
+        window.evaluate_js(f'updateApp({update_js},{json.dumps(translations)})')
         window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
 
     # Функция для смены папки загрузок
@@ -828,6 +830,8 @@ if __name__ == "__main__":
     window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
     window.events.loaded += lambda: window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
     window.events.loaded += lambda: window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
+    window.events.loaded += lambda: window.evaluate_js(f'setLanguage("{language}")')
+
 
     print(translations, download_folder)
     webview.start()

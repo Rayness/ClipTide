@@ -20,8 +20,8 @@
         "the_queue_is_empty_download_success" : "The queue is empty. There is nothing to download.",
         "download_started" : "Downloading started.",
         "downloading" : "Downloading",
-        "removed_from_queue" : "Видео удалено из очереди: ",
-        "error_removing" : "Видео удалено из очереди: ",
+        "removed_from_queue" : "Video removed from queue: ",
+        "error_removing" : "Error when deleting from the queue: ",
         "converting" : "Converting",
         "convert_success" : "The conversion was completed successfully",
         "convert_stopped" : "The conversion was canceled"
@@ -51,6 +51,10 @@
         "language" : "Language: ",
         "russian" : "Russian",
         "english" : "English",
+        "polish" : "Polish",
+        "ukraine" : "Ukraine",
+        "german" : "German",
+        "french" : "French",
         "update_text_ready" : "Update available",
         "update_text_not_ready" : "Update not required",
         "update_text_error" : "Error getting version",
@@ -73,8 +77,25 @@
         "convert_title" : "The conversion is completed"
     },
 
-    "converter": {
-        "video_add": "Video was added",
+"converter": {
+        "click_for_add_video" : "Click to select a video",
+        "convertion_settings" : "Conversion settings",
+        "conversion_button" : "Convert",
+        "format" : "Format:",
+        "close_video": "Cancel",
+        
+        "video_info" : {
+            "title" : "Video information:",
+            "duration": "Duration:",
+            "framerate": "Frame rate:",
+            "video_codec" : "Video Codec:",
+            "video_bitrate": "Video bitrate:",
+            "audio_codec": "Audio Codec: ",
+            "audio_bitrate" : "Audio bitrate: "
+            },
+        
+
+        "video_add": "Video has been added",
         "video_error": "Error adding video",
         "video_adding": "Adding video"
     }

@@ -51,6 +51,11 @@
         "language" : "Язык: ",
         "russian" : "Русский",
         "english" : "Английский",
+        "polish" : "Польский",
+        "japan" : "Японский",
+        "ukraine" : "Ураинский",
+        "german" : "Немецкий",
+        "french" : "Французский",
         "update_text_ready" : "Доступно обновление",
         "update_text_not_ready" : "Обновление не требуется",
         "update_text_error" : "Ошибка получения версии",
@@ -74,6 +79,23 @@
     },
 
     "converter": {
+        "click_for_add_video" : "Кликните для выбора видео",
+        "convertion_settings" : "Настройки конвертации",
+        "conversion_button" : "Конвертировать",
+        "format" : "Формат: ",
+        "close_video" : "Отмена",
+        
+        "video_info" : {
+            "title" : "Информация о видео:",
+            "duration" : "Длительность: ",
+            "framerate" : "Частота кадров: ",
+            "video_codec" : "Видеокодек: ",
+            "video_bitrate" : "Битрейт видео: ",
+            "audio_codec" : "Аудиокодек: ",
+            "audio_bitrate" : "Битрейт аудио: "
+        },
+        
+
         "video_add": "Видео было добавлено",
         "video_error": "Ошибка добавления видео",
         "video_adding": "Добавление видео"

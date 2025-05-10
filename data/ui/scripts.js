@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    window.isDomReady = true;
     const buttons = document.querySelectorAll('.tab-btn');
     const blocks = document.querySelectorAll('.content');
     const name = document.getElementById('name');
@@ -24,6 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // По желанию: активировать первую вкладку при загрузке
     buttons[0].click();
 });
+
+window.addEventListener('load', () => {
+    console.log('Page load:', performance.now());
+  });
 
 dropArea = document.getElementById('dropZone');
 
@@ -272,11 +277,17 @@ window.updateTranslations = function(translations) {
 
     document.getElementById('10').setAttribute('data-status', translations.sections.setting);
 
+    // Настройки
     document.getElementById('language_title').innerText = translations.settings.language || 'Language';
     document.getElementById('folder_title').innerText = translations.settings.placeholder || 'Specify the path to the download folder';
 
     document.getElementById('lang_ru').innerHTML = translations.settings.russian || 'Russian';
     document.getElementById('lang_en').innerHTML = translations.settings.english || 'English';
+    document.getElementById('lang_pl').innerHTML = translations.settings.polish || 'Polish';
+    document.getElementById('lang_ja').innerHTML = translations.settings.japan || 'Japan';
+    document.getElementById('lang_ua').innerHTML = translations.settings.ukraine || 'Ukraine';
+    document.getElementById('lang_de').innerHTML = translations.settings.german || 'German';
+    document.getElementById('lang_fr').innerHTML = translations.settings.french || 'French';
 
     document.getElementById('tooltip_defoult').innerHTML = translations.settings.by_defoult || 'Restore default folder'
     document.getElementById('tooltip_choose').innerHTML = translations.settings.choose_folder || 'Change download folder'
@@ -284,8 +295,27 @@ window.updateTranslations = function(translations) {
 
     document.getElementById('update').innerHTML = translations.settings.update_button || 'Check';
 
+    // Загрузка видео
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
    
+    // Конвертер видео
+    document.getElementById('converter_add_video').innerText = translations.converter.click_for_add_video || '';
+
+    document.getElementById('convertion-settings').innerText = translations.converter.convertion_settings || '';
+    document.getElementById('convert_btn').innerText = translations.converter.conversion_button;
+    document.getElementById('convertion_format').innerText = translations.converter.format;
+    document.getElementById('close-video').innerText = translations.converter.close_video;
+    
+    document.getElementById('video_info').innerText = translations.converter.video_info.title;
+    document.getElementById('conv_duration_text').innerText = translations.converter.video_info.duration;
+    document.getElementById('conv_framerate_text').innerText = translations.converter.video_info.framerate;
+    document.getElementById('conv_video_codec_text').innerText = translations.converter.video_info.video_codec;
+    document.getElementById('conv_bit_rate-video_text').innerText = translations.converter.video_info.video_bitrate;
+    document.getElementById('conv_audio_codec_text').innerText = translations.converter.video_info.audio_codec;
+    document.getElementById('conv_bit_rate-audio_text').innerText = translations.converter.video_info.audio_bitrate;
+
+    
+    // Статус
     document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
 
     document.getElementById('progress').innerText = translations.progress + " 0% " || 'Progress: ';
@@ -368,3 +398,11 @@ function formatDuration(seconds) {
     
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
+
+function setLanguage(lang) {
+    const select = document.getElementById("language");
+    if (select) {
+      select.value = lang;
+    }
+  }
+  

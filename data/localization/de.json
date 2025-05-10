@@ -1,0 +1,101 @@
+{
+    "video_URL" : "Video-URL eingeben",
+    "audio_only" : "Nur Audio",
+    "audio_text": "Audio",
+    "format": "Format: ",
+    "resolution": "Auflösung: ",
+    "add_to_queue" : "Zur Warteschlange hinzufügen",
+    "start_downloading" : "Download starten",
+    "status" : {
+        "status_text" : "Status: Warten...",
+        "unknown_video" : "Unbekanntes Video",
+        "download_success" : "Video erfolgreich heruntergeladen",
+        "download_error" : "Fehler beim Herunterladen",
+        "to_queue" : "Video zur Warteschlange hinzugefügt",
+        "in_format" : "im Format",
+        "in_resolution" : "in Auflösung",
+        "error_adding" : "Fehler beim Hinzufügen des Videos:",
+        "downloading_already" : "Download bereits gestartet.",
+        "the_queue_is_empty" : "Die Warteschlange ist leer. Nichts zum Herunterladen.",
+        "the_queue_is_empty_download_success" : "Die Warteschlange ist leer. Nichts zum Herunterladen.",
+        "download_started" : "Download gestartet.",
+        "downloading" : "Herunterladen",
+        "removed_from_queue" : "Video aus Warteschlange entfernt: ",
+        "error_removing" : "Fehler beim Entfernen aus der Warteschlange: ",
+        "converting" : "Konvertiere",
+        "convert_success" : "Konvertierung erfolgreich abgeschlossen",
+        "convert_stopped" : "Konvertierung wurde abgebrochen"
+    },
+    "queue" : "Warteschlange: ",
+    "progress" : "Fortschritt: ",
+    "speed" : "Geschwindigkeit: ",
+    "bs" : "B/s",
+    "mbs" : "MB/s",
+    "eta" : "Verbleibende Zeit: ",
+    "min" : "Min",
+    "sec" : "Sek",
+    "error": "Fehler",
+
+    "sections": {
+        "coming_soon": "Demnächst verfügbar",
+        "video_downloader": "Video-Downloader",
+        "converter": "Konverter",
+        "queue": "Warteschlange",
+        "setting": "Einstellungen",
+        "profile": "Profil",
+        "notifications": "Benachrichtigungen"
+    },
+
+    "settings" : {
+        "settings_text" : "Einstellungen",
+        "language" : "Sprache: ",
+        "russian" : "Russisch",
+        "english" : "Englisch",
+        "polish" : "Polnisch",
+        "ukraine" : "Ukrainisch",
+        "German" : "Deutsch",
+        "french" : "Französisch",
+        "update_text_ready" : "Update verfügbar",
+        "update_text_not_ready" : "Kein Update erforderlich",
+        "update_text_error" : "Fehler beim Abrufen der Version",
+        "update_button" : "Updater starten",
+        "folder" : "Download-Ordner: ",
+        "choose_folder" : "Download-Ordner ändern",
+        "open_folder" : "Download-Ordner öffnen",
+        "by_defoult" : "Standardordner wiederherstellen",
+        "auto_update" : "Automatisches Update",
+        "button_apply" : "Übernehmen",
+        "placeholder" : "Pfad zum Download-Ordner"
+    },
+
+    "notifications" : {
+        "video_title" : "Download abgeschlossen!",
+        "video_message_1": "Video",
+        "video_message_2": "erfolgreich heruntergeladen!",
+        "queue_title" : "Download abgeschlossen",
+        "queue_message": "Alle Videos in der Warteschlange wurden heruntergeladen",
+        "convert_title" : "Konvertierung abgeschlossen"
+    },
+
+    "converter": {
+        "click_for_add_video" : "Klicken, um ein Video auszuwählen",
+        "convertion_settings" : "Konvertierungseinstellungen",
+        "conversion_button" : "Konvertieren",
+        "format" : "Format:",
+        "close_video": "Abbrechen",
+        
+        "video_info" : {
+            "title" : "Videoinformationen:",
+            "duration": "Dauer:",
+            "framerate": "Bildrate:",
+            "video_codec" : "Video-Codec:",
+            "video_bitrate": "Video-Bitrate:",
+            "audio_codec": "Audio-Codec: ",
+            "audio_bitrate" : "Audio-Bitrate: "
+        },
+        
+        "video_add": "Video wurde hinzugefügt",
+        "video_error": "Fehler beim Hinzufügen des Videos",
+        "video_adding": "Video wird hinzugefügt"
+    }
+}
