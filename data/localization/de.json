@@ -55,6 +55,7 @@
         "ukraine" : "Ukrainisch",
         "German" : "Deutsch",
         "french" : "Französisch",
+        "chinese" : "Chinesisch",
         "update_text_ready" : "Update verfügbar",
         "update_text_not_ready" : "Kein Update erforderlich",
         "update_text_error" : "Fehler beim Abrufen der Version",

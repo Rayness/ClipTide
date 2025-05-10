@@ -48,7 +48,7 @@
 
     "settings" :{
         "settings_text":"設定",
-        "language":"言語:",
+        "language":"言語: ",
         "russian":"ロシア語",
         "english":"英語",
         "polish" : "ポーランド語",
@@ -56,6 +56,7 @@
         "ukraine" : "ウクライナ語",
         "german" : "ドイツ語",
         "french" : "フランス語",
+        "chinese" : "中国語",
         "update_text_ready":"利用可能な更新",
         "update_text_not_ready":"更新は必要ありません",
         "update_text_error":"バージョンの取得中にエラーが発生しました",

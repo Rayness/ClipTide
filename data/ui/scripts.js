@@ -288,6 +288,7 @@ window.updateTranslations = function(translations) {
     document.getElementById('lang_ua').innerHTML = translations.settings.ukraine || 'Ukraine';
     document.getElementById('lang_de').innerHTML = translations.settings.german || 'German';
     document.getElementById('lang_fr').innerHTML = translations.settings.french || 'French';
+    document.getElementById('lang_cn').innerHTML = translations.settings.chinese || 'Chinese';
 
     document.getElementById('tooltip_defoult').innerHTML = translations.settings.by_defoult || 'Restore default folder'
     document.getElementById('tooltip_choose').innerHTML = translations.settings.choose_folder || 'Change download folder'

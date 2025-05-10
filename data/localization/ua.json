@@ -54,6 +54,7 @@
       "ukraine" : "Український",
       "german" : "Німецький",
       "french" : "Французький",
+      "chinese" : "Китайський",
       "update_text_ready": "Доступне оновлення",
       "update_text_not_ready": "Оновлення не потрібне",
       "update_text_error": "Помилка отримання версії",

@@ -48,13 +48,14 @@
 
     "settings" : {
         "settings_text" : "Paramètres",
-        "language" : "Langue : ",
+        "language" : "Langue: ",
         "russian" : "Russe",
         "english" : "Anglais",
         "polish" : "Polonais",
         "ukraine" : "Ukrainien",
         "german" : "Allemand",
         "french" : "Français",
+        "chinese" : "Chinois",
         "update_text_ready" : "Mise à jour disponible",
         "update_text_not_ready" : "Mise à jour non requise",
         "update_text_error" : "Erreur lors de la récupération de la version",
