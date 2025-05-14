@@ -68,7 +68,7 @@ document.getElementById('addBtn').addEventListener('click', function() {
     const videoUrl = document.getElementById('videoUrl').value;
     const selectedFormat = document.getElementById('format').value; // Получаем выбранный формат
     const selectedResolution = document.getElementById('resolution').value; // Получаем выбранное разрешение
-
+    // TODO: Доработать!
     if (!videoUrl) {
         document.getElementById('status').innerText = 'Ошибка: Введите URL видео';
         return;

@@ -132,7 +132,7 @@ def check_for_update():
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {
-    "language": "ru",
+    "language": "en",
     "folder_path": f"{download_dir}",
     "auto_update": "False"
 }
@@ -344,7 +344,7 @@ class Api:
         self.download_thread = None
         self.download_stop = False
         
-    # Возможно больше не понадобитс 
+    # Возможно больше не понадобится
     def remove_emoji_simple(self, text):
         emoji_pattern = re.compile("["
             u"\U0001F600-\U0001F64F"  # emoticons
@@ -756,6 +756,7 @@ class Api:
                 progress = (downloaded_bytes / total_bytes) * 100 if total_bytes > 0 else 0
                 progress = round(progress, 2)  # Округляем до двух знаков после запятой
 
+                # TODO: СРОЧНО СДЕЛАТЬ ПЕРЕВОД!
                 # Преобразуем ETA в читаемый формат
                 eta_minutes = eta // 60 if eta is not None else 0
                 eta_seconds = eta % 60 if eta is not None else 0
