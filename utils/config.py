@@ -1,3 +1,6 @@
+# Copyright (C) 2025 Rayness
+# This program is free software under GPLv3. See LICENSE for details.
+
 import os
 import configparser
 from utils.const import download_dir, CONFIG_FILE

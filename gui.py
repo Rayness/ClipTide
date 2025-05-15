@@ -3,17 +3,13 @@
 
 import os
 import webview
-import json
 from pathlib import Path
 import logging
 from logging.handlers import RotatingFileHandler
-from modules.core import Api, startApp
-from utils.config import load_config
-from utils.queue import save_queue_to_file
-from utils.translations import load_translations
-from utils.utils import unicodefix, ffmpegreg, check_for_update
-from utils.ui import createwindow
-from utils.const import html_file_path
+from modules.core import startApp
+
+from utils.utils import unicodefix, ffmpegreg
+
 
 log_dir = Path.home() / 'AppData' / 'Local' / 'ClipTide' / 'Logs'
 log_dir.mkdir(parents=True, exist_ok=True)
