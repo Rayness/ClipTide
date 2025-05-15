@@ -4,28 +4,9 @@
 import os
 import webview
 from pathlib import Path
-import logging
-from logging.handlers import RotatingFileHandler
 from modules.core import startApp
-
 from utils.utils import unicodefix, ffmpegreg
-
-
-log_dir = Path.home() / 'AppData' / 'Local' / 'ClipTide' / 'Logs'
-log_dir.mkdir(parents=True, exist_ok=True)
-
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-
-handler = RotatingFileHandler(
-    log_dir / 'app.log',
-    maxBytes=1024*1024,  # 1 MB
-    backupCount=15  # Хранить 5 архивных копий
-)
-handler.setFormatter(formatter)
-
-logging.basicConfig(handlers=[handler], level=logging.INFO)
+from utils.logs import logs
 # ФАЙЛ КОНФИГУРАЦИИ
 # -------------------------------------------------------------------------
 
@@ -44,4 +25,5 @@ if __name__ == "__main__":
     unicodefix()
     ffmpegreg()
     startApp()
+    logs()
     webview.start()

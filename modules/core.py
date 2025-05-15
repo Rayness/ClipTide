@@ -455,6 +455,7 @@ def startApp():
     download_folder = config.get("Settings", "folder_path", fallback="downloads")
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
     translations = load_translations(language)
+    print(config, translations, language)
 
     api.translations = translations
 
