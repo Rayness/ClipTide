@@ -17,8 +17,10 @@ from utils.queue import load_queue_from_file, save_queue_to_file
 from utils.converter_utils import get_thumbnail_base64, print_video_info
 from utils.ui import createwindow
 from utils.utils import check_for_update
+from modules.converter import Conversrion
 
 config = load_config()
+conversion = Conversrion()
 
 class Api():
     def __init__(self):
@@ -30,6 +32,7 @@ class Api():
         self.download_thread = None
         self.download_stop = False
         self.translations = "ru"
+        self.update_js = ''
 
     # Запуск программы обновления
     def launch_update(self):
@@ -58,6 +61,7 @@ class Api():
         try:
             window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('converter', {}).get('video_adding')}"')
             window.evaluate_js(f'showSpinner()')
+            window.evaluate_js(f'window.updateTranslations({self.translations})')
             thumbnail, error = get_thumbnail_base64(file_path)
             result = print_video_info(file_path)
             if result is None:
@@ -99,6 +103,7 @@ class Api():
         self.translations = load_translations(language)
         config.set("Settings", "language", self.current_language)
         save_config(config)
+        window.evaluate_js(f'updateApp({self.update_js},{json.dumps(self.translations)})')
         window.evaluate_js(f'window.updateTranslations({json.dumps(self.translations)})')
 
     # Функция для смены папки загрузок
@@ -129,6 +134,8 @@ class Api():
             os.startfile(f"{self.download_folder}")
         except Exception as e:
             print(f"Ошибка: {e}")
+
+
 
     # Функция для конвертации видео
     def convert_video(self, output_format):
@@ -458,12 +465,13 @@ def startApp():
     print(config, translations, language)
 
     api.translations = translations
-
+    api.update_js = update_js
         # Загружаем параметры при запуске
     window.events.loaded += lambda: window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
     window.events.loaded += lambda: window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
     window.events.loaded += lambda: window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
     window.events.loaded += lambda: window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
+    window.events.loaded += lambda: window.evaluate_js(f'setLanguage("{language}")')
 
     api.download_folder = download_folder
     download_queue = api.download_queue
