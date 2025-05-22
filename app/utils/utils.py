@@ -4,7 +4,7 @@ import subprocess
 import requests
 from pathlib import Path
 
-from utils.const import GITHUB_REPO, HEADERS, VERSION_FILE
+from app.utils.const import GITHUB_REPO, HEADERS, VERSION_FILE
 
 subprocess.CREATE_NO_WINDOW
 

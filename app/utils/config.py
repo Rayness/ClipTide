@@ -3,7 +3,7 @@
 
 import os
 import configparser
-from utils.const import download_dir, CONFIG_FILE
+from app.utils.const import download_dir, CONFIG_FILE
 
 # Настройки по умолчанию
 DEFAULT_CONFIG = {

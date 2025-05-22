@@ -24,7 +24,8 @@
         "error_removing":"削除時のエラー:",
         "converting":"変換",
         "convert_success":"変換が正常に完了しました",
-        "convert_stopped":"変換がキャンセルされました"
+        "convert_stopped":"変換がキャンセルされました",
+        "download_ended":"ダウンロードが完了しました。.."
     },
     "queue":"キュー:",
     "progress":"進捗状況:",

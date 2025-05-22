@@ -24,7 +24,8 @@
         "error_removing" : "Fehler beim Entfernen aus der Warteschlange: ",
         "converting" : "Konvertiere",
         "convert_success" : "Konvertierung erfolgreich abgeschlossen",
-        "convert_stopped" : "Konvertierung wurde abgebrochen"
+        "convert_stopped" : "Konvertierung wurde abgebrochen",
+        "download_ended" : "Der Download ist abgeschlossen..."
     },
     "queue" : "Warteschlange: ",
     "progress" : "Fortschritt: ",

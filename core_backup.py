@@ -10,17 +10,16 @@ import ffmpeg
 import yt_dlp
 import os
 from tkinter import Tk, filedialog
-from utils.translations import load_translations 
-from utils.config import load_config, save_config
-from utils.const import COOKIES_FILE, UPDATER, html_file_path, download_dir
-from utils.queue import load_queue_from_file, save_queue_to_file
-from utils.converter_utils import get_thumbnail_base64, print_video_info
-from utils.ui import createwindow
-from utils.utils import check_for_update
-from modules.converter import Conversrion
+from app.utils.translations import load_translations 
+from app.utils.config import load_config, save_config
+from app.utils.const import COOKIES_FILE, UPDATER, html_file_path, download_dir
+from app.utils.queue import load_queue_from_file, save_queue_to_file
+from app.utils.converter_utils import get_thumbnail_base64, print_video_info
+from app.utils.ui import createwindow
+from app.utils.utils import check_for_update
+
 
 config = load_config()
-conversion = Conversrion()
 
 class Api():
     def __init__(self):
@@ -439,14 +438,14 @@ class Api():
             elif d['status'] == 'finished':
                 # Загрузка завершена
                 window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
-                window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} 0B/s"')
-                window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0 мин 0 сек"')
+                window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} {speed_formatted}"')
+                window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} {eta_formatted}"')
                 window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
         else:
             # Загрузка отменена
             window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
-            window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} 0B/s"')
-            window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0 мин 0 сек"')
+            window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} {speed_formatted}"')
+            window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} {eta_formatted}"')
             window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
             raise yt_dlp.utils.DownloadCancelled("Загрузка отменена")
   

@@ -2,11 +2,11 @@
 # This program is free software under GPLv3. See LICENSE for details.
 
 import webview
-from utils.utils import get_local_version
+from app.utils.utils import get_local_version
 
-version = get_local_version()
 
 def createwindow(html_file_path, api):
+    version = get_local_version()
     # Создаем окно с HTML-контентом
     window = webview.create_window(
         f'ClipTide {version}',
@@ -19,3 +19,4 @@ def createwindow(html_file_path, api):
     )
 
     return window
+

@@ -27,4 +27,4 @@ HEADERS = {
 TRANSLATIONS_DIR = "./data/localization"
 
 # HTML-контент для отображения в окне
-html_file_path = os.path.abspath("data/ui/index.html")
+html_file_path = os.path.abspath("./data/ui/index.html")

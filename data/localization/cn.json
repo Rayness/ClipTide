@@ -24,7 +24,8 @@
         "error_removing" : "从队列中删除时出错：",
         "converting" : "正在转换",
         "convert_success" : "转换完成",
-        "convert_stopped" : "转换已取消"
+        "convert_stopped" : "转换已取消",
+        "download_ended":"下载完成。.."
     },
     "queue" : "队列：",
     "progress" : "进度：",

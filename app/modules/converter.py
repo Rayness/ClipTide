@@ -1,16 +1,70 @@
 import os
-import subprocess
-from threading import Thread
+import json
 import ffmpeg
+import subprocess
 import time
+from threading import Thread
+from tkinter import Tk, filedialog
+from app.utils.converter_utils import get_thumbnail_base64, print_video_info
+from app.modules.settings import open_folder
 
-class Conversrion():
-    def __init__(self):
-        self.translations = "ru"
-        self.convert_video_path = ''
-        self.ffmpeg_process = None
-        self.window = None
-        self.output_path = ''
+class Converter():
+    def __init__(self, window, translations, download_folder):
+        self.window = window
+        self.translations = translations
+        self.convert_video_path = None
+        self.download_folder = download_folder
+        print("Перевод в ковертере: ", translations)
+# функция для выбора видео для конвертации
+    def openFile(self):
+        # Открытие диалогового окна для выбора папки
+        root = Tk()
+        root.withdraw()  # Скрываем главное окно tkinter
+        try:
+            file_path = filedialog.askopenfilename(
+                title="Выберите файл",
+                filetypes=(("Все файлы", "*.*"), ("Текстовые файлы", "*.txt"), ("Видео", "*.mp4;*.avi"))
+            )
+        except Exception as e:
+            print(f"Ошибка при выборе папки: {e}")
+        root.destroy()
+        try:
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('converter', {}).get('video_adding')}"')
+            self.window.evaluate_js(f'showSpinner()')
+            self.window.evaluate_js(f'window.updateTranslations({self.translations})')
+            thumbnail, error = get_thumbnail_base64(file_path)
+            result = print_video_info(file_path)
+            if result is None:
+                print("Не удалось получить данные о видео")
+            else:
+                if result and len(result) == 8:
+                    duration, bitrate, width, height, codec, fps, audio_codec, audio_bitrate = result
+                else: 
+                    print(result)
+            file_name = os.path.basename(file_path)
+            self.convert_video_path = file_path
+            # print(duration, bitrate, codec, fps, audio_codec, audio_bitrate, thumbnail, error, file_name)
+
+            # Формируем данные
+            video_data = {
+                'duration': duration,
+                'bitrate': bitrate,
+                'codec': codec,
+                'fps': fps,
+                'audio_codec': audio_codec,
+                'audio_bitrate': audio_bitrate,
+                'thumbnail': thumbnail,
+                'error': error,
+                'file_name': file_name
+            }
+            self.window.evaluate_js(f"file_is_input({json.dumps(video_data)})")
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('converter', {}).get('video_add')}"')
+            time.sleep(2)
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+        except Exception as e:
+            print("Ошибка при выборе видео")
+            self.window.evaluate_js(f'hideSpinner()')
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
 
     # Функция для конвертации видео
     def convert_video(self, output_format):
@@ -33,7 +87,7 @@ class Conversrion():
                 '-c:a', 'aac',  # Пример кодека аудио
                 output_path
             ]
-            # Запускаем процесс FFmpeg в отдельном потоке
+           # Запускаем процесс FFmpeg в отдельном потоке
             def run_ffmpeg():
                 self.ffmpeg_process = subprocess.Popen(
                     command,
@@ -82,7 +136,8 @@ class Conversrion():
                     self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("convert_success")}"')
                     self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
                     time.sleep(2)
-                    self.open_folder()
+                    open_folder(self.download_folder)
+                    self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
                     self.window.evaluate_js(f'closeVideo()')
                     self.window.evaluate_js(f'hideSpinner()')
                     self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("status_text")}"')
@@ -114,6 +169,10 @@ class Conversrion():
                 print("Конвертация прервана пользователем.")
                 self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("conversion_stopped")}"')
                 time.sleep(2)
-                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+                self.window.evaluate_js(f'hideSpinner()')
+                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("status_text")}"')
+                self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0 мин 0 сек"')
+                self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
+                self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
             except Exception as e:
                 print(f"Ошибка при попытке прервать конвертацию: {str(e)}")

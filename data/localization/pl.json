@@ -24,7 +24,8 @@
         "error_removing": "Błąd podczas usuwania z kolejki:",
         "konwertowanie": "Konwertowanie",
         "convert_success": "Konwersja została zakończona pomyślnie",
-        "convert_stopped": "Konwersja została anulowana"
+        "convert_stopped": "Konwersja została anulowana",
+        "download_ended": "Zakończenie pobierania..."
     },
     "queue": "Kolejka:",
     "progress": "Postęp:",

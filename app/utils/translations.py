@@ -3,7 +3,7 @@
 
 import os
 import json
-from utils.const import TRANSLATIONS_DIR, html_file_path
+from app.utils.const import TRANSLATIONS_DIR
 
 def load_translations(language, fallback="ru"):
     file_path = os.path.join(TRANSLATIONS_DIR, f"{language}.json")

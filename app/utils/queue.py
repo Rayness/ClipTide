@@ -4,7 +4,7 @@
 import os
 import json
 
-from utils.const import QUEUE_FILE
+from app.utils.const import QUEUE_FILE
 
 def load_queue_from_file():
     """ Загружаем очередь из JSON-файла. """

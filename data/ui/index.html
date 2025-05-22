@@ -231,5 +231,43 @@
     </div>
     <script src="scripts.js" defer></script>
     <script src="ui-effects.js"></script>
+    <script>
+        window.onload = function () {
+            console.log("Window loaded!");
+            console.log("pywebview:", pywebview); // Проверяем, что pywebview определен
+            console.log("Доступные методы js_api:", pywebview.api);
+
+            if (pywebview && pywebview.api) {
+                console.log("pywebview.api is available!");
+            } else {
+                console.error("pywebview.api is not defined!");
+            }
+
+            // Тестовый вызов метода после загрузки
+            setTimeout(() => {
+                if (pywebview && pywebview.api && pywebview.api.testMethod) {
+                    console.log("Calling testMethod...");
+                    pywebview.api.testMethod();
+                } else {
+                    console.error("pywebview.api.testMethod is not defined!");
+                }
+            }, 1000); // Задержка для гарантии загрузки
+        };
+
+        window.onerror = function (message, source, lineno, colno, error) {
+            console.error("JavaScript error:", message, "in", source, "at line", lineno);
+        };
+
+        function callTestMethod() {
+            if (pywebview && pywebview.api && pywebview.api.testMethod) {
+                console.log("Calling testMethod...");
+                pywebview.api.testMethod();
+            } else {
+                console.error("pywebview.api.testMethod is not defined!");
+            }
+        }
+
+        callTestMethod()
+    </script>
 </body>
 </html>

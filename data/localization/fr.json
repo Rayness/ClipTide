@@ -24,7 +24,8 @@
         "error_removing" : "Erreur lors de la suppression de la file : ",
         "converting" : "Conversion en cours",
         "convert_success" : "La conversion est terminée avec succès",
-        "convert_stopped" : "La conversion a été annulée"
+        "convert_stopped" : "La conversion a été annulée",
+        "download_ended": "Téléchargement Terminé..."
     },
     "queue" : "File : ",
     "progress" : "Progression : ",

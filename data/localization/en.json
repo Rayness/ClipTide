@@ -24,7 +24,8 @@
         "error_removing" : "Error when deleting from the queue: ",
         "converting" : "Converting",
         "convert_success" : "The conversion was completed successfully",
-        "convert_stopped" : "The conversion was canceled"
+        "convert_stopped" : "The conversion was canceled",
+        "download_ended" : "Download completion..."
     },
     "queue" : "Queue: ",
     "progress" : "Progress: ",
