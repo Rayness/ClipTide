@@ -7,6 +7,8 @@ os.makedirs(appdata_local, exist_ok=True)
 download_dir = Path.home() / 'Downloads' / 'ClipTide'
 os.makedirs(download_dir, exist_ok=True)
 
+NOTIFICATION_FILE = os.path.join(appdata_local, "notifications.json")
+
 CONFIG_FILE = os.path.join(appdata_local, "config.ini")
 
 QUEUE_FILE = os.path.join(appdata_local, "queue.json")

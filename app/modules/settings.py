@@ -12,14 +12,13 @@ from app.utils.config import load_config, save_config
 config = load_config()
 
 class SettingsManager():
-    def __init__(self, window, language, translations, update, folder=None):
+    def __init__(self, window, language, translations, update, notifications, folder=None):
         self.window = window
         self.language = language
         self.folder = folder
         self.translations = translations
         self.update = update
-        print(">>> SettingsManager window =", type(window))
-        print("Перевод в настройках: ", translations)
+        self.notifications = notifications
 
     # Запуск программы обновления
     def launch_update(self):

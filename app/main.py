@@ -4,6 +4,7 @@
 import json
 import webview
 from app.utils.config import load_config
+from app.utils.notifications import load_notifications
 from app.utils.translations import load_translations
 from app.core import PublicWebViewApi, WebViewApi
 from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg
@@ -15,12 +16,12 @@ def startApp():
     version = get_local_version()
     update = check_for_update()
     update_js = str(update).lower()
+    notifications = load_notifications()
 
     config = load_config()
     language = config.get("Settings", "language", fallback="en")
 
     translations = load_translations(language)
-
 
     download_queue = load_queue_from_file()
 
@@ -30,14 +31,13 @@ def startApp():
 
     print("ЗАПУСК")
 
-    # window = createwindow(html_file_path, api)
-    # Создаем окно с HTML-контентом
     real_api = WebViewApi(
         translations = translations,
         language = language,
         download_folder = download_folder,
         download_queue = download_queue,
-        update = update_js
+        update = update_js,
+        notifications=notifications
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -45,7 +45,7 @@ def startApp():
     window = webview.create_window(
         f'ClipTide {version}',
         html_file_path,
-        js_api=public_api, # Передаем API для взаимодействия с JavaScript
+        js_api=public_api,
         height=780,
         width=1000,
         resizable=True,
@@ -53,23 +53,21 @@ def startApp():
     )
     real_api.set_window(window)
 
-    # api.init_modules(translations, language, update_js, download_folder, download_queue)  # инициализируем модули после
+
     print("Window created:", window)
-        # Загружаем параметры при запуске
-    # Перенесите все evaluate_js в обработчик loaded
+
     def on_loaded():
         window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
         window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
         window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
         window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
         window.evaluate_js(f'setLanguage("{language}")')
-        window.evaluate_js('console.log("Window fully loaded!");')
+        window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
     
     window.events.loaded += on_loaded
 
-    webview.start()
+    webview.start(debug=True)
 
-# Основная функция запуска всей программы
 def main():
     unicodefix()
     ffmpegreg()

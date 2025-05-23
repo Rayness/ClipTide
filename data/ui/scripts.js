@@ -25,8 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
+
     // По желанию: активировать первую вкладку при загрузке
-    buttons[0].click();
+    buttons[3].click();
 });
 
 window.addEventListener('load', () => {
@@ -188,6 +189,7 @@ function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
 // Функция для удаления видео из очереди
 function removeVideoFromQueue(videoTitle) {
     window.pywebview.api.removeVideoFromQueue(videoTitle); // Вызываем API для удаления
+    removeVideoFromList(videoTitle)
 }
 
 window.loadQueue = function(queue) {

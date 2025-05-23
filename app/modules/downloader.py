@@ -6,16 +6,19 @@ import yt_dlp
 
 from app.utils.const import COOKIES_FILE
 from app.utils.queue import save_queue_to_file
+from app.utils.notifications import add_notification
 
 class Downloader():
-    def __init__(self, window, translations, download_queue, download_folder):
+    def __init__(self, window, translations, download_queue, download_folder, notifications):
         self.window = window
         self.translations = translations
         self.download_queue = download_queue
         self.download_folder = download_folder
+        self.notifications = notifications
         self.is_downloading = False
         self.download_stop = False
-        print("Перевод в загрузчике: ", translations)
+
+
 # Функция для удаления видео из очереди
     def removeVideoFromQueue(self, video_title):
         try:
@@ -32,8 +35,6 @@ class Downloader():
             print(f"Видео удалено из очереди: {video_title}")
             print(video_title)
             # Обновляем интерфейс
-            self.window.evaluate_js(f'removeVideoFromList("{video_title}")')
-            
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('removed_from_queue')}: {video_title}"'), time.sleep(3), self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
             time.sleep(2)
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
@@ -169,6 +170,9 @@ class Downloader():
             self.removeVideoFromQueue(video_title)
             self.window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
+            self.notifications = add_notification("Загрузка завершена", f"Видео {video_title} успешно загружено", "downloader")
+            self.window.evaluate_js(f'loadNotifications({self.notifications})')
+            print("Уведомления после загрузки: ", self.notifications)
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('download_success')}: {video_title}"')
         except Exception as e:
             print(f"Ошибка при загрузке: {str(e)}")
@@ -178,6 +182,7 @@ class Downloader():
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
 
         # Сбрасываем флаг загрузки и запускаем следующую загрузку
+
         self.is_downloading = False
         self.start_next_download()
 
