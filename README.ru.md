@@ -13,14 +13,14 @@
 > [!NOTE]
 > У приложения также имеется сайт: [cliptide.ru](https://cliptide.ru/index.html)
 >
-> Пока только на русском, позже добавлю перевод на другие языки. 
+> Пока только на русском и английском, позже добавлю перевод на другие языки. 
 
 ### Актуальная версия с графическим интерфейсом: 
 <img src="https://github.com/user-attachments/assets/efa4b9b2-4525-4f4d-84f2-1aee667bc53a" width="600">
 
 ## Загрузка
 
-**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.4.0)** - 1.4
+**[Актуальная версия](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.4.2)** - 1.4.2
 
 ## Как запустить:
 - Как и любое другое приложение;

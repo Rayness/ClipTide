@@ -12,14 +12,14 @@ This small program is designed to download video content in audio and video form
 > [!NOTE]
 > The app also has a website: [cliptide.ru](https://cliptide.ru/index.html)
 > 
-> So far, it's only in Russian, but I'll add a translation into other languages later.
+> So far, it's only in Russian and English, but I'll add a translation into other languages later.
 
 ### Current version with graphical interface:
 <img src="https://github.com/user-attachments/assets/00d3f220-2c2a-4c5e-9899-a6123ff31bf1" width="600">
 
 ## Download
 
-**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.4.0)** - 1.4
+**[Current version](https://github.com/Rayness/YouTube-Downloader/releases/tag/v1.4.2)** - 1.4.2
 
 ## How to run:
 - Like any other application;
