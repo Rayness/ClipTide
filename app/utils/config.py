@@ -53,3 +53,4 @@ def save_config(config):
             print("Конфигурация сохранена.")
     except Exception as e:
         print(f"Ошибка при сохранении конфигурации: {e}")
+

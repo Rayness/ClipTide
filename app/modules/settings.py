@@ -12,12 +12,14 @@ from app.utils.config import load_config, save_config
 config = load_config()
 
 class SettingsManager():
-    def __init__(self, window, language, translations, update, notifications, folder=None):
+    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None):
         self.window = window
         self.language = language
         self.folder = folder
         self.translations = translations
         self.update = update
+        self.theme = theme
+        self.style = style
         self.notifications = notifications
 
     # Запуск программы обновления
@@ -40,6 +42,16 @@ class SettingsManager():
         self.window.evaluate_js(f'updateApp({self.update},{json.dumps(self.translations)})')
         self.window.evaluate_js(f'window.updateTranslations({json.dumps(self.translations)})')
         return self.translations
+    
+    def switch_theme(self, theme):
+        self.theme = theme
+        config.set("Settings", "theme", self.theme)
+        save_config(config)
+
+    def switch_style(self, style):
+        self.style = style
+        config.set("Settings", "style", self.style)
+        save_config(config)
 
     # Функция для смены папки загрузок
     def switch_download_folder(self, folder_path=f'{download_dir}'):

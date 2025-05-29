@@ -4,6 +4,7 @@ from app.modules.downloader import Downloader
 from app.modules.converter import Converter
 from app.modules.settings import SettingsManager
 from app.utils.notifications import save_notifications, delete_notification, mark_notification_as_read
+from app.utils.themes import get_themes
 
 class PublicWebViewApi:
     def __init__(self, _api):
@@ -53,15 +54,36 @@ class PublicWebViewApi:
     def delete_notification(self, id):
         delete_notification(id)
 
+    def minimize(self):
+        self._api.window.minimize()
+
+    def toggle_fullscreen(self):
+        
+        self._api.window.toggle_fullscreen()
+
+    def close(self):
+        self._api.window.destroy()
+
     def mark_notification_as_read(self, id):
         self._api.notifications = mark_notification_as_read(id)
         self._api.downloader.notifications = self._api.notifications
         self._api.converter.notifications = self._api.notifications
         self._api.settings.notifications = self._api.notifications
         print(self._api.notifications)
+    
+    def saveTheme(self, theme):
+        self._api.settings.switch_theme(theme)
+
+    def saveStyle(self, style):
+        self._api.settings.switch_style(style)
+
+    def get_themes(self):
+        themes = get_themes()
+        return themes
+
 
 class WebViewApi:
-    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications=""):
+    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style=""):
         self.window = None
         self.translations = translations
         self.update = update
@@ -69,13 +91,15 @@ class WebViewApi:
         self.download_folder = download_folder
         self.download_queue = download_queue
         self.notifications = notifications
+        self.theme = theme
+        self.style = style
         self.settings = None
         self.downloader = None
         self.converter = None
 
     def set_window(self, window):
         self.window = window
-        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications)
+        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme)
         self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications)
         self.converter = Converter(window, self.translations, self.download_folder, self.notifications)
         print("При инициализации окна: ", self.notifications)

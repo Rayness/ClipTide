@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
-
     // По желанию: активировать первую вкладку при загрузке
-    buttons[3].click();
+    buttons[0].click();
 });
 
 window.addEventListener('load', () => {
@@ -412,3 +411,4 @@ function setLanguage(lang) {
     }
   }
   
+

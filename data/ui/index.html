@@ -6,301 +6,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link id="theme-link" rel="stylesheet" href="themes/default/styles.css">
     <!-- <link rel="stylesheet" href="/data/fontawesome/css/all.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>ClipTide Video Downloader</title>
 </head>
 <body>
-    <div class="left-panel">
-        <div class="utils">
-            <div class="tab-btn" data-tab="1" id="video-downloader">
-                <i class="fa-solid fa-download"></i>
-            </div>
-            <div class="tab-btn" data-tab="2" id="converter">
-                <i class="fa-solid fa-right-left"></i>
-            </div>
-        </div>
-        <div class="settings">
-            <div class="tab-btn" data-tab="10" id="settings">
-                <i class="fa-solid fa-gears"></i>
+    <div class="app">
+        <div class="drag-area pywebview-drag-region">
+            <h3>ClipTide</h3>
+            <div class="window-controls">
+                <button onclick="pywebview.api.minimize()">_</button>
+                <button onclick="pywebview.api.toggle_fullscreen()">⬜</button>
+                <button onclick="pywebview.api.close()">✕</button>
             </div>
         </div>
-    </div>
-    <div class="conteiner">
-        <div class="name">
-            <h3 id="name">
-                Video Downloader
-            </h3>
-        </div>
-        <div class="main">
-            <!-- Загрузчик видео -->
-            <div class="content active" id="1" data-status="Video Downloader">
-                <div class="download-settings fade-in">
-                    <input class="url-input fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
-                    <div class="settings-group">
-                        <select id="format" class="select-control">
-                            <option value="mp4">MP4</option>
-                            <option value="mkv">MKV</option>
-                            <option value="webm">WEBM</option>
-                            <option value="avi">AVI</option>
-                            <option disabled>-------------------------------------------</option>
-                            <option value="mp3">MP3 (Только аудио)</option>
-                            <option disabled>-------------------------------------------</option>
-                            <option disabled value="m4a">M4A (Только аудио)</option>
-                            <option disabled value="opus">OPUS (Только аудио)</option>
-                            <option disabled value="aac">AAC (Только аудио)</option>
-                            <option disabled value="flac">FLAC (Только аудио)</option>
-                        </select>
-                        <select id="resolution" class="select-control">
-                            <option value="240">SD (240p)</option>
-                            <option value="360">SD (360p)</option>
-                            <option value="480">SD (480p)</option>
-                            <option value="720">HD (720p)</option>
-                            <option selected value="1080">FullHD (1080p)</option>
-                            <option value="1440">2K (1440p)</option>
-                            <option value="2160">4K (2160p)</option>
-                            <option value="4320">8K (4320p)</option>
-                        </select>
-                        <div class="action-buttons">
-                            <button class="primary-btn fade-in" id="addBtn"><i class="fa-solid fa-plus"></i></button>
-                            <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
-                            <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
-                        </div>
+        <div class="body-app">
+            <div class="left-panel">
+                <div class="utils">
+                    <div class="tab-btn" data-tab="1" id="video-downloader">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div class="tab-btn" data-tab="2" id="converter">
+                        <i class="fa-solid fa-right-left"></i>
                     </div>
                 </div>
-                <div id="queue-list" class="queue-container fade-in">
-                    <ul id="queue" class="queue-items"></ul>
+                <div class="settings">
+                    <div class="tab-btn" data-tab="10" id="settings">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
                 </div>
             </div>
-
-            <div class="content" id="11" data-status="Profile">
-                <div class="coming-soon">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <h1 class="coming-soon_text">Coming Soon</h1>
-                </div>
-            </div>
-
-            <div class="content" id="12" data-status="Notification">
-                <!-- <div class="coming-soon">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <h1>Coming Soon</h1>
-                </div> -->
-                <div class="notification-container" id="notification-container">
-                    <!-- <div class="block">
-                        <div class="icon">
-                            <i class="fa-solid fa-download"></i>
-                        </div>
-                        <div class="body">
-                            <h4>Downloader</h4>
-                            <p>Загрузка завершена</p>
-                            <div class="datetime">
-                                <p>23.05.2025</p>
-                                <p>-</p>
-                                <p>18:30</p>
+            <div class="conteiner">
+                <div class="main">
+                    <div class="name">
+                        <h3 id="name">
+                            Video Downloader
+                        </h3>
+                    </div>
+                    <!-- Загрузчик видео -->
+                    <div class="content active" id="1" data-status="Video Downloader">
+                        <div class="download-settings fade-in">
+                            <input class="url-input fade-in" type="text" id="videoUrl" placeholder="Введите URL видео">
+                            <div class="settings-group">
+                                <select id="format" class="select-control">
+                                    <option value="mp4">MP4</option>
+                                    <option value="mkv">MKV</option>
+                                    <option value="webm">WEBM</option>
+                                    <option value="avi">AVI</option>
+                                    <option disabled>-------------------------------------------</option>
+                                    <option value="mp3">MP3 (Только аудио)</option>
+                                    <option disabled>-------------------------------------------</option>
+                                    <option disabled value="m4a">M4A (Только аудио)</option>
+                                    <option disabled value="opus">OPUS (Только аудио)</option>
+                                    <option disabled value="aac">AAC (Только аудио)</option>
+                                    <option disabled value="flac">FLAC (Только аудио)</option>
+                                </select>
+                                <select id="resolution" class="select-control">
+                                    <option value="240">SD (240p)</option>
+                                    <option value="360">SD (360p)</option>
+                                    <option value="480">SD (480p)</option>
+                                    <option value="720">HD (720p)</option>
+                                    <option selected value="1080">FullHD (1080p)</option>
+                                    <option value="1440">2K (1440p)</option>
+                                    <option value="2160">4K (2160p)</option>
+                                    <option value="4320">8K (4320p)</option>
+                                </select>
+                                <div class="action-buttons">
+                                    <button class="primary-btn fade-in" id="addBtn"><i class="fa-solid fa-plus"></i></button>
+                                    <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
+                                    <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
+                                </div>
                             </div>
                         </div>
-                        <div class="remove">
-                            <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path
-                                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
-                                    />
-                                </svg>
-                            </button>
+                        <!-- <div id="queue-list" class="queue-container fade-in"> -->
+                            <ul id="queue" class="queue-items"></ul>
+                        <!-- </div> -->
+                    </div>
+        
+                    <div class="content" id="11" data-status="Profile">
+                        <div class="coming-soon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <h1 class="coming-soon_text">Coming Soon</h1>
                         </div>
                     </div>
-                    <div class="block">
-                        <div class="icon">
-                            <i class="fa-solid fa-code-compare"></i>
+        
+                    <div class="content" id="12" data-status="Notification">
+                        <!-- <div class="coming-soon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <h1>Coming Soon</h1>
+                        </div> -->
+                        <div class="notification-container" id="notification-container">
+                            <!--
+                            <div class="block">
+                                <div class="icon">
+                                    <i class="fa-solid fa-code-compare"></i>
+                                </div>
+                                <div class="body">
+                                    <h4>ClipTide</h4>
+                                    <p>Доступна новая версия - 1.4.1</p>
+                                    <div class="datetime">
+                                        <p>10.05.2025</p>
+                                        <p>-</p>
+                                        <p>11:30</p>
+                                    </div>
+                                </div>
+                                <div class="remove">
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path
+                                            d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div> -->
                         </div>
-                        <div class="body">
-                            <h4>ClipTide</h4>
-                            <p>Доступна новая версия - 1.4.2</p>
-                            <div class="datetime">
-                                <p>23.05.2025</p>
-                                <p>-</p>
-                                <p>18:30</p>
+                    </div>
+        
+                    <div class="content" id="2" data-status="Converter">
+                        <div class="converter-app">
+                            <div class="input-file" id="input-file">
+                                <div class="drop-zone" id="dropZone">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <p id="converter_add_video">Кликните для выбора видео</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="remove">
-                            <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path
-                                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="icon">
-                            <i class="fa-solid fa-code-compare"></i>
-                        </div>
-                        <div class="body">
-                            <h4>ClipTide</h4>
-                            <p>Доступна новая версия - 1.4.1</p>
-                            <div class="datetime">
-                                <p>10.05.2025</p>
-                                <p>-</p>
-                                <p>11:30</p>
-                            </div>
-                        </div>
-                        <div class="remove">
-                            <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path
-                                    d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-
-            <div class="content" id="2" data-status="Converter">
-                <div class="converter-app">
-                    <div class="input-file" id="input-file">
-                        <div class="drop-zone" id="dropZone">
-                            <i class="fa-solid fa-plus"></i>
-                            <p id="converter_add_video">Кликните для выбора видео</p>
-                        </div>
-                    </div>
-                    <div class="app" id="main-app">
-                        <div class="main">
-                            <div id="video-after" class="video">
-                                <img id="conv_image" src="" alt="Видео">
-                                <div class="text">
-                                    <button id="close-video">Отмена</button>
-                                    <p id="conv_name">Название</p>
-                                    <div class="additional-text"><p id="video_info">Информация о видео:</p></div>
-                                    <div class="additional">
-                                        <div>
-                                            <p id="conv_duration_text">Длительность: </p><p id="conv_duration">312312</p>
+                            <div class="app" id="main-app">
+                                <div class="main">
+                                    <div id="video-after" class="video">
+                                        <img id="conv_image" src="" alt="Видео">
+                                        <div class="text">
+                                            <button id="close-video">Отмена</button>
+                                            <p id="conv_name">Название</p>
+                                            <div class="additional-text"><p id="video_info">Информация о видео:</p></div>
+                                            <div class="additional">
+                                                <div>
+                                                    <p id="conv_duration_text">Длительность: </p><p id="conv_duration">312312</p>
+                                                </div>
+                                                <!-- <p id="conv_format">Формат: </p> -->
+                                                 <div>
+                                                    <p id="conv_framerate_text">Частота кадров: </p><p id="conv_framerate">3213213</p>
+                                                 </div>
+                                                <div>
+                                                    <p id="conv_video_codec_text">Видеокодек: <p id="conv_video_codec">321312</p></p>
+                                                </div>
+                                                <div>
+                                                    <p id="conv_bit_rate-video_text">Битрейт видео: </p><p id="conv_bit_rate-video">3213</p>
+                                                </div>
+                                                <div>
+                                                    <p id="conv_audio_codec_text">Аудиокодек: </p><p id="conv_audio_codec">31231</p>
+                                                </div>
+                                                <div>
+                                                    <p id="conv_bit_rate-audio_text">Битрейт аудио: </p><p id="conv_bit_rate-audio">32131</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- <p id="conv_format">Формат: </p> -->
-                                         <div>
-                                            <p id="conv_framerate_text">Частота кадров: </p><p id="conv_framerate">3213213</p>
-                                         </div>
-                                        <div>
-                                            <p id="conv_video_codec_text">Видеокодек: <p id="conv_video_codec">321312</p></p>
-                                        </div>
-                                        <div>
-                                            <p id="conv_bit_rate-video_text">Битрейт видео: </p><p id="conv_bit_rate-video">3213</p>
-                                        </div>
-                                        <div>
-                                            <p id="conv_audio_codec_text">Аудиокодек: </p><p id="conv_audio_codec">31231</p>
-                                        </div>
-                                        <div>
-                                            <p id="conv_bit_rate-audio_text">Битрейт аудио: </p><p id="conv_bit_rate-audio">32131</p>
-                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings">
+                                    <div class="text">
+                                        <h3 id="convertion-settings">Настройки конвертации</h3>
+                                    </div>
+                                    <div class="format">
+                                        <p id="convertion_format">Формат: </p>
+                                        <select name="format" id="conv-format" class="select-control">
+                                            <option value="mp4">mp4</option>
+                                            <option value="avi">avi</option>
+                                            <option value="mkv">mkv</option>
+                                        </select>
+                                        <button class="primary-btn" id="convert_btn">Конвертировать</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="settings">
-                            <div class="text">
-                                <h3 id="convertion-settings">Настройки конвертации</h3>
+                    </div>
+        
+                    <div class="content" id="10" data-status="Settings"> 
+                        <div id="app_settings" class="settings-block fade-in">
+                            <div class="sections" id="language-settings">
+                                <h3>Языковые настройки: </h3>
+                                <div class="language-block">
+                                    <label for="language" id="language_title">Язык: </label>
+                                    <select id="language" class="select-control">
+                                        <option id="lang_en" value="en">Английский</option>
+                                        <option id="lang_de" value="de">Немецкий</option>
+                                        <option id="lang_pl" value="pl">Польский</option>
+                                        <option id="lang_ru" value="ru">Русский</option>
+                                        <option id="lang_ua" value="ua">Украинский</option>
+                                        <option id="lang_fr" value="fr">Французский</option>
+                                        <option id="lang_cn" value="cn">Китайский</option>
+                                        <option id="lang_ja" value="ja">Японский</option>
+                                    </select>
+                                    <div class="tooltip-wrap">
+                                        <button class="icon-btn small" id="opneLangFiles"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                        <span class="tooltip" id="tooltip_defoult">Открыть папку с локализацией</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="format">
-                                <p id="convertion_format">Формат: </p>
-                                <select name="format" id="conv-format" class="select-control">
-                                    <option value="mp4">mp4</option>
-                                    <option value="avi">avi</option>
-                                    <option value="mkv">mkv</option>
-                                </select>
-                                <button class="primary-btn" id="convert_btn">Конвертировать</button>
+                            <div class="sections" id="folders-settings">
+                                <h3>Управление папками: </h3>
+                                <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
+                                <div class="folder-controls">
+                                    <input class="input-folder" disabled type="text" id="folder_path" placeholder="">
+                                    
+                                    <div class="folder-icons">
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                            <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+                                        </div>
+                                        
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
+                                            <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+                                        </div>
+                                        
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
+                                            <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label for="folder_path" id="folder_title">Путь к папке конвертации: </label>
+                                <div class="folder-controls">
+                                    <input class="input-folder" disabled type="text" id="folder_path" placeholder="">
+                                    
+                                    <div class="folder-icons">
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                            <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+                                        </div>
+                                        
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
+                                            <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+                                        </div>
+                                        
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
+                                            <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sections" id="decorations-settings">
+                                <h3>Оформление: </h3>
+                                <div class="themes">
+                                    <label for="">Тема: </label>
+                                    <select class="theme-selector" name="" id="theme">
+                                        <!-- <option value="default">Default</option>
+                                        <option value="classic">Classic</option> -->
+                                    </select>
+                                    <label for="">Стиль: </label>
+                                    <select class="theme-selector" name="style-selector" id="style">
+                                        <!-- <option value="dark">Dark</option>
+                                        <option value="light">Light</option>
+                                        <option value="wave">Wave</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="sections" id="update-settings">
+                                <h3>Обновления: </h3>
+                                <div class="update-block">
+                                    <span id="update__text">Обновление: </span>
+                                    <button class="icon-btn" id="update">Проверить</button>
+                                </div>
+                            </div>
+                            <div class="sections" id="about-settings">
+                                <h3>О приложении</h3>
+                                <p>ClipTide. Версия: 1.4.3. Дата выхода: 2025 год.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Контент с настройками -->
-            <div class="content" id="10" data-status="Settings"> 
-                <div id="app_settings" class="settings-block fade-in">
-                    <div class="settings-row">
-                        <div class="language-block">
-                            <label for="language" id="language_title">Язык: </label>
-                            <select id="language" class="select-control">
-                                <option id="lang_en" value="en">Английский</option>
-                                <option id="lang_de" value="de">Немецкий</option>
-                                <option id="lang_pl" value="pl">Польский</option>
-                                <option id="lang_ru" value="ru">Русский</option>
-                                <option id="lang_ua" value="ua">Украинский</option>
-                                <option id="lang_fr" value="fr">Французский</option>
-                                <option id="lang_cn" value="cn">Китайский</option>
-                                <option id="lang_ja" value="ja">Японский</option>
-                            </select>
-                        </div>
-                        <div class="update-block">
-                            <span id="update__text">Обновление: </span>
-                            <button class="icon-btn" id="update">Проверить</button>
-                        </div>
+                <div class="down-panel">
+                    <div id="status" class="status-info fade-in">
+                        Статус: Ожидание...
+                    </div>
+                    <div id="loading-spinner" class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="progress-info fade-in">
+                        <div id="progress">Прогресс: 0%</div>
+                        <div id="speed">Скорость: 0B/s</div>
+                        <div id="eta">Осталось: </div>
                     </div>
                     
-                    <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
-                    <div class="folder-controls">
-                        <input class="input-folder" disabled type="text" id="folder_path" placeholder="Укажите путь к папке для загрузок">
-                        
-                        <div class="folder-icons">
-                            <div class="tooltip-wrap">
-                                <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                                <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
-                            </div>
-                            
-                            <div class="tooltip-wrap">
-                                <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
-                                <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
-                            </div>
-                            
-                            <div class="tooltip-wrap">
-                                <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
-                                <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="progress-bar fade-in">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>    
                 </div>
             </div>
-        </div>
-        <div class="down-panel">
-            <div id="status" class="status-info fade-in">
-                Статус: Ожидание...
-            </div>
-            <div id="loading-spinner" class="spinner-container">
-                <div class="spinner"></div>
-            </div>
-            <div class="progress-info fade-in">
-                <div id="progress">Прогресс: 0%</div>
-                <div id="speed">Скорость: 0B/s</div>
-                <div id="eta">Осталось: </div>
-            </div>
-            
-            <div class="progress-bar fade-in">
-                <div id="progress-fill" class="progress-fill"></div>
-            </div>    
-        </div>
-    </div>
-        
-    <div class="right-panel">
-        <div class="utils">
-            <div class="tab-btn" data-tab="12" id="notifications">
-                <i class="fa-solid fa-bell"></i>
-            </div>
-            <!-- <div class="tab-btn" data-tab="11">
-                <i class="fa-solid fa-circle-user"></i>
-            </div> -->
-        </div>
-        <div class="controls">
-            <div class="buttons">
-                <button id="startBtn"><i class="fa-solid fa-play"></i></button>
-                <!-- <button><i class="fa-solid fa-pause"></i></button> -->
-                <button id="stopBtn"><i class="fa-solid fa-stop"></i></button>
+                
+            <div class="right-panel">
+                <div class="utils">
+                    <div class="tab-btn" data-tab="12" id="notifications">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+                    <!-- <div class="tab-btn" data-tab="11">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </div> -->
+                </div>
+                <div class="controls">
+                    <div class="buttons">
+                        <button id="startBtn"><i class="fa-solid fa-play"></i></button>
+                        <!-- <button><i class="fa-solid fa-pause"></i></button> -->
+                        <button id="stopBtn"><i class="fa-solid fa-stop"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <script src="scripts.js" defer></script>
+    <script src="theme.js" defer></script>
     <script src="notification.js"></script>
     <script src="ui-effects.js"></script>
 </body>

@@ -37,16 +37,72 @@ html {
     scroll-behavior: smooth;
 }
 
-body {
+
+/* ===== Base Styles ===== */
+html, body {
+    font-size: 16px;
+    scroll-behavior: smooth;
     margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.app {
+    width: 100%;
     font-family: "Roboto", sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-color);
     color: var(--text-color);
     line-height: 1.5;
     display: flex;
-    height: 100vh;
+    height: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.body-app {
+    display: flex;
     flex-direction: row;
-    gap: 0.3rem;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    height: calc(100% - 5.5rem);
+    min-height: 0;
+}
+
+
+.drag-area {    
+    margin: 0;
+    position: relative;     
+    height: 2.3rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--border-radius-sm);
+    align-items: center;
+    padding:12px;
+}
+
+.window-controls {
+    background: transparent;
+    position: absolute;
+    display: flex;
+    gap: 0.1rem;
+    border: none;
+    color: white;
+    font-size: 14px;
+    right: 0; 
+    padding: 0.1rem;
+}
+
+.window-controls button {
+    -webkit-user-drag: none;
+    border: none;
+    background: inherit;
+    cursor: pointer;
+}
+
+.window-controls button:hover {
+    border: var(--text-color);
+    background: white;
 }
 
 /* ===== Utility Classes ===== */
@@ -214,85 +270,6 @@ body {
     background: var(--input-bg-transparent);
     backdrop-filter: blur(10px);
 }
-
-
-
-
-
-
-
-
-/* Уведомления */
-
-.notification-container .block {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    background: var(--dark-bg);
-    border-radius: var(--border-radius-md);
-}
-
-.notification-container .block .body {
-     display: flex;
-     flex-direction: column;
-     width: 100%;
-}
-
-.notification-container .block .body h4, p {
-    margin: 0;
-}
-
-.notification-container .block .body .datetime {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.notification-container .block .icon {
-    display: flex;
-    font-size: 2rem;
-    justify-content: center;
-    align-items: center;
-    min-width: 5rem;
-}
-
-.notification-container .block .remove {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 5rem;
-    min-height: 5rem;
-}
-
-.notification-container .block .remove button {
-    appearance: none;
-    background: none;
-    border: none;
-    color: wheat;
-    width: 3rem;
-}
-
-.notification-container .block .remove button svg {
-    fill: var(--danger-color);
-}
-
-.notification-container .block .remove button svg:hover {
-    cursor: pointer;
-    fill: var(--danger-dark);
-}
-
-
-
-
-
 
 
 /* Конвертер */

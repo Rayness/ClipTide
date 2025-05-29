@@ -5,6 +5,7 @@ import json
 import webview
 from app.utils.config import load_config
 from app.utils.notifications import load_notifications
+from app.utils.themes import get_themes
 from app.utils.translations import load_translations
 from app.core import PublicWebViewApi, WebViewApi
 from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg
@@ -18,8 +19,12 @@ def startApp():
     update_js = str(update).lower()
     notifications = load_notifications()
 
+    themes = get_themes()
+
     config = load_config()
     language = config.get("Settings", "language", fallback="en")
+    theme = config.get("Settings", "theme", fallback="default")
+    style = config.get("Settings", "style", fallback="default")
 
     translations = load_translations(language)
 
@@ -37,7 +42,9 @@ def startApp():
         download_folder = download_folder,
         download_queue = download_queue,
         update = update_js,
-        notifications=notifications
+        notifications=notifications,
+        theme=theme,
+        style=style
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -49,7 +56,8 @@ def startApp():
         height=780,
         width=1000,
         resizable=True,
-        text_select=True
+        text_select=True,
+        frameless=True
     )
     real_api.set_window(window)
 
@@ -63,6 +71,8 @@ def startApp():
         window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
         window.evaluate_js(f'setLanguage("{language}")')
         window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
+        window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
+        
     
     window.events.loaded += on_loaded
 
