@@ -443,7 +443,6 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
 }
 
 /* Основной функционал */
@@ -801,7 +800,6 @@ html, body {
     padding: 0.5rem;
     overflow-x: hidden;
     overflow-y: auto;
-
 }
 
 .settings-block .sections {
@@ -812,6 +810,7 @@ html, body {
 
 .settings-block .sections h3 {
     margin: 0;
+    margin-bottom: 0.5rem;
 }
 
 .download-settings {

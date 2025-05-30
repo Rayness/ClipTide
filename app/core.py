@@ -2,7 +2,7 @@
 
 from app.modules.downloader import Downloader
 from app.modules.converter import Converter
-from app.modules.settings import SettingsManager
+from app.modules.settings import SettingsManager, open_folder
 from app.utils.notifications import save_notifications, delete_notification, mark_notification_as_read
 from app.utils.themes import get_themes
 
@@ -31,11 +31,17 @@ class PublicWebViewApi:
     def choose_folder(self):
         self._api.settings.choose_folder()
 
+    def switch_converter_folder(self):
+        self._api.settings.switch_converter_folder()
+
     def switch_download_folder(self):
         self._api.settings.switch_download_folder()
 
-    def open_folder(self):
-        self._api.settings.open_folder()
+    def choose_converter_folder(self):
+        self._api.settings.choose_converter_folder()
+
+    def open_folder(self, folder):
+        open_folder(folder)
 
     def launch_update(self):
         self._api.settings.launch_update()
@@ -83,12 +89,13 @@ class PublicWebViewApi:
 
 
 class WebViewApi:
-    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style=""):
+    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder=""):
         self.window = None
         self.translations = translations
         self.update = update
         self.language = language
         self.download_folder = download_folder
+        self.converterFolder = converter_folder
         self.download_queue = download_queue
         self.notifications = notifications
         self.theme = theme
@@ -99,9 +106,9 @@ class WebViewApi:
 
     def set_window(self, window):
         self.window = window
-        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme)
+        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme, self.converterFolder)
         self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications)
-        self.converter = Converter(window, self.translations, self.download_folder, self.notifications)
+        self.converter = Converter(window, self.translations, self.converterFolder, self.notifications)
         print("При инициализации окна: ", self.notifications)
 
 

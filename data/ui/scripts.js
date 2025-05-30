@@ -332,6 +332,10 @@ window.updateDownloadFolder = function(folder_path) {
     document.getElementById('folder_path').placeholder = folder_path;
 }
 
+window.updateConvertFolder = function(folder_path) {
+    document.getElementById('conv_folder_path').placeholder = folder_path;
+}
+
 document.getElementById("stopBtn").addEventListener('click', function() {
     window.pywebview.api.stopDownload();
     window.pywebview.api.stop_conversion()
@@ -347,7 +351,22 @@ document.getElementById("byDefoult").addEventListener("click", function() {
 })
 
 document.getElementById("openFolder").addEventListener("click", () =>{
-    window.pywebview.api.open_folder();
+    folder = document.getElementById('folder_path').placeholder
+    window.pywebview.api.open_folder(folder);
+})
+
+document.getElementById("chooseButton-conv").addEventListener("click", function() {
+    // Вызов метода Python через pywebview
+    window.pywebview.api.choose_converter_folder();
+});
+
+document.getElementById("byDefoult-conv").addEventListener("click", function() {
+    window.pywebview.api.switch_converter_folder()
+})
+
+document.getElementById("openFolder-conv").addEventListener("click", () =>{
+    folder = document.getElementById('conv_folder_path').placeholder
+    window.pywebview.api.open_folder(folder);
 })
 
 document.getElementById("update").addEventListener("click", function(){

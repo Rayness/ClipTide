@@ -9,12 +9,12 @@ from app.utils.converter_utils import get_thumbnail_base64, print_video_info
 from app.modules.settings import open_folder
 
 class Converter():
-    def __init__(self, window, translations, download_folder, notifications):
+    def __init__(self, window, translations, output_path, notifications):
         self.window = window
         self.translations = translations
         self.notifications = notifications
         self.convert_video_path = None
-        self.download_folder = download_folder
+        self.output_path = output_path
 
 # функция для выбора видео для конвертации
     def openFile(self):
@@ -71,7 +71,7 @@ class Converter():
     def convert_video(self, output_format):
         try:
             filename = os.path.splitext(os.path.basename(self.convert_video_path))[0]
-            output_path = os.path.join(self.download_folder, f"{filename}.{output_format}")
+            output_path = os.path.join(self.output_path, f"{filename}.{output_format}")
 
             print(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("converting")}"')
                 
@@ -137,7 +137,7 @@ class Converter():
                     self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("convert_success")}"')
                     self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
                     time.sleep(2)
-                    open_folder(self.download_folder)
+                    open_folder(self.output_path)
                     self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
                     self.window.evaluate_js(f'closeVideo()')
                     self.window.evaluate_js(f'hideSpinner()')

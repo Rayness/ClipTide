@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link id="theme-link" rel="stylesheet" href="themes/default/styles.css">
+    <link id="theme-link" rel="stylesheet" href="themes/cliptide/styles.css">
     <!-- <link rel="stylesheet" href="/data/fontawesome/css/all.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>ClipTide Video Downloader</title>
@@ -229,21 +229,21 @@
                                 </div>
                                 <label for="folder_path" id="folder_title">Путь к папке конвертации: </label>
                                 <div class="folder-controls">
-                                    <input class="input-folder" disabled type="text" id="folder_path" placeholder="">
+                                    <input class="input-folder" disabled type="text" id="conv_folder_path" placeholder="">
                                     
                                     <div class="folder-icons">
                                         <div class="tooltip-wrap">
-                                            <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                            <button class="icon-btn small" id="byDefoult-conv"><i class="fa-solid fa-clock-rotate-left"></i></button>
                                             <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
                                         </div>
                                         
                                         <div class="tooltip-wrap">
-                                            <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
+                                            <button class="icon-btn small" id="chooseButton-conv"><i class="fa-solid fa-folder"></i></button>
                                             <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
                                         </div>
                                         
                                         <div class="tooltip-wrap">
-                                            <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
+                                            <button class="icon-btn small" id="openFolder-conv"><i class="fa-solid fa-folder-open"></i></button>
                                             <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
                                         </div>
                                     </div>
@@ -253,12 +253,12 @@
                                 <h3>Оформление: </h3>
                                 <div class="themes">
                                     <label for="">Тема: </label>
-                                    <select class="theme-selector" name="" id="theme">
+                                    <select class="select-control theme-selector" name="" id="theme">
                                         <!-- <option value="default">Default</option>
                                         <option value="classic">Classic</option> -->
                                     </select>
                                     <label for="">Стиль: </label>
-                                    <select class="theme-selector" name="style-selector" id="style">
+                                    <select class="select-control theme-selector" name="style-selector" id="style">
                                         <!-- <option value="dark">Dark</option>
                                         <option value="light">Light</option>
                                         <option value="wave">Wave</option> -->

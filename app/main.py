@@ -31,6 +31,7 @@ def startApp():
     download_queue = load_queue_from_file()
 
     download_folder = config.get("Settings", "folder_path", fallback="downloads")
+    converter_folder = config.get("Settings", "converter_folder", fallback="downloads")
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
     print(config, translations, language)
 
@@ -44,7 +45,8 @@ def startApp():
         update = update_js,
         notifications=notifications,
         theme=theme,
-        style=style
+        style=style,
+        converter_folder=converter_folder
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -66,6 +68,7 @@ def startApp():
 
     def on_loaded():
         window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
+        window.evaluate_js(f'updateConvertFolder({json.dumps(converter_folder)})')
         window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
         window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
         window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')

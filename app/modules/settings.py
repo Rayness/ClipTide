@@ -12,10 +12,11 @@ from app.utils.config import load_config, save_config
 config = load_config()
 
 class SettingsManager():
-    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None):
+    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None, converterFolder = None):
         self.window = window
         self.language = language
         self.folder = folder
+        self.converterFolder = converterFolder
         self.translations = translations
         self.update = update
         self.theme = theme
@@ -62,6 +63,13 @@ class SettingsManager():
         print("Folder_path: " + folder_path, "download_folder: " + self.download_folder)
         self.window.evaluate_js(f'updateDownloadFolder({json.dumps(self.folder)})')
 
+    def switch_converter_folder(self, folder_path=f'{download_dir}'):
+        self.converterFolder = folder_path if folder_path is not None else download_dir
+        config.set("Settings", "converter_folder", self.converterFolder)
+        save_config(config)
+        print("Converter Folder: " + folder_path)
+        self.window.evaluate_js(f'updateConvertFolder({json.dumps(folder_path)})')
+
     # Функция для выбора папки для загрузки
     def choose_folder(self):
         # Открытие диалогового окна для выбора папки
@@ -73,6 +81,16 @@ class SettingsManager():
             self.switch_download_folder(folder_path)
         except Exception as e:
             print(f"Ошибка при выборе папки: {e}")
+        root.destroy()
+
+    def choose_converter_folder(self):
+        root = Tk()
+        root.withdraw()
+        try:
+            folder_path = filedialog.askdirectory()
+            self.switch_converter_folder(folder_path)
+        except Exception as e:
+            print(f"Ошибка при выборе папка: {e}")
         root.destroy()
 
 # Функция для открытия папки с загрузками
