@@ -24,7 +24,7 @@ This small program is designed to download video content in audio and video form
 ## How to run:
 - Like any other application;
 - If you downloaded the installer, then run it and follow the installation instructions;
-- If you downloaded the archive, then extract the contents to any folder and run "YT-Downloader"
+- If you downloaded the archive, then extract the contents to any folder and run "ClipTide.exe"
 
 ## How to use:
 After launching the graphical interface, you need to:
