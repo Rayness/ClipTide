@@ -1,8 +1,7 @@
 [![Supported Python Versions](https://img.shields.io/badge/python-3.12%20%7C%203.13-%234B8BBE)](https://www.python.org/downloads/) [![Downloads](https://img.shields.io/github/downloads/Rayness/YouTube-Downloader/total)](https://github.com/Rayness/YouTube-Downloader/releases) [![Release date](https://img.shields.io/github/release-date/Rayness/YouTube-Downloader)]() [![Version tag](https://img.shields.io/github/v/tag/Rayness/YouTube-Downloader)]()
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fa32ee50-105d-4d10-8bb8-fb4fc58e300c" width="500">
+  <img src="https://github.com/user-attachments/assets/9b7b0afc-d138-4496-9e87-176246057eeb" width="500">
 </p>
-
 
 [English Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.md)
 • [Russian Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
