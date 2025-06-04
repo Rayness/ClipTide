@@ -22,9 +22,11 @@ def startApp():
     themes = get_themes()
 
     config = load_config()
+    
     language = config.get("Settings", "language", fallback="en")
-    theme = config.get("Settings", "theme", fallback="default")
-    style = config.get("Settings", "style", fallback="default")
+
+    theme = config.get("Themes", "theme", fallback="default")
+    style = config.get("Themes", "style", fallback="default")
 
     translations = load_translations(language)
 
@@ -56,10 +58,11 @@ def startApp():
         html_file_path,
         js_api=public_api,
         height=780,
-        width=1000,
+        width=1200,
         resizable=True,
         text_select=True,
-        frameless=True
+        frameless=True,
+        
     )
     real_api.set_window(window)
 

@@ -46,12 +46,12 @@ class SettingsManager():
     
     def switch_theme(self, theme):
         self.theme = theme
-        config.set("Settings", "theme", self.theme)
+        config.set("Themes", "theme", self.theme)
         save_config(config)
 
     def switch_style(self, style):
         self.style = style
-        config.set("Settings", "style", self.style)
+        config.set("Themes", "style", self.style)
         save_config(config)
 
     # Функция для смены папки загрузок

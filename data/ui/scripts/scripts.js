@@ -170,7 +170,7 @@ function addVideoToList(videoTitle, thumbnailUrl, format, resolution) {
 
     // Создаем кнопку удаления
     const deleteButton = document.createElement("button");
-    deleteButton.innerText = "Удалить";
+    deleteButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
     deleteButton.classList.add("delete-button");
     deleteButton.onclick = function () {
         removeVideoFromQueue(videoTitle); // Вызываем функцию для удаления видео
@@ -231,7 +231,7 @@ window.loadQueue = function(queue) {
 
         // Создаем кнопку удаления
         const deleteButton = document.createElement("button");
-        deleteButton.innerText = "Удалить";
+        deleteButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
         deleteButton.classList.add("delete-button");
         deleteButton.onclick = function () {
             removeVideoFromQueue(video[1]); // Вызываем функцию для удаления видео
