@@ -692,6 +692,10 @@ html, body {
     box-shadow: var(--shadow-sm);
 }
 
+.input-folder:disabled {
+    color: transparent;
+}
+
 .select-control option {
     background-color: var(--input-bg);
 }
@@ -1111,11 +1115,11 @@ html, body {
     background-color: var(--input-bg-transparent);
 }
 
-.sections .section h3 {
+/* .sections .section h3 {
     border-radius: var(--border-radius-sm);
     padding: 0.5rem;
     background-color: var(--input-bg);
-}
+} */
 
 .switch input {
     opacity: 0;

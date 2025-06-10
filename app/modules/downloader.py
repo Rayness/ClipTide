@@ -9,7 +9,7 @@ from app.utils.queue import save_queue_to_file
 from app.utils.notifications import add_notification
 
 class Downloader():
-    def __init__(self, window, translations, download_queue, download_folder, notifications):
+    def __init__(self, window, translations, download_queue, download_folder, notifications, proxy_url, proxy):
         self.window = window
         self.translations = translations
         self.download_queue = download_queue
@@ -17,6 +17,8 @@ class Downloader():
         self.notifications = notifications
         self.is_downloading = False
         self.download_stop = False
+        self.proxy_url = proxy_url
+        self.proxy = proxy
 
 
 # Функция для удаления видео из очереди
@@ -47,8 +49,18 @@ class Downloader():
     # Функция для добавления видео в очередь
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
         try:
+            opt = {
+                'proxy': f'{self.proxy_url}',
+                'nocheckcertificate': True,
+                'cookies': f'{COOKIES_FILE}'
+            }
+            if self.proxy != "False":
+                opt['proxy'] = self.proxy_url
+            else:
+                opt['proxy'] = ''
             # Извлекаем информацию о видео (название)
-            with yt_dlp.YoutubeDL() as ydl:
+            with yt_dlp.YoutubeDL(opt) as ydl:
+                print(opt)
                 info = ydl.extract_info(video_url, download=False)
                 video_title_get = info.get('title', 'Неизвестное видео')
                 thumbnail_url = info.get('thumbnail', '')
@@ -137,7 +149,9 @@ class Downloader():
         try:
             if (selected_format != 'mp3'):
                 # Настройки для yt-dlp
+                print(self.proxy_url)
                 ydl_opts = {
+                    'proxy': f'',
                     'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
                     'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
                     'outtmpl': f'{download_folder}/{video_title}.{selected_format}',  # Путь для сохранения
@@ -149,6 +163,7 @@ class Downloader():
                 }
             else:
                 ydl_opts = {
+                    'proxy': f'',
                     'format': 'bestaudio/best',
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
@@ -162,6 +177,10 @@ class Downloader():
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
                 }
 
+            if self.proxy != "False":
+                ydl_opts['proxy'] = self.proxy_url
+            else:
+                ydl_opts['proxy'] = ''
 
             # Загружаем видео
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:

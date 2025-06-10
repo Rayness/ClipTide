@@ -71,3 +71,7 @@ function mark_notification_as_read(id) {
     }
     window.pywebview.api.mark_notification_as_read(id);
 }
+
+function load_settingsNotificatios() {
+    
+}

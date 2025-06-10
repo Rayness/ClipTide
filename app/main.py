@@ -22,11 +22,14 @@ def startApp():
     themes = get_themes()
 
     config = load_config()
-    
+
     language = config.get("Settings", "language", fallback="en")
 
     theme = config.get("Themes", "theme", fallback="default")
     style = config.get("Themes", "style", fallback="default")
+
+    proxy = config.get("Proxy", "url", fallback="")
+    proxy_enabled = config.get("Proxy", "enabled", fallback="False")
 
     translations = load_translations(language)
 
@@ -37,7 +40,7 @@ def startApp():
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
     print(config, translations, language)
 
-    print("ЗАПУСК")
+    print("ЗАПУСК", proxy_enabled)
 
     real_api = WebViewApi(
         translations = translations,
@@ -48,7 +51,9 @@ def startApp():
         notifications=notifications,
         theme=theme,
         style=style,
-        converter_folder=converter_folder
+        converter_folder=converter_folder,
+        proxy_url=proxy,
+        proxy=proxy_enabled
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -77,6 +82,7 @@ def startApp():
         window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
         window.evaluate_js(f'setLanguage("{language}")')
         window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
+        window.evaluate_js(f'loadproxy("{proxy}",{json.dumps(proxy_enabled)})')
         window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
         
     

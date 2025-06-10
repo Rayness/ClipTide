@@ -70,3 +70,4 @@ document.getElementById("style").addEventListener('change', () => {
     const style = document.getElementById('style').value || 'dark';
     changeStyle(style);
 })
+

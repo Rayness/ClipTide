@@ -12,7 +12,7 @@ from app.utils.config import load_config, save_config
 config = load_config()
 
 class SettingsManager():
-    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None, converterFolder = None):
+    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None, converterFolder = None, proxy_url = "", proxy = "False"):
         self.window = window
         self.language = language
         self.folder = folder
@@ -22,6 +22,8 @@ class SettingsManager():
         self.theme = theme
         self.style = style
         self.notifications = notifications
+        self.proxy_url = proxy_url
+        self.proxy = proxy
 
     # Запуск программы обновления
     def launch_update(self):
@@ -52,6 +54,16 @@ class SettingsManager():
     def switch_style(self, style):
         self.style = style
         config.set("Themes", "style", self.style)
+        save_config(config)
+
+    def switch_proxy_url(self, proxy):
+        self.proxy_url = proxy
+        config.set("Proxy", "url", self.proxy_url)
+        save_config(config)
+
+    def switch_proxy(self, proxy):
+        self.proxy = proxy
+        config.set("Proxy", "enabled", self.proxy)
         save_config(config)
 
     # Функция для смены папки загрузок

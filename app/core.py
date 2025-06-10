@@ -86,10 +86,17 @@ class PublicWebViewApi:
     def get_themes(self):
         themes = get_themes()
         return themes
+    
+    def switch_proxy_url(self, proxy):
+        self._api.settings.switch_proxy_url(proxy)
+        self._api.downloader.proxy_url = proxy
 
+    def switch_proxy(self, proxy):
+        self._api.settings.switch_proxy(proxy)
+        self._api.downloader.proxy = proxy
 
 class WebViewApi:
-    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder=""):
+    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False"):
         self.window = None
         self.translations = translations
         self.update = update
@@ -103,11 +110,13 @@ class WebViewApi:
         self.settings = None
         self.downloader = None
         self.converter = None
+        self.proxy_url = proxy_url
+        self.proxy = proxy
 
     def set_window(self, window):
         self.window = window
-        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme, self.converterFolder)
-        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications)
+        self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme, self.converterFolder, self.proxy_url, self.proxy)
+        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications, self.proxy_url, self.proxy)
         self.converter = Converter(window, self.translations, self.converterFolder, self.notifications)
         print("При инициализации окна: ", self.notifications)
 
