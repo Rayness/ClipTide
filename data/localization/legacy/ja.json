@@ -1,0 +1,105 @@
+{
+    "video_url":"動画のURLを入力",
+    "audio_only":"オーディオのみ",
+    "audio_text":"オーディオ",
+    "formatト":"フォーマット:",
+    "resolution":"解像度:",
+    "add_to_queue":"キューに追加",
+    "start_downloading":"ダウンロードを開始する",
+    "status":{
+        "status_text":"ステータス:待機中です。..",
+        "unknown_video":"不明なビデオ",
+        "download_success":"ビデオが正常にダウンロードされました",
+        "download_error":"ダウンロード中にエラーが発生しました",
+        "to_queue":"ビデオがキューに追加されました",
+        "in_format":"フォーマット中",
+        "in_resolution":"解決中",
+        "error_adding":"ビデオの追加中にエラーが発生しました:",
+        "downloading_already":"ダウンロードは既に開始されています。",
+        "the_queue_is_empty":"キューは空です。 ダウンロードするものは何もありません。",
+        "the_queue_is_empty_download_success":"キューが空です。 ダウンロードするものは何もありません。",
+        "download_started":"ダウンロードが開始されました。",
+        "downloading":"ダウンロード",
+        "removed_from_queue":"キューから削除されたビデオ",
+        "error_removing":"削除時のエラー:",
+        "converting":"変換",
+        "convert_success":"変換が正常に完了しました",
+        "convert_stopped":"変換がキャンセルされました",
+        "download_ended":"ダウンロードが完了しました。.."
+    },
+    "queue":"キュー:",
+    "progress":"進捗状況:",
+    "speed":"スピード:",
+    "bs":"B/s",
+    "mbs":"MB/s",
+    "eta":"残された時間:",
+    "min":"min",
+    "sec":"sec",
+    "error":"エラー",
+
+    "sections": {
+        "coming_soon":"近日公開予定",
+        "video_downloader":"ビデオダウンローダー",
+        "converter":"コンバータ",
+        "queue":"キュー",
+        "setting":"設定",
+        "profile":"プロフィール",
+        "notifications":"通知"
+    },
+
+    "settings" :{
+        "settings_text":"設定",
+        "language":"言語: ",
+        "russian" : "Русский",
+        "english" : "English",
+        "polish" : "Polski",
+        "ukraine" : "Український",
+        "german" : "Deutsch",
+        "french" : "Français",
+        "japan" : "日本語",
+        "chinese" : "中文",
+        "update_text_ready":"利用可能な更新",
+        "update_text_not_ready":"更新は必要ありません",
+        "update_text_error":"バージョンの取得中にエラーが発生しました",
+        "update_button":"アップデータを実行",
+        "folder":"ダウンロードフォルダ:",
+        "choose_folder":"ダウンロードフォルダの変更",
+        "open_folder":"ダウンロードフォルダを開く",
+        "by_defoult":"デフォルトのフォルダを復元する",
+        "auto_update":"自動更新",
+        "button_apply":"適用",
+        "placeholder":"ダウンロードフォルダへのパス"
+    },
+
+    "notifications":{
+        "video_title":"ダウンロード完了！",
+        "video_message_1":"ビデオ",
+        "video_message_2":"正常にダウンロードされました！",
+        "queue_title":"ダウンロード完了",
+        "queue_message":"キュー内のすべての動画がダウンロードされました",
+        "convert_title":"変換が完了しました"
+    },
+
+"converter":{
+        "click_for_add_video":"クリックして動画を選択",
+        "conversion_settings":"変換設定",
+        "conversion_button":"変換",
+        "format":"フォーマット:",
+        "close_video":"キャンセル",
+        
+        "video_info":{
+            "title":"動画情報:",
+            "duration":"期間:",
+            "framerate":"フレームレート:",
+            "video_codec":"ビデオコーデック:",
+            "video_bitrate":"ビデオビットレート:",
+            "audio_codec":"オーディオコーデック:",
+            "audio_bitrate":"オーディオビットレート:"
+            },
+        
+
+        "video_add":"動画が追加されました",
+        "video_error":"ビデオの追加中にエラーが発生しました",
+        "video_adding":"ビデオの追加"
+    }
+}

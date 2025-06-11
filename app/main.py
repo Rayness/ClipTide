@@ -28,6 +28,9 @@ def startApp():
     theme = config.get("Themes", "theme", fallback="default")
     style = config.get("Themes", "style", fallback="default")
 
+    notifi_download = config.get("Notifications", "downloads", fallback="True")
+    notifi_conversion = config.get("Notifications", "conversion", fallback="True")
+
     proxy = config.get("Proxy", "url", fallback="")
     proxy_enabled = config.get("Proxy", "enabled", fallback="False")
 
@@ -40,7 +43,7 @@ def startApp():
     auto_update = config.getboolean("Settings", "auto_update", fallback=False)
     print(config, translations, language)
 
-    print("ЗАПУСК", proxy_enabled)
+    print("ЗАПУСК", proxy_enabled, notifi_download)
 
     real_api = WebViewApi(
         translations = translations,
@@ -53,7 +56,9 @@ def startApp():
         style=style,
         converter_folder=converter_folder,
         proxy_url=proxy,
-        proxy=proxy_enabled
+        proxy=proxy_enabled,
+        notifi_download=notifi_download,
+        notifi_conversion=notifi_conversion
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -67,7 +72,6 @@ def startApp():
         resizable=True,
         text_select=True,
         frameless=True,
-        
     )
     real_api.set_window(window)
 
@@ -83,6 +87,7 @@ def startApp():
         window.evaluate_js(f'setLanguage("{language}")')
         window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
         window.evaluate_js(f'loadproxy("{proxy}",{json.dumps(proxy_enabled)})')
+        window.evaluate_js(f'load_settingsNotificatios("{notifi_download}","{notifi_conversion}")')
         window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
         
     

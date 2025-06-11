@@ -42,6 +42,7 @@ class PublicWebViewApi:
 
     def open_folder(self, folder):
         open_folder(folder)
+        print(folder)
 
     def launch_update(self):
         self._api.settings.launch_update()
@@ -95,8 +96,15 @@ class PublicWebViewApi:
         self._api.settings.switch_proxy(proxy)
         self._api.downloader.proxy = proxy
 
+    def switch_notifi(self, type, enabled):
+        self._api.settings.switch_notifi(type, enabled)
+        if type == "downloads":
+            self._api.downloader.notification = enabled
+        if type == "conversion":
+            self._api.converter.notification = enabled
+
 class WebViewApi:
-    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False"):
+    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False", notifi_download = "True", notifi_conversion = "True"):
         self.window = None
         self.translations = translations
         self.update = update
@@ -112,12 +120,14 @@ class WebViewApi:
         self.converter = None
         self.proxy_url = proxy_url
         self.proxy = proxy
+        self.notifi_download = notifi_download
+        self.notifi_conversion = notifi_conversion
 
     def set_window(self, window):
         self.window = window
         self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme, self.converterFolder, self.proxy_url, self.proxy)
-        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications, self.proxy_url, self.proxy)
-        self.converter = Converter(window, self.translations, self.converterFolder, self.notifications)
+        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications, self.proxy_url, self.proxy, self.notifi_download)
+        self.converter = Converter(window, self.translations, self.converterFolder, self.notifications, self.notifi_conversion)
         print("При инициализации окна: ", self.notifications)
 
 

@@ -1,8 +1,7 @@
-
-
 from datetime import datetime
 import json
 import os
+import winsound
 
 from app.utils.const import NOTIFICATION_FILE
 
@@ -32,6 +31,7 @@ def add_notification(title, message, source, type="local"):
     }
     notifications.append(new_notification)
     save_notifications(notifications)
+    winsound.MessageBeep(winsound.MB_ICONASTERISK) 
     return notifications
 
 def delete_notification(notification_id):

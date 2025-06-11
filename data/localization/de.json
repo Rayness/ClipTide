@@ -7,38 +7,38 @@
     "add_to_queue" : "Zur Warteschlange hinzufügen",
     "start_downloading" : "Download starten",
     "status" : {
-        "status_text" : "Status: Warten...",
-        "unknown_video" : "Unbekanntes Video",
-        "download_success" : "Video erfolgreich heruntergeladen",
+        "status_text" : "Status: Ausstehend...",
+        "unknown video" : "Unbekanntes Video",
+        "download_success" : "Das Video wurde erfolgreich heruntergeladen",
         "download_error" : "Fehler beim Herunterladen",
         "to_queue" : "Video zur Warteschlange hinzugefügt",
         "in_format" : "im Format",
         "in_resolution" : "in Auflösung",
         "error_adding" : "Fehler beim Hinzufügen des Videos:",
-        "downloading_already" : "Download bereits gestartet.",
-        "the_queue_is_empty" : "Die Warteschlange ist leer. Nichts zum Herunterladen.",
-        "the_queue_is_empty_download_success" : "Die Warteschlange ist leer. Nichts zum Herunterladen.",
-        "download_started" : "Download gestartet.",
-        "downloading" : "Herunterladen",
-        "removed_from_queue" : "Video aus Warteschlange entfernt: ",
-        "error_removing" : "Fehler beim Entfernen aus der Warteschlange: ",
-        "converting" : "Konvertiere",
-        "convert_success" : "Konvertierung erfolgreich abgeschlossen",
-        "convert_stopped" : "Konvertierung wurde abgebrochen",
+        "downloading_already" : "Der Download wurde bereits ausgeführt.",
+        "the_queue_is_empty" : "Die Warteschlange ist leer. Es gibt nichts zu laden.",
+        "the_queue_is_empty_download_success" : "Die Warteschlange ist leer. Es gibt nichts zu laden.",
+        "download_started" : "Der Download wurde gestartet.",
+        "downloading" : "Ich lade es herunter",
+        "removed_from_queue" : "Das Video wurde aus der Warteschlange entfernt: ",
+        "error_removing" : "Das Video wurde aus der Warteschlange entfernt: ",
+        "converting" : "Konvertierung",
+        "convert_success" : "Die Konvertierung wurde erfolgreich abgeschlossen",
+        "convert_stopped" : "Die Konvertierung wurde abgebrochen",
         "download_ended" : "Der Download ist abgeschlossen..."
     },
     "queue" : "Warteschlange: ",
     "progress" : "Fortschritt: ",
     "speed" : "Geschwindigkeit: ",
-    "bs" : "B/s",
+    "eta" : "Noch übrig: ",
+    "bs" : "B/c",
     "mbs" : "MB/s",
-    "eta" : "Verbleibende Zeit: ",
-    "min" : "Min",
-    "sec" : "Sek",
+    "min" : "min",
+    "sec" : "sec",
     "error": "Fehler",
 
     "sections": {
-        "coming_soon": "Demnächst verfügbar",
+        "coming_soon": "Bald",
         "video_downloader": "Video-Downloader",
         "converter": "Konverter",
         "queue": "Warteschlange",
@@ -48,57 +48,96 @@
     },
 
     "settings" : {
-        "settings_text" : "Einstellungen",
-        "language" : "Sprache: ",
-        "russian" : "Русский",
-        "english" : "English",
-        "polish" : "Polski",
-        "ukraine" : "Український",
-        "german" : "Deutsch",
-        "french" : "Français",
-        "japan" : "日本語",
-        "chinese" : "中文",
-        "update_text_ready" : "Update verfügbar",
-        "update_text_not_ready" : "Kein Update erforderlich",
-        "update_text_error" : "Fehler beim Abrufen der Version",
-        "update_button" : "Updater starten",
-        "folder" : "Download-Ordner: ",
-        "choose_folder" : "Download-Ordner ändern",
-        "open_folder" : "Download-Ordner öffnen",
-        "by_defoult" : "Standardordner wiederherstellen",
-        "auto_update" : "Automatisches Update",
-        "button_apply" : "Übernehmen",
-        "placeholder" : "Pfad zum Download-Ordner"
+        "title" : "Einstellungen",
+        "language" : {
+            "title" : "Spracheinstellungen verwalten",
+            "language" : "Sprache: ",
+            "russian" : "Русский",
+            "english" : "English",
+            "polish" : "Polski",
+            "ukraine" : "Український",
+            "german" : "Deutsch",
+            "french" : "Français",
+            "japan" : "日本語",
+            "chinese" : "中文",
+            "open_folder" : "Lokalisierter Ordner öffnen"
+        },
+        "themes" : {
+            "decoration" : "Dekoration verwalten",
+            "theme" : "Thema: ",
+            "style" : "Style: ",
+            "open_folder" : "Ordner mit Themen öffnen"
+        },
+        "folders": {
+            "title" : "Ordner verwalten",
+            "placeholder_download" : "Pfad zum Download-Ordner",
+            "placeholder_conversion" : "Pfad zum Konvertierungsordner",
+            "choose_download_folder" : "Download-Ordner ändern",
+            "open_download_folder" : "Download-Ordner öffnen",
+            "choose_converter_folder" : "Konvertierungsordner ändern",
+            "open_converter_folder" : "Konvertierungsordner öffnen",
+            "by_defoult" : "Standardordner zurücksetzen"
+        },
+        "notifications" : {
+            "title" : "Benachrichtigungen verwalten",
+            "notifi_download" : "Benachrichtigungen erhalten, wenn der Download abgeschlossen ist",
+            "notifi_conversion" : "Benachrichtigungen erhalten, wenn die Konvertierung abgeschlossen ist"
+        },
+        "proxys" : {
+            "title" : "Proxy-Server verwalten",
+            "turn_on" : "Proxy aktivieren",
+            "reset" : "Den Standardwert zurückgeben",
+            "button_apply" : "Anwenden"
+        },
+        "updates" : {
+            "title" : "Updates verwalten",
+            "update_text_ready" : "Ein Update ist verfügbar",
+            "update_text_not_ready" : "Keine Aktualisierung erforderlich",
+            "update_text_error" : "Fehler beim Abrufen der Version",
+            "update_button" : " Updater starten",
+            "auto_update" : "Automatische Aktualisierung"
+        },
+        "about" : {
+            "title" : "Über die App",
+            "version" : "Version: 1.5.",
+            "date" : "Veröffentlichungsdatum: 11.06.2025"
+        }
     },
 
     "notifications" : {
         "video_title" : "Download abgeschlossen!",
-        "video_message_1": "Video",
-        "video_message_2": "erfolgreich heruntergeladen!",
+        "video_message_1" : "Video ",
+        "video_message_2" : " Erfolgreich heruntergeladen!",
         "queue_title" : "Download abgeschlossen",
-        "queue_message": "Alle Videos in der Warteschlange wurden heruntergeladen",
+        "queue_message" : "Alle Videos in der Warteschlange wurden hochgeladen",
         "convert_title" : "Konvertierung abgeschlossen"
+    },
+
+    "donate" : {
+        "title" : "Donat",
+        "description" : "Wenn es einen Wunsch gibt, finanziell zu helfen und die weitere Entwicklung der App zu beschleunigen!"
     },
 
     "converter": {
         "click_for_add_video" : "Klicken, um ein Video auszuwählen",
         "convertion_settings" : "Konvertierungseinstellungen",
         "conversion_button" : "Konvertieren",
-        "format" : "Format:",
-        "close_video": "Abbrechen",
+        "format" : "Format: ",
+        "close_video" : "Abbrechen",
         
         "video_info" : {
-            "title" : "Videoinformationen:",
-            "duration": "Dauer:",
-            "framerate": "Bildrate:",
-            "video_codec" : "Video-Codec:",
-            "video_bitrate": "Video-Bitrate:",
-            "audio_codec": "Audio-Codec: ",
+            "title" : "Informationen zum Video:",
+            "duration" : "Dauer: ",
+            "framerate" : "Bildrate: ",
+            "video_codec" : "Videocodec: ",
+            "video_bitrate" : "Video-Bitrate: ",
+            "audio_codec" : "Audiocodec: ",
             "audio_bitrate" : "Audio-Bitrate: "
         },
         
-        "video_add": "Video wurde hinzugefügt",
-        "video_error": "Fehler beim Hinzufügen des Videos",
-        "video_adding": "Video wird hinzugefügt"
+
+        "video_add": "Das Video wurde hinzugefügt",
+        "video_error": "Fehler beim Hinzufügen von Videos",
+        "video_adding": "Video hinzufügen"
     }
 }

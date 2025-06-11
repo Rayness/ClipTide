@@ -36,8 +36,6 @@ function loadNotifications(data) {
                 <p>${n.message}</p>
                 <div class="datetime">
                     <p>${n.timestamp}</p>
-                    <p>-</p>
-                    <p>18:30</p>
                 </div>
             </div>
             <div class="remove">
@@ -72,6 +70,40 @@ function mark_notification_as_read(id) {
     window.pywebview.api.mark_notification_as_read(id);
 }
 
-function load_settingsNotificatios() {
+function load_settingsNotificatios(video, conversion) {
+    const switch_down = document.getElementById('switch_notifiDownload');
+    const switch_conv = document.getElementById('switch_notifiConvertion');
+
+    if (video == "True") {
+        switch_down.checked = true
+    } else {
+        switch_down.checked = false
+    };
+
+    if (conversion == "True") {
+        switch_conv.checked = true
+    } else {
+        switch_conv.checked = false
+    }
     
 }
+
+document.getElementById('switch_notifiDownload').addEventListener('change', () => {
+    const checkbox = document.getElementById('switch_notifiDownload');
+    
+    if (checkbox.checked) {
+        window.pywebview.api.switch_notifi("downloads", "True")
+    } else {
+        window.pywebview.api.switch_notifi("downloads", "False")
+    }
+})
+
+document.getElementById('switch_notifiConvertion').addEventListener('change', () => {
+    const checkbox = document.getElementById('switch_notifiConvertion');
+    
+    if (checkbox.checked) {
+        window.pywebview.api.switch_notifi("conversion", "True")
+    } else {
+        window.pywebview.api.switch_notifi("conversion", "False")
+    }
+})

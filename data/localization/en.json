@@ -1,38 +1,38 @@
 {
-    "video_URL" : "Enter video URL",
+    "video_URL" : "Enter the video URL",
     "audio_only" : "Audio only",
     "audio_text": "Audio",
-    "format": "Format: ",
-    "resolution": "Resolution: ",
-    "add_to_queue" : "Add to queue",
+    "format": "Format:",
+    "resolution": "Resolution:",
+    "add_to_queue": "Add to Queue",
     "start_downloading" : "Start downloading",
     "status" : {
-        "status_text" : "Status: Waiting...",
-        "unknown_video" : "Unknown video",
-        "download_success" : "Video downloaded successfully",
-        "download_error" : "Error while downloading",
+        "status_text" : "Status: Pending...",
+        "unknown video" : "Unknown video",
+        "download_success" : "Video uploaded successfully",
+        "download_error" : "Error downloading",
         "to_queue" : "Video added to queue",
-        "in_format" : "in format",
+        "in_format" : "in the format",
         "in_resolution" : "in resolution",
-        "error_adding" : "Error adding video:",
-        "downloading_already" : "Downloading already started.",
-        "the_queue_is_empty" : "The queue is empty. There is nothing to download.",
+        "error_adding": "Error when adding video:",
+        "downloading_already" : "Download has already started.",
+        "the_queue_is_empty": "Queue is empty. There is nothing to load.",
         "the_queue_is_empty_download_success" : "The queue is empty. There is nothing to download.",
-        "download_started" : "Downloading started.",
-        "downloading" : "Downloading",
-        "removed_from_queue" : "Video removed from queue: ",
-        "error_removing" : "Error when deleting from the queue: ",
-        "converting" : "Converting",
-        "convert_success" : "The conversion was completed successfully",
-        "convert_stopped" : "The conversion was canceled",
-        "download_ended" : "Download completion..."
+        "download_started" : "The download has started.",
+        "downloading" : "Uploading",
+        "removed_from_queue" : "Video deleted from queue:",
+        "error_removing" : "Video deleted from queue:",
+        "converting": "Conversion",
+        "convert_success" : "Conversion completed successfully",
+        "convert_stopped" : "Conversion was canceled",
+        "download_ended" : "Download completed..."
     },
     "queue" : "Queue: ",
-    "progress" : "Progress: ",
-    "speed" : "Speed: ",
+    "progress" : "Progress:",
+    "speed": "Speed: ",
+    "eta" : "Remaining:",
     "bs" : "B/s",
     "mbs" : "MB/s",
-    "eta" : "Time left: ",
     "min" : "min",
     "sec" : "sec",
     "error": "Error",
@@ -48,54 +48,92 @@
     },
 
     "settings" : {
-        "settings_text" : "Settings",
-        "language" : "Language: ",
-        "russian" : "Русский",
-        "english" : "English",
-        "polish" : "Polski",
-        "ukraine" : "Український",
-        "german" : "Deutsch",
-        "french" : "Français",
-        "japan" : "日本語",
-        "chinese" : "中文",
-        "update_text_ready" : "Update available",
-        "update_text_not_ready" : "Update not required",
-        "update_text_error" : "Error getting version",
-        "update_button" : "Run Updater",
-        "folder" : "Download folder: ",
-        "choose_folder" : "Change download folder",
-        "open_folder" : "Open download folder",
-        "by_defoult" : "Restore default folder",
-        "auto_update" : "Automatic update",
-        "button_apply" : "Apply",
-        "placeholder" : "Path to the download folder"
+        "title" : "Settings",
+        "language" : {
+            "title" : "Language settings management",
+            "language" : "Language: ",
+            "russian" : "Русский",
+            "english" : "English",
+            "polish" : "Polski",
+            "ukraine" : "Український",
+            "german" : "Deutsch",
+            "french" : "Français",
+            "japan" : "日本語",
+            "chinese" : "中文",
+            "open_folder" : "Open localization folder"
+        },
+        "themes" : {
+            "decoration" : "Design management",
+            "theme" : "Theme:",
+            "style" : "Style:",
+            "open_folder" : "Open a folder with themes"
+        },
+        "folders": {
+            "title" : "Folder management",
+            "placeholder_download": "Path to the downloads folder",
+            "placeholder_conversion": "Path to the conversion folder",
+            "choose_download_folder": "Change the downloads folder",
+            "open_download_folder" : "Open the downloads folder",
+            "choose_converter_folder" : "Change the conversion folder",
+            "open_converter_folder" : "Open the conversion folder",
+            "by_default" : "Return the default folder"
+        },
+        "notifications" : {
+            "title" : "Notification management",
+            "notifi_download" : "Receive notifications of download completion",
+            "notifi_conversion" : "Receive notifications of conversion completion"
+        },
+        "proxys" : {
+            "title" : "Proxy server management",
+            "turn_on" : "Enable Proxy server",
+            "reset" : "Return default value",
+            "button_apply" : "Apply"
+        },
+        "updates" : {
+            "title" : "Update management",
+            "update_text_ready" : "Update available",
+            "update_text_not_ready" : "Update not required",
+            "update_text_error" : "Error getting version",
+            "update_button" : "Run Updater",
+            "auto_update": "Automatic update"
+        },
+        "about" : {
+            "title" : "About the app",
+            "version" : "Version: 1.5.",
+            "date" : "Release date: 11.06.2025"
+        }
     },
 
     "notifications" : {
-        "video_title" : "Download complete!",
-        "video_message_1": "Video",
-        "video_message_2": "successfully downloaded!",
-        "queue_title" : "Download complete",
-        "queue_message": "All videos in the queue have been downloaded",
-        "convert_title" : "The conversion is completed"
+        "video_title" : "Download completed!",
+        "video_message_1" : "Video ",
+        "video_message_2" : "downloaded successfully!",
+        "queue_title" : "Download completed",
+        "queue_message" : "All videos from the queue have been uploaded",
+        "convert_title" : "Conversion completed"
     },
 
-"converter": {
+    "donate" : {
+        "title" : "Donat",
+        "description" : "If there is a desire to help financially and accelerate the further development of the application!"
+    },
+
+    "converter": {
         "click_for_add_video" : "Click to select a video",
         "convertion_settings" : "Conversion settings",
         "conversion_button" : "Convert",
-        "format" : "Format:",
-        "close_video": "Cancel",
+        "format" : "Format: ",
+        "close_video" : "Cancel",
         
         "video_info" : {
             "title" : "Video information:",
             "duration": "Duration:",
             "framerate": "Frame rate:",
             "video_codec" : "Video Codec:",
-            "video_bitrate": "Video bitrate:",
-            "audio_codec": "Audio Codec: ",
+            "video_bitrate" : "Video bitrate:",
+            "audio_codec": "Audio Codec:",
             "audio_bitrate" : "Audio bitrate: "
-            },
+        },
         
 
         "video_add": "Video has been added",

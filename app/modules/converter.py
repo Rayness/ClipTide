@@ -9,12 +9,13 @@ from app.utils.converter_utils import get_thumbnail_base64, print_video_info
 from app.modules.settings import open_folder
 
 class Converter():
-    def __init__(self, window, translations, output_path, notifications):
+    def __init__(self, window, translations, output_path, notifications, notification):
         self.window = window
         self.translations = translations
         self.notifications = notifications
         self.convert_video_path = None
         self.output_path = output_path
+        self.notification = notification
 
 # функция для выбора видео для конвертации
     def openFile(self):

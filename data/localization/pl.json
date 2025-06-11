@@ -1,104 +1,143 @@
 {
-    "video_URL": "Wprowadź adres URL filmu",
-    "audio_only": "Tylko dźwięk",
-    "audio_text": "Dźwięk",
+    "video_URL": "wprowadź adres URL filmu",
+    "audio_only":"Tylko dźwięk",
+    "audio_text":"Audio",
     "format": "Format:",
-    "resolution": "Rozdzielczość",
+    "resolution": "rozdzielczość:",
     "add_to_queue": "Dodaj do kolejki",
     "start_downloading": "Rozpocznij pobieranie",
-    "status": {
+    "status" : {
         "status_text": "Status: oczekiwanie...",
-        "unknown_video": "Nieznane wideo",
-        "download_success": "Wideo pobrane pomyślnie",
-        "download_error": "Błąd podczas pobierania",
-        "to_queue": "Wideo dodane do kolejki",
-        "in_format": "w formacie",
-        "in_resolution": "w rozdzielczości",
-        "error_adding": "Błąd dodawania wideo:",
-        "downloading_already": "Pobieranie już się rozpoczęło.",
+        "unknown video": "nieznany film",
+        "download_success": "wideo zostało pomyślnie pobrane",
+        "download_error" :" błąd podczas pobierania",
+        "to_queue" :" wideo dodane do kolejki",
+        "in_format":"w formacie",
+        "in_resolution":"w rozdzielczości",
+        "error_adding": "błąd podczas dodawania wideo:",
+        "downloading_already": "pobieranie jest już uruchomione.",
         "the_queue_is_empty": "Kolejka jest pusta. Nie ma nic do pobrania.",
-        "the_queue_is_empty_download_success": "Kolejka jest pusta. Nie ma nic do pobrania.",
-        "download_started": "Rozpoczęto pobieranie.",
-        "pobieranie": "Pobieranie",
-        "removed_from_queue": "Wideo usunięte z kolejki:",
-        "error_removing": "Błąd podczas usuwania z kolejki:",
-        "konwertowanie": "Konwertowanie",
-        "convert_success": "Konwersja została zakończona pomyślnie",
+        "The_queue_is_empty_download_success": "Kolejka jest pusta. Nie ma nic do pobrania.",
+        "download_started": "pobieranie rozpoczęte.",
+        "downloading":"pobieram",
+        "removed_from_queue": "wideo usunięte z kolejki:",
+        "error_removing": "wideo usunięte z kolejki:",
+        "converting":"Konwersja",
+        "convert_success" :" konwersja zakończyła się pomyślnie",
         "convert_stopped": "Konwersja została anulowana",
-        "download_ended": "Zakończenie pobierania..."
+        "download_ended": "zakończenie pobierania..."
     },
     "queue": "Kolejka:",
-    "progress": "Postęp:",
+    "progress": "Progress:",
     "speed": "Prędkość:",
-    "bs": "B/s",
-    "MBS": "MB/s",
-    "eta": "Pozostały czas:",
+    "eta": "pozostało:",
+    "bs": "B / C",
+    "mbs":"MB/s",
     "min": "min",
-    "sec": "sek",
-    "error": "Błąd",
+    "sec":"sec",
+    "error":"Błąd",
 
     "sections": {
-        "coming_soon": "Wkrótce",
-        "video_downloader": "Pobieranie wideo",
+        "coming_soon": "wkrótce",
+        "video_downloader":"Video Downloader",
         "converter": "Konwerter",
-        "queue": "Kolejka",
-        "setting": "Ustawienia",
-        "profile": "Profil",
-        "notifications": "Powiadomienia"
+        "Kolejka":"Kolejka",
+        "setting":"Ustawienia",
+        "profile":"Profil",
+        "notifications":"Powiadomienia"
     },
 
-    "settings": {
-        "settings_text": "Ustawienia",
-        "language": "Język: ",
-        "russian" : "Русский",
-        "english" : "English",
-        "polish" : "Polski",
-        "ukraine" : "Український",
-        "german" : "Deutsch",
-        "french" : "Français",
-        "japan" : "日本語",
-        "chinese" : "中文",
-        "update_text_ready" : "Dostępna aktualizacja",
-        "update_text_not_ready" : "Aktualizacja nie jest wymagana",
-        "update_text_error" : "Błąd pobierania wersji",
-        "update_button": "Uruchom aktualizator",
-        "folder": "Folder pobierania:",
-        "choose_folder": "Zmień folder pobierania",
-        "open_folder": "Otwórz folder pobierania",
-        "by_defoult": "Przywróć domyślny folder",
-        "auto_update": "Automatyczna aktualizacja",
-        "button_apply": "Zastosuj",
-        "placeholder": "Ścieżka do folderu pobierania"
+    "settings" : {
+        "title":"Ustawienia",
+        "language" : {
+            "title":"Zarządzaj ustawieniami języka",
+            "language": "Język:",
+            "russian" : "Русский",
+            "english" : "English",
+            "polish" : "Polski",
+            "ukraine" : "Український",
+            "german" : "Deutsch",
+            "french" : "Français",
+            "japan" : "日本語",
+            "chinese" : "中文",
+            "open_folder": "Otwórz folder z lokalizacją"
+        },
+        "themes" : {
+            "decoration":"zarządzanie dekoracjami",
+            "theme": "theme:",
+            "style": "Styl:",
+            "open_folder": "Otwórz folder motywów"
+        },
+        "folders": {
+            "title": "zarządzanie folderami",
+            "placeholder_download": "ścieżka do folderu pobierania",
+            "placeholder_conversion": "ścieżka do folderu konwersji",
+            "choose_download_folder": "Zmień folder pobierania",
+            "open_download_folder": "Otwórz folder pobierania",
+            "choose_converter_folder": "Zmień folder konwersji",
+            "open_converter_folder": "Otwórz folder konwersji",
+            "by_defoult": "Przywróć domyślny folder"
+        },
+        "notifications" : {
+            "title": "Zarządzaj powiadomieniami",
+            "notifi_download": "Otrzymuj powiadomienia o zakończeniu pobierania",
+            "notifi_conversion": "Otrzymuj powiadomienia o zakończeniu konwersji"
+        },
+        "proxys" : {
+            "title": "Zarządzanie serwerem proxy",
+            "turn_on": "Włącz serwer proxy",
+            "reset": "Przywróć wartość domyślną",
+            "button_apply":"Zastosuj"
+        },
+        "updates" : {
+            "title": "Zarządzaj aktualizacjami",
+            "update_text_ready":"dostępna aktualizacja",
+            "update_text_not_ready": "nie jest wymagana aktualizacja",
+            "update_text_error" :" błąd pobierania wersji",
+            "update_button": "Uruchom Updater",
+            "auto_update": "automatyczna aktualizacja"
+        },
+        "about" : {
+            "title" :" o aplikacji",
+            "version": "Wersja: 1.5.",
+            "date": "Data Wydania: 11.06.2025"
+        }
     },
 
-    "notifications": {
+    "notifications" : {
         "video_title": "Pobieranie zakończone!",
-        "video_message_1": "Wideo",
-        "video_message_2": "zostało pomyślnie pobrane!",
+        "video_message_1": "wideo",
+        "video_message_2": "pomyślnie pobrane!",
         "queue_title": "Pobieranie zakończone",
-        "queue_message": "Wszystkie filmy w kolejce zostały pobrane",
-        "convert_title": "Konwersja została zakończona"
+        "queue_message": "wszystkie filmy z kolejki zostały przesłane",
+        "convert_title": "konwersja zakończona"
+    },
+
+    "donate" : {
+        "title":"Donat",
+        "description": "jeśli istnieje chęć pomocy finansowej i przyspieszenia dalszego rozwoju aplikacji!"
     },
 
     "converter": {
         "click_for_add_video": "Kliknij, aby wybrać film",
-        "convertion_settings": "Ustawienia konwersji",
+        "convertion_settings": "ustawienia konwersji",
         "conversion_button": "Konwertuj",
         "format": "Format:",
-        "close_video": "Anuluj",
-
-        "video_info": {
-            "title": "Informacje o filmie:",
-            "duration": "Czas trwania:",
-            "framerate": "Liczba klatek na sekundę:",
-            "video_codec": "Kodek wideo:",
-            "video_bitrate": "Bitrate wideo:",
-            "audio_codec": "Kodek dźwięku:",
-            "audio_bitrate": "Bitrate dźwięku:"
+        "close_video":"Anuluj",
+        
+        "video_info" : {
+            "title": "informacje o filmie:",
+            "duration": "czas trwania:",
+            "framerate": "liczba klatek na sekundę: ",
+            "video_codec": "kodek wideo:",
+            "video_bitrate": "bitrate wideo: ",
+            "audio_codec": "kodek Audio:",
+            "audio_bitrate": "bitrate audio:"
         },
+        
 
-        "video_add": "Wideo zostało dodane",
-        "video_error": "Błąd dodawania wideo",
-        "video_adding": "Dodawanie wideo"
+        "video_add":"film został dodany",
+        "video_error": "błąd dodawania wideo",
+        "video_adding": "dodawanie wideo"
     }
 }

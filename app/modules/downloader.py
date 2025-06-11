@@ -9,7 +9,7 @@ from app.utils.queue import save_queue_to_file
 from app.utils.notifications import add_notification
 
 class Downloader():
-    def __init__(self, window, translations, download_queue, download_folder, notifications, proxy_url, proxy):
+    def __init__(self, window, translations, download_queue, download_folder, notifications, proxy_url, proxy, notification):
         self.window = window
         self.translations = translations
         self.download_queue = download_queue
@@ -19,6 +19,7 @@ class Downloader():
         self.download_stop = False
         self.proxy_url = proxy_url
         self.proxy = proxy
+        self.notification = notification
 
 
 # Функция для удаления видео из очереди
@@ -189,7 +190,8 @@ class Downloader():
             self.removeVideoFromQueue(video_title)
             self.window.evaluate_js(f'hideSpinner()')
             print(f"Видео успешно загружено: {video_title}")
-            self.notifications = add_notification("Загрузка завершена", f"Видео {video_title} успешно загружено", "downloader")
+            if self.notification == "True":
+                self.notifications = add_notification("Загрузка завершена", f"Видео {video_title} успешно загружено", "downloader")
             self.window.evaluate_js(f'loadNotifications({self.notifications})')
             print("Уведомления после загрузки: ", self.notifications)
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('download_success')}: {video_title}"')

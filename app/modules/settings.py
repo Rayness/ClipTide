@@ -1,5 +1,6 @@
 import os
 import json
+import platform
 import subprocess
 from tkinter import Tk, filedialog
 
@@ -66,6 +67,10 @@ class SettingsManager():
         config.set("Proxy", "enabled", self.proxy)
         save_config(config)
 
+    def switch_notifi(self, type, enabled):
+        config.set("Notifications", type, enabled)
+        save_config(config)
+
     # Функция для смены папки загрузок
     def switch_download_folder(self, folder_path=f'{download_dir}'):
         self.folder = folder_path if folder_path is not None else download_dir
@@ -107,6 +112,13 @@ class SettingsManager():
 
 # Функция для открытия папки с загрузками
 def open_folder(download_folder):
+    # try:
+    #     if platform.system() == "Windows":
+    #         subprocess.run(["explorer", download_folder])
+    #     else:
+    #         print("Открытие папки не поддерживается на этой ОС.")
+    # except Exception as e:
+    #     print(f"Ошибка при открытии папки: {e}")
     try:
         os.startfile(f"{download_folder}")
     except Exception as e:

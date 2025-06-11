@@ -48,27 +48,60 @@
     },
 
     "settings" : {
-        "settings_text" : "Настройки",
-        "language" : "Язык: ",
-        "russian" : "Русский",
-        "english" : "English",
-        "polish" : "Polski",
-        "ukraine" : "Український",
-        "german" : "Deutsch",
-        "french" : "Français",
-        "japan" : "日本語",
-        "chinese" : "中文",
-        "update_text_ready" : "Доступно обновление",
-        "update_text_not_ready" : "Обновление не требуется",
-        "update_text_error" : "Ошибка получения версии",
-        "update_button" : " Запустить Updater",
-        "folder" : "Папка для загрузки: ",
-        "choose_folder" : "Изменить папку загрузки",
-        "open_folder" : "Открыть папку загрузки",
-        "by_defoult" : "Вернуть папку по умолчанию",
-        "auto_update" : "Автоматическое обновление",
-        "button_apply" : "Применить",
-        "placeholder" : "Путь к папке загрузок"
+        "title" : "Настройки",
+        "language" : {
+            "title" : "Управление языковыми настройками",
+            "language" : "Язык: ",
+            "russian" : "Русский",
+            "english" : "English",
+            "polish" : "Polski",
+            "ukraine" : "Український",
+            "german" : "Deutsch",
+            "french" : "Français",
+            "japan" : "日本語",
+            "chinese" : "中文",
+            "open_folder" : "Открыть папку с локализацией"
+        },
+        "themes" : {
+            "decoration" : "Управление оформлением",
+            "theme" : "Тема: ",
+            "style" : "Стиль: ",
+            "open_folder" : "Открыть папку с темами"
+        },
+        "folders": {
+            "title" : "Управление папками",
+            "placeholder_download" : "Путь к папке загрузок",
+            "placeholder_conversion" : "Путь к папке конвертации",
+            "choose_download_folder" : "Изменить папку загрузки",
+            "open_download_folder" : "Открыть папку загрузки",
+            "choose_converter_folder" : "Изменить папку конвертации",
+            "open_converter_folder" : "Открыть папку конвертации",
+            "by_defoult" : "Вернуть папку по умолчанию"
+        },
+        "notifications" : {
+            "title" : "Управление уведомлениями",
+            "notifi_download" : "Получать уведомления о завершении загрузки",
+            "notifi_conversion" : "Получать уведомления о завершении конвертации"
+        },
+        "proxys" : {
+            "title" : "Управление прокси сервером",
+            "turn_on" : "Включить Прокси-сервер",
+            "reset" : "Вернуть значение по умолчанию",
+            "button_apply" : "Применить"
+        },
+        "updates" : {
+            "title" : "Управление обновлениями",
+            "update_text_ready" : "Доступно обновление",
+            "update_text_not_ready" : "Обновление не требуется",
+            "update_text_error" : "Ошибка получения версии",
+            "update_button" : " Запустить Updater",
+            "auto_update" : "Автоматическое обновление"
+        },
+        "about" : {
+            "title" : "О приложении",
+            "version" : "Версия: 1.5.",
+            "date" : "Дата выхода: 11.06.2025"
+        }
     },
 
     "notifications" : {
@@ -78,6 +111,11 @@
         "queue_title" : "Загрузка завершена",
         "queue_message" : "Все видео из очереди были загружены",
         "convert_title" : "Конвертация завершена"
+    },
+
+    "donate" : {
+        "title" : "Донат",
+        "description" : "Если есть желание помочь финансово и ускорить дальнейшую разработку приложения!"
     },
 
     "converter": {

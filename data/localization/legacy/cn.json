@@ -1,0 +1,103 @@
+{
+    "video_URL" : "输入视频链接",
+    "audio_only" : "仅音频",
+    "audio_text": "音频",
+    "format": "格式：",
+    "resolution": "分辨率：",
+    "add_to_queue" : "添加到队列",
+    "start_downloading" : "开始下载",
+    "status" : {
+        "status_text" : "状态：等待中...",
+        "unknown_video" : "未知视频",
+        "download_success" : "视频下载成功",
+        "download_error" : "下载出错",
+        "to_queue" : "视频已添加到队列",
+        "in_format" : "格式为",
+        "in_resolution" : "分辨率为",
+        "error_adding" : "添加视频时出错：",
+        "downloading_already" : "下载已开始。",
+        "the_queue_is_empty" : "队列为空。没有内容可下载。",
+        "the_queue_is_empty_download_success" : "队列为空。没有内容可下载。",
+        "download_started" : "开始下载。",
+        "downloading" : "正在下载",
+        "removed_from_queue" : "视频已从队列中移除：",
+        "error_removing" : "从队列中删除时出错：",
+        "converting" : "正在转换",
+        "convert_success" : "转换完成",
+        "convert_stopped" : "转换已取消",
+        "download_ended":"下载完成。.."
+    },
+    "queue" : "队列：",
+    "progress" : "进度：",
+    "speed" : "速度：",
+    "bs" : "B/秒",
+    "mbs" : "MB/秒",
+    "eta" : "剩余时间：",
+    "min" : "分钟",
+    "sec" : "秒",
+    "error": "错误",
+
+    "sections": {
+        "coming_soon": "即将推出",
+        "video_downloader": "视频下载器",
+        "converter": "转换器",
+        "queue": "队列",
+        "setting": "设置",
+        "profile": "个人资料",
+        "notifications": "通知"
+    },
+
+    "settings" : {
+        "settings_text" : "设置",
+        "russian" : "Русский",
+        "english" : "English",
+        "polish" : "Polski",
+        "ukraine" : "Український",
+        "german" : "Deutsch",
+        "french" : "Français",
+        "japan" : "日本語",
+        "chinese" : "中文",
+        "update_text_ready" : "有可用更新",
+        "update_text_not_ready" : "无需更新",
+        "update_text_error" : "获取版本时出错",
+        "update_button" : "启动更新器",
+        "folder" : "下载文件夹：",
+        "choose_folder" : "更改下载文件夹",
+        "open_folder" : "打开下载文件夹",
+        "by_defoult" : "恢复默认文件夹",
+        "auto_update" : "自动更新",
+        "button_apply" : "应用",
+        "placeholder" : "下载文件夹路径"
+    },
+
+    "notifications" : {
+        "video_title" : "下载完成！",
+        "video_message_1": "视频",
+        "video_message_2": "已成功下载！",
+        "queue_title" : "下载完成",
+        "queue_message": "队列中的所有视频已下载完成",
+        "convert_title" : "转换完成"
+    },
+
+    "converter": {
+        "click_for_add_video" : "点击选择视频",
+        "convertion_settings" : "转换设置",
+        "conversion_button" : "开始转换",
+        "format" : "格式：",
+        "close_video": "取消",
+        
+        "video_info" : {
+            "title" : "视频信息：",
+            "duration": "时长：",
+            "framerate": "帧率：",
+            "video_codec" : "视频编码：",
+            "video_bitrate": "视频码率：",
+            "audio_codec": "音频编码：",
+            "audio_bitrate" : "音频码率："
+        },
+
+        "video_add": "视频已添加",
+        "video_error": "添加视频时出错",
+        "video_adding": "正在添加视频"
+    }
+}

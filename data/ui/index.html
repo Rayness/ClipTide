@@ -188,10 +188,24 @@
                         </div>
                     </div>
 
-                    <div class="content" id="6" data-status="Donate">
+                    <div class="content donate" id="6" data-status="Donate">
                         <div class="sections">
                             <div class="section">
-                                Если есть желание помочь финансово и ускорить дальнейшую разработку приложения!
+                                <p id="donate-description">Если есть желание помочь финансово и ускорить дальнейшую разработку приложения!</p>
+                            </div>
+                            <div class="section">
+                                <div>
+                                    <a href="https://boosty.to/rayness/donate" target="_blank">
+                                        Boosty
+                                    </a>
+                                    <img src="./src/donate-boosty.png" alt="Boosty">
+                                </div>
+                                <div>
+                                    <a href="https://www.tbank.ru/cf/4vbUQHX5qLB" target="_blank">
+                                        T-Банк
+                                    </a>
+                                    <img src="./src/donate-tbank.jpg" alt="Boosty">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -200,7 +214,7 @@
                         <div id="app_settings" class="settings-block fade-in">
                             <div class="sections" id="language-settings">
                                 <div class="section">
-                                    <h3>Языковые настройки</h3>
+                                    <h3 id="language_settings_title">Языковые настройки</h3>
                                     <div class="language-block">
                                         <label for="language" id="language_title">Язык: </label>
                                         <select id="language" class="select-control">
@@ -215,76 +229,77 @@
                                         </select>
                                         <div class="tooltip-wrap">
                                             <button class="icon-btn small" id="opneLangFiles"><i class="fa-solid fa-folder-open"></i></button>
-                                            <span class="tooltip" id="tooltip_defoult">Открыть папку с локализацией</span>
+                                            <span class="tooltip" id="open_locale_folder">Открыть папку с локализацией</span>
                                         </div>
                                     </div>
+                                    <p>The original language of the application is Russian. Translations into other languages ​​may contain errors!</p>
                                 </div>
                             </div>
                             <div class="sections" id="decorations-settings">
                                 <div class="section">
-                                    <h3>Оформление</h3>
+                                    <h3 id="decorations-title">Оформление</h3>
                                     <div class="themes">
                                         <div class="block">
-                                            <label for="">Тема: </label>
+                                            <label for="" id="theme-title">Тема: </label>
                                             <select class="theme-selector select-control" name="" id="theme">
                                                 <!-- <option value="default">Default</option>
                                                 <option value="classic">Classic</option> -->
                                             </select>
                                         </div>
                                         <div class="block">
-                                            <label for="">Стиль: </label>
+                                            <label for="" id="style-title">Стиль: </label>
                                             <select class="theme-selector select-control" name="style-selector" id="style">
                                                 <!-- <option value="dark">Dark</option>
                                                 <option value="light">Light</option>
                                                 <option value="wave">Wave</option> -->
                                             </select>
                                         </div>
-                                        <button class="icon-btn small"><i class="fa-solid fa-folder-open"></i></button>
+                                        <button class="icon-btn small" id="open-theme_folder"><i class="fa-solid fa-folder-open"></i></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="sections" id="folders-settings">
                                 <div class="section">
-                                    <h3>Управление папками</h3>
-                                    <label for="folder_path" id="folder_title">Путь к папке загрузки: </label>
+                                    <h3 id="folders-title">Управление папками</h3>
+                                    <label for="folder_path" id="download_folder_title">Путь к папке загрузки: </label>
                                     <div class="folder-controls">
                                         <input class="input-folder" disabled type="text" id="folder_path" placeholder="">
                                         
                                         <div class="folder-icons">
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="byDefoult"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                                                <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+                                                <span class="tooltip" id="download_tooltip_defoult">Вернуть папку по умолчанию</span>
                                             </div>
                                             
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="chooseButton"><i class="fa-solid fa-folder"></i></button>
-                                                <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+                                                <span class="tooltip" id="download_tooltip_choose">Изменить папку загрузки</span>
                                             </div>
                                             
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="openFolder"><i class="fa-solid fa-folder-open"></i></button>
-                                                <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+                                                <span class="tooltip" id="download_tooltip_open">Открыть папку загрузки</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <label for="folder_path" id="folder_title">Путь к папке конвертации: </label>
+                                    <label for="folder_path" id="conversion_folder_title">Путь к папке конвертации: </label>
                                     <div class="folder-controls">
                                         <input class="input-folder" disabled type="text" id="conv_folder_path" placeholder="">
                                         
                                         <div class="folder-icons">
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="byDefoult-conv"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                                                <span class="tooltip" id="tooltip_defoult">Вернуть папку по умолчанию</span>
+                                                <span class="tooltip" id="conversion-tooltip_defoult">Вернуть папку по умолчанию</span>
                                             </div>
                                             
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="chooseButton-conv"><i class="fa-solid fa-folder"></i></button>
-                                                <span class="tooltip" id="tooltip_choose">Изменить папку загрузки</span>
+                                                <span class="tooltip" id="conversion-tooltip_choose">Изменить папку загрузки</span>
                                             </div>
                                             
                                             <div class="tooltip-wrap">
                                                 <button class="icon-btn small" id="openFolder-conv"><i class="fa-solid fa-folder-open"></i></button>
-                                                <span class="tooltip" id="tooltip_open">Открыть папку загрузки</span>
+                                                <span class="tooltip" id="conversion-tooltip_open">Открыть папку загрузки</span>
                                             </div>
                                         </div>
                                     </div>
@@ -292,23 +307,23 @@
                             </div>
                             <div class="sections" id="notification-settings">
                                 <div class="section">
-                                    <h3>Управление уведомлениями</h3>
+                                    <h3 id="notification-title">Управление уведомлениями</h3>
                                     <div class="switchs">
                                         <div class="">
                                             <label class="switch">
-                                                <input type="checkbox" id="toggleSwitch">
+                                                <input type="checkbox" id="switch_notifiDownload">
                                                 <span class="slider"></span>
                                             </label>
-                                            <span>Получать уведомления о завершении загрузки</span>
+                                            <span id="get_notifi_download">Получать уведомления о завершении загрузки</span>
                                         </div>
                                         <div class="">
                                             <label class="switch">
-                                                <input type="checkbox" id="toggleSwitch">
+                                                <input type="checkbox" id="switch_notifiConvertion">
                                                 <span class="slider"></span>
                                             </label>
-                                            <span>Получать уведомления о завершении конвертации</span>
+                                            <span id="get_notifi_conversion">Получать уведомления о завершении конвертации</span>
                                         </div>
-                                        <div class="">
+                                        <!-- <div class="">
                                             <label class="switch">
                                                 <input type="checkbox" id="toggleSwitch">
                                                 <span class="slider"></span>
@@ -321,30 +336,30 @@
                                                 <span class="slider"></span>
                                             </label>
                                             <span>Получать уведомления о новостях</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
                             <div class="sections" id="proxy-settings">
                                 <div class="section">
-                                    <h3>Управление прокси сервером</h3>
+                                    <h3 id="proxy-title">Управление прокси сервером</h3>
                                     <div class="proxy-settings">
                                         <label class="switch">
                                             <input type="checkbox" id="switch_proxy">
                                             <span class="slider"></span>
                                         </label>
-                                        <span>Включить Прокси-сервер</span>
+                                        <span id="turn_on_proxy">Включить Прокси-сервер</span>
                                         <div class="folder-controls">
                                             <input class="input-folder" type="text" name="" id="input_proxy">
                                             <button class="icon-btn" id="proxy_apply"><i class="fa-solid fa-check"></i></button>
-                                            <button class="icon-btn"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                            <!-- <button class="icon-btn"><i class="fa-solid fa-clock-rotate-left"></i></button> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="sections" id="update-settings">
                                 <div class="section">
-                                    <h3>Обновления</h3>
+                                    <h3 id="updates-title">Обновления</h3>
                                     <div class="update-block">
                                         <span id="update__text">Обновление: </span>
                                         <button class="icon-btn" id="update">Проверить</button>
@@ -353,8 +368,9 @@
                             </div>
                             <div class="sections" id="about-settings">
                                 <div class="section">
-                                    <h3>О приложении</h3>
-                                    <p>ClipTide. Версия: 1.4.3. Дата выхода: 2025 год.</p>
+                                    <h3 id="about-title">О приложении</h3>
+                                    <p id="about-version">Версия: 1.5.</p>
+                                    <p id="about-date">Дата выхода: 11.06.2025</p>
                                 </div>
                             </div>
                         </div>
@@ -403,5 +419,6 @@
     <script src="scripts/theme.js" defer></script>
     <script src="scripts/notification.js"></script>
     <script src="scripts/ui-effects.js"></script>
+    <script src="scripts/locale.js"></script>
 </body>
 </html>

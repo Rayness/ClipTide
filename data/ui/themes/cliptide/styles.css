@@ -857,16 +857,6 @@ html, body {
     gap: 0.5rem;
 }
 
-/* Блок с настройкой прокси */
-
-.proxy-settings {
-
-}
-
-
-
-
-
 
 .download-settings {
     display: flex;
@@ -1115,6 +1105,41 @@ html, body {
     background-color: var(--input-bg-transparent);
 }
 
+.donate .sections {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.donate p {
+    align-content: center;
+}
+
+.donate .sections .section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+}
+
+.donate .sections .section a {
+    color: var(--danger-color);
+    text-decoration: none;
+}
+
+.donate .sections .section img {
+    width: 10rem;
+}
+
+.donate .sections .section div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
 /* .sections .section h3 {
     border-radius: var(--border-radius-sm);
     padding: 0.5rem;
