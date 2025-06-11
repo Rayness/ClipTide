@@ -93,7 +93,7 @@ def startApp():
     
     window.events.loaded += on_loaded
 
-    webview.start(debug=True)
+    webview.start()
 
 def main():
     unicodefix()
