@@ -15,10 +15,13 @@ from app.utils.queue import load_queue_from_file
 
 def startApp():
     version = get_local_version()
+
+    version = str(version).lower()
+
     update = check_for_update()
     update_js = str(update).lower()
     notifications = load_notifications()
-
+    print(f"Verison: {version}")
     themes = get_themes()
 
     config = load_config()
@@ -89,6 +92,7 @@ def startApp():
         window.evaluate_js(f'loadproxy("{proxy}",{json.dumps(proxy_enabled)})')
         window.evaluate_js(f'load_settingsNotificatios("{notifi_download}","{notifi_conversion}")')
         window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
+        window.evaluate_js(f'get_version("{version}")')
         
     
     window.events.loaded += on_loaded

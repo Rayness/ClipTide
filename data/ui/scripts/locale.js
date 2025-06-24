@@ -15,6 +15,7 @@ updateApp = function(update, translations) {
 }
 
 
+
 // Функция для обновления текста интерфейса
 window.updateTranslations = function(translations) {
     update_text = document.getElementById('update__text')
@@ -42,6 +43,7 @@ window.updateTranslations = function(translations) {
     document.getElementById('decorations-title').innerHTML = translations.settings.themes.decoration || 'Decoration';
     document.getElementById('theme-title').innerHTML = translations.settings.themes.theme || 'Theme: ';
     document.getElementById('style-title').innerHTML = translations.settings.themes.style || 'Style: ';
+    document.getElementById('themes-tooltip-open').innerHTML = translations.settings.themes.open_folder || 'Open theme folder';
     
 
     // Папки 
@@ -117,3 +119,7 @@ window.updateTranslations = function(translations) {
     document.getElementById('speed').innerText = translations.speed + " 0 " + translations.bs || 'Speed: ';
     document.getElementById('eta').innerText = translations.eta + " 0 " + translations.min + " 0 " + translations.sec || 'Eta: ';
 };
+
+document.getElementById('openLangFiles').addEventListener('click', ()=>{
+    window.pywebview.api.open_locale_folder()
+})

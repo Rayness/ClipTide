@@ -6,10 +6,25 @@ import configparser
 from app.utils.const import download_dir, CONFIG_FILE
 
 # Настройки по умолчанию
-DEFAULT_CONFIG = {
+DEFAULT_CONFIG_SETTINGS = {
     "language": "ru",
     "folder_path": f"{download_dir}",
-    "auto_update": "False"
+    "auto_update": "False",
+}
+
+DEFAULT_CONFIG_PROXY = {
+    "enabled" : "False",
+    "url" : "http://185.10.129.14:3128"
+}
+
+DEFAULT_CONFIG_THEMES = {
+    "theme" : "cliptide",
+    "style" : "default"
+}
+
+DEFAULT_CONFIG_NOTIFICATIONS = {
+    "conversion" : "True",
+    "downloads" : "True"
 }
 
 def load_config():
@@ -42,7 +57,10 @@ def load_config():
 
 def create_default_config():
     config = configparser.ConfigParser()
-    config["Settings"] = DEFAULT_CONFIG
+    config["Settings"] = DEFAULT_CONFIG_SETTINGS
+    config["Proxy"] = DEFAULT_CONFIG_PROXY
+    config["Themes"] = DEFAULT_CONFIG_THEMES
+    config["Notifications"] = DEFAULT_CONFIG_NOTIFICATIONS
     save_config(config)
     return config
 

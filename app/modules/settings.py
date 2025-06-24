@@ -1,7 +1,6 @@
 # Copyright (C) 2025 Rayness
 # This program is free software under GPLv3. See LICENSE for details.
 
-import os
 import json
 import platform
 import subprocess
@@ -115,14 +114,10 @@ class SettingsManager():
 
 # Функция для открытия папки с загрузками
 def open_folder(download_folder):
-    # try:
-    #     if platform.system() == "Windows":
-    #         subprocess.run(["explorer", download_folder])
-    #     else:
-    #         print("Открытие папки не поддерживается на этой ОС.")
-    # except Exception as e:
-    #     print(f"Ошибка при открытии папки: {e}")
     try:
-        os.startfile(f"{download_folder}")
+        if platform.system() == "Windows":
+            subprocess.run(["explorer", download_folder])
+        else:
+            subprocess.run(['xdg-open', download_folder])
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f"Ошибка при открытии папки: {e}")

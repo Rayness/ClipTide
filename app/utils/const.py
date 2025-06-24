@@ -29,7 +29,9 @@ HEADERS = {
     "Accept": "application/vnd.github.v3+json"
 }
 # Путь к папке с переводами
-TRANSLATIONS_DIR = "./data/localization"
+TRANSLATIONS_DIR = os.path.abspath("./data/localization")
+
+THEME_DIR = os.path.abspath("./data/ui/themes")
 
 # HTML-контент для отображения в окне
 html_file_path = os.path.abspath("./data/ui/index.html")

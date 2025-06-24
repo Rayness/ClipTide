@@ -13,6 +13,7 @@
 </head>
 <body>
     <div class="app">
+        <!--  -->
         <div class="drag-area pywebview-drag-region">
             <div class="title">
                 <img src="src/logo.png" alt="LOGO" id="logo">
@@ -23,6 +24,17 @@
                 <!-- <button onclick="pywebview.api.toggle_fullscreen()">🟪</button> -->
                 <button onclick="pywebview.api.close()">✖️</button>
             </div>
+        </div>
+
+        <!-- Модальное окно -->
+        <div class="modal" id="modal">
+            <div class="modal-content">
+            <span class="modal-close" id="close-modal">&times;</span>
+            <h2 id="modal-title">Заголовок</h2>
+            <p>Это модальное окно.</p>
+        </div>
+
+        <!-- Основное приложение -->
         </div>
         <div class="body-app">
             <div class="left-panel">
@@ -228,7 +240,7 @@
                                             <option id="lang_ja" value="ja">Японский</option>
                                         </select>
                                         <div class="tooltip-wrap">
-                                            <button class="icon-btn small" id="opneLangFiles"><i class="fa-solid fa-folder-open"></i></button>
+                                            <button class="icon-btn small" id="openLangFiles"><i class="fa-solid fa-folder-open"></i></button>
                                             <span class="tooltip" id="open_locale_folder">Открыть папку с локализацией</span>
                                         </div>
                                     </div>
@@ -254,7 +266,14 @@
                                                 <option value="wave">Wave</option> -->
                                             </select>
                                         </div>
-                                        <button class="icon-btn small" id="open-theme_folder"><i class="fa-solid fa-folder-open"></i></button>
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="open-theme_folder"><i class="fa-solid fa-folder-open"></i></button>
+                                            <span class="tooltip" id="themes-tooltip-open"></span>
+                                        </div>
+                                        <div class="tooltip-wrap">
+                                            <button class="icon-btn small" id="help-theme"><i class="fa-solid fa-question"></i></button>
+                                            <span class="tooltip" id="themes-tooltip-help"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -314,14 +333,14 @@
                                                 <input type="checkbox" id="switch_notifiDownload">
                                                 <span class="slider"></span>
                                             </label>
-                                            <span id="get_notifi_download">Получать уведомления о завершении загрузки</span>
+                                            <label for="switch_notifiDownload" id="get_notifi_download">Получать уведомления о завершении загрузки</label for="">
                                         </div>
                                         <div class="">
                                             <label class="switch">
                                                 <input type="checkbox" id="switch_notifiConvertion">
                                                 <span class="slider"></span>
                                             </label>
-                                            <span id="get_notifi_conversion">Получать уведомления о завершении конвертации</span>
+                                            <label for="switch_notifiConvertion" id="get_notifi_conversion">Получать уведомления о завершении конвертации</label for="">
                                         </div>
                                         <!-- <div class="">
                                             <label class="switch">
@@ -348,10 +367,14 @@
                                             <input type="checkbox" id="switch_proxy">
                                             <span class="slider"></span>
                                         </label>
-                                        <span id="turn_on_proxy">Включить Прокси-сервер</span>
+                                        <label for="switch_proxy" id="turn_on_proxy">Включить Прокси-сервер</label for="">
                                         <div class="folder-controls">
                                             <input class="input-folder" type="text" name="" id="input_proxy">
-                                            <button class="icon-btn" id="proxy_apply"><i class="fa-solid fa-check"></i></button>
+                                            <button class="icon-btn small" id="proxy_apply"><i class="fa-solid fa-check"></i></button>
+                                            <div class="tooltip-wrap">
+                                                <button class="icon-btn small" id="help-theme"><i class="fa-solid fa-question"></i></button>
+                                                <span class="tooltip" id="themes-tooltip-help"></span>
+                                            </div>
                                             <!-- <button class="icon-btn"><i class="fa-solid fa-clock-rotate-left"></i></button> -->
                                         </div>
                                     </div>
@@ -369,7 +392,10 @@
                             <div class="sections" id="about-settings">
                                 <div class="section">
                                     <h3 id="about-title">О приложении</h3>
-                                    <p id="about-version">Версия: 1.5.</p>
+                                    <div class="folder-controls">
+                                        <p id="about-version">Версия: </p>
+                                        <p id="current-version">11</p>
+                                    </div>
                                     <p id="about-date">Дата выхода: 11.06.2025</p>
                                 </div>
                             </div>
@@ -416,9 +442,11 @@
     </div>
     <script src="scripts/proxy.js" defer></script>
     <script src="scripts/scripts.js" defer></script>
+    <script src="scripts/modal.js"></script>
     <script src="scripts/theme.js" defer></script>
     <script src="scripts/notification.js"></script>
     <script src="scripts/ui-effects.js"></script>
     <script src="scripts/locale.js"></script>
+    <script src="scripts/version.js"></script>
 </body>
 </html>

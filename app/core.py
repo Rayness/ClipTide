@@ -4,6 +4,7 @@
 from app.modules.downloader import Downloader
 from app.modules.converter import Converter
 from app.modules.settings import SettingsManager, open_folder
+from app.utils.const import THEME_DIR, TRANSLATIONS_DIR
 from app.utils.notifications import save_notifications, delete_notification, mark_notification_as_read
 from app.utils.themes import get_themes
 
@@ -44,6 +45,14 @@ class PublicWebViewApi:
     def open_folder(self, folder):
         open_folder(folder)
         print(folder)
+
+    def open_theme_folder(self):
+        open_folder(THEME_DIR)
+        print(THEME_DIR)
+
+    def open_locale_folder(self):
+        open_folder(TRANSLATIONS_DIR)
+        print(TRANSLATIONS_DIR)
 
     def launch_update(self):
         self._api.settings.launch_update()

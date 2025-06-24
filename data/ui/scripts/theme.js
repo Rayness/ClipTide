@@ -74,3 +74,13 @@ document.getElementById("style").addEventListener('change', () => {
     changeStyle(style);
 })
 
+document.getElementById('open-theme_folder').addEventListener('click', ()=>{
+    window.pywebview.api.open_theme_folder()
+})
+
+document.getElementById('help-theme').addEventListener('click', ()=>{
+    const modal = document.getElementById('modal')
+    const title = document.getElementById('modal-title')
+
+    modal.classList.add('show')
+})
