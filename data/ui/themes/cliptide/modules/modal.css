@@ -18,7 +18,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--accent-dark-transparent);
   padding: 20px 30px;
   border-radius: 8px;
   min-width: 300px;

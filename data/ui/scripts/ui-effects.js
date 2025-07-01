@@ -44,3 +44,13 @@ function updateProgress(value) {
     progressBar.style.transition = "width 0.5s ease-in-out";
     progressBar.style.width = value + "%";
 }
+
+
+const buttons = document.querySelectorAll('.tab-btn');
+
+    buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active')); // убрать у всех
+        btn.classList.add('active'); // добавить только этой
+    });
+});

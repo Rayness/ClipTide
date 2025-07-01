@@ -1,0 +1,64 @@
+/* Queue Items */
+.queue-items {
+    height: 24rem;
+    min-height: 0;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.queue-items li {
+    display: flex;
+    font-size: 0.85rem;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: var(--dark-bg-transparent);
+    border-radius: var(--border-radius-sm);
+}
+
+.queue-items img {
+    width: 100px;
+    height: 65px;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.video-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.video-details {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
+}
+
+.video-details p {
+    font-size: 0.85rem;
+    background-color: var(--card-bg);
+    padding: 0.4rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+}
+
+.delete-button {
+    padding: 0.5rem;
+    width: 3rem;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: var(--danger-dark);
+}
