@@ -18,6 +18,7 @@ function setStyle(styleName) {
 function loadTheme(themeName, styleName, themes) {
     const themeSelect = document.getElementById('theme');
     const styleSelect = document.getElementById('style');
+    const btnDownloader = document.getElementById('icon-downloader')
 
     themes.forEach(theme => {
         const option = document.createElement("option");
@@ -44,7 +45,19 @@ function loadTheme(themeName, styleName, themes) {
         });
     }
 
-
+    
+    async function loadIcon(name, theme) {
+        const res = await fetch(`themes/${theme}/icons/${name}.svg`);
+        const svgText = await res.text();
+        document.getElementById(`${name}`).innerHTML = svgText;  
+    }
+    
+    loadIcon('icon-downloader', themeName )
+    loadIcon('icon-settings', themeName )
+    loadIcon('icon-converter', themeName )
+    loadIcon('icon-comingSoon', themeName )
+    loadIcon('icon-donate', themeName )
+    loadIcon('icon-notifi', themeName )
     loadStylesForTheme(themeName || selectedTheme.value);
     setTheme(themeName);
     setStyle(styleName);
