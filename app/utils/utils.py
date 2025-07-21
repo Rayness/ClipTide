@@ -1,13 +1,14 @@
 # Copyright (C) 2025 Rayness
 # This program is free software under GPLv3. See LICENSE for details.
 
+import json
 import sys
 import os
 import subprocess
 import requests
 from pathlib import Path
 
-from app.utils.const import GITHUB_REPO, HEADERS, VERSION_FILE
+from app.utils.const import GITHUB_REPO, HEADERS, VERSION_FILE, MODAL_CONTENT
 
 subprocess.CREATE_NO_WINDOW
 
@@ -77,3 +78,15 @@ def get_appdata_path(app_name: str, roaming: bool = False) -> Path:
     path = Path(appdata) / app_name
     path.mkdir(parents=True, exist_ok=True)
     return path
+
+def load_modal_content():
+    file_path = os.path.join(MODAL_CONTENT, "modals.json")
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                print(file)
+                return json.load(file)
+        except Exception as e:
+            print(f"Ошибка при загрузке модального контента: {e}")
+    print("Не получилось загрузить JSON файлы")
+    return {}

@@ -24,6 +24,8 @@ VERSION_FILE = "./data/version.txt"
 
 GITHUB_REPO = "Rayness/YT-Downloader"
 
+MODAL_CONTENT = os.path.abspath("./data/ui/src/text")
+
 HEADERS = {
     "User-Agent": "Updater-App",
     "Accept": "application/vnd.github.v3+json"

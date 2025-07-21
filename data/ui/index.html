@@ -31,7 +31,7 @@
             <div class="modal-content">
             <span class="modal-close" id="close-modal">&times;</span>
             <h2 id="modal-title">Заголовок</h2>
-            <p>Это модальное окно.</p>
+            <div id="modal-content">Это модальное окно.</div>
         </div>
 
         <!-- Основное приложение -->
@@ -114,8 +114,11 @@
                                     <option value="2160">4K (2160p)</option>
                                     <option value="4320">8K (4320p)</option>
                                 </select>
-                                <div class="action-buttons">
+                                <div class="action-buttons flex-conteiner-row" style="gap: 0.5rem;">
                                     <button class="primary-btn fade-in" id="addBtn"><i class="fa-solid fa-plus"></i></button>
+                                    <button class="primary-btn fade-in" id="startBtn"><i class="fa-solid fa-play"></i></button>
+                                    <!-- <button><i class="fa-solid fa-pause"></i></button> -->
+                                    <button class="primary-btn fade-in" id="stopBtn"><i class="fa-solid fa-stop"></i></button>
                                     <!-- <button class="primary-btn fade-in" id="startBtn">Начать загрузку</button> -->
                                     <!-- <button class="primary-btn fade-in" disabled id="stopBtn">STOP</button> -->
                                 </div>
@@ -458,13 +461,6 @@
                                 <div id="progress">Прогресс: 0%</div>
                                 <div id="speed">Скорость: 0B/s</div>
                                 <div id="eta">Осталось: </div>
-                            </div>
-                        </div>
-                        <div class="controls">
-                            <div class="buttons">
-                                <button id="startBtn"><i class="fa-solid fa-play"></i></button>
-                                <!-- <button><i class="fa-solid fa-pause"></i></button> -->
-                                <button id="stopBtn"><i class="fa-solid fa-stop"></i></button>
                             </div>
                         </div>
                     </div>

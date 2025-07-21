@@ -8,7 +8,7 @@ from app.utils.notifications import load_notifications
 from app.utils.themes import get_themes
 from app.utils.translations import load_translations
 from app.core import PublicWebViewApi, WebViewApi
-from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg
+from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg, load_modal_content
 from app.utils.logs import logs
 from app.utils.const import html_file_path
 from app.utils.queue import load_queue_from_file
@@ -40,6 +40,8 @@ def startApp():
     translations = load_translations(language)
 
     download_queue = load_queue_from_file()
+
+    modal_content = load_modal_content()
 
     download_folder = config.get("Settings", "folder_path", fallback="downloads")
     converter_folder = config.get("Settings", "converter_folder", fallback="downloads")
@@ -93,11 +95,12 @@ def startApp():
         window.evaluate_js(f'load_settingsNotificatios("{notifi_download}","{notifi_conversion}")')
         window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
         window.evaluate_js(f'get_version("{version}")')
+        window.evaluate_js(f'loadData({json.dumps(modal_content)})')
         
     
     window.events.loaded += on_loaded
 
-    webview.start()
+    webview.start(debug=True)
 
 def main():
     unicodefix()
