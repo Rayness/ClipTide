@@ -1,5 +1,3 @@
-@import url(styles.css);
-
 .modal {
   position: fixed;
   top: 0;
@@ -18,7 +16,7 @@
 }
 
 .modal-content {
-  background: var(--accent-dark-transparent);
+  background: var(--accent-gradient);
   padding: 20px 30px;
   border-radius: 8px;
   min-width: 300px;

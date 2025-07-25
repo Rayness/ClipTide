@@ -92,8 +92,5 @@ document.getElementById('open-theme_folder').addEventListener('click', ()=>{
 })
 
 document.getElementById('help-theme').addEventListener('click', ()=>{
-    const modal = document.getElementById('modal')
-    const title = document.getElementById('modal-title')
-
     modal.classList.add('show')
 })

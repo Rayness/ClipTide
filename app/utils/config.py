@@ -27,6 +27,11 @@ DEFAULT_CONFIG_NOTIFICATIONS = {
     "downloads" : "True"
 }
 
+DEFAULT_CONFIG_FOLDERS = {
+    "dl" : "True",
+    "cv" : "True"
+}
+
 def load_config():
     config = configparser.ConfigParser()
     
@@ -61,6 +66,7 @@ def create_default_config():
     config["Proxy"] = DEFAULT_CONFIG_PROXY
     config["Themes"] = DEFAULT_CONFIG_THEMES
     config["Notifications"] = DEFAULT_CONFIG_NOTIFICATIONS
+    config["Folders"] = DEFAULT_CONFIG_FOLDERS
     save_config(config)
     return config
 

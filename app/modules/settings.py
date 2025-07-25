@@ -73,6 +73,10 @@ class SettingsManager():
         config.set("Notifications", type, enabled)
         save_config(config)
 
+    def switch_open_folder_dl(self, type, enabled):
+        config.set("Folders", type, enabled)
+        save_config(config)
+
     # Функция для смены папки загрузок
     def switch_download_folder(self, folder_path=f'{download_dir}'):
         self.folder = folder_path if folder_path is not None else download_dir

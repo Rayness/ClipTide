@@ -35,3 +35,8 @@ function loadproxy(proxy, proxy_enabled){
 
   input.value = proxy
 }
+
+
+document.getElementById('help-proxy').addEventListener('click', ()=>{
+    modal.classList.add('show')
+})

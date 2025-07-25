@@ -37,6 +37,9 @@ def startApp():
     proxy = config.get("Proxy", "url", fallback="")
     proxy_enabled = config.get("Proxy", "enabled", fallback="False")
 
+    download_open_folder = config.get("Folders", "dl", fallback="True")
+    converter_open_folder = config.get("Folders", "cv", fallback="True")
+
     translations = load_translations(language)
 
     download_queue = load_queue_from_file()
@@ -92,10 +95,12 @@ def startApp():
         window.evaluate_js(f'setLanguage("{language}")')
         window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
         window.evaluate_js(f'loadproxy("{proxy}",{json.dumps(proxy_enabled)})')
+        window.evaluate_js(f'loadopenfolders({json.dumps(download_open_folder)},{json.dumps(converter_open_folder)})')
         window.evaluate_js(f'load_settingsNotificatios("{notifi_download}","{notifi_conversion}")')
         window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
         window.evaluate_js(f'get_version("{version}")')
         window.evaluate_js(f'loadData({json.dumps(modal_content)})')
+
         
     
     window.events.loaded += on_loaded

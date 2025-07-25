@@ -113,31 +113,46 @@ class PublicWebViewApi:
         if type == "conversion":
             self._api.converter.notification = enabled
 
+    def switch_open_folder_dl(self, type, enabled):
+        self._api.settings.switch_open_folder_dl(type, enabled)
+        if type == "dl":
+            self._api.downloader.open_folders = enabled
+        if type == "cv":
+            self._api.converter.open_folders = enabled
+
 class WebViewApi:
-    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False", notifi_download = "True", notifi_conversion = "True"):
+    def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False", notifi_download = "True", notifi_conversion = "True", folder_open_dl = "True", folder_open_cv = "True"):
         self.window = None
         self.translations = translations
         self.update = update
         self.language = language
+
         self.download_folder = download_folder
         self.converterFolder = converter_folder
         self.download_queue = download_queue
         self.notifications = notifications
+
         self.theme = theme
         self.style = style
+
         self.settings = None
         self.downloader = None
         self.converter = None
+
         self.proxy_url = proxy_url
         self.proxy = proxy
+
         self.notifi_download = notifi_download
         self.notifi_conversion = notifi_conversion
+
+        self.folder_open_dl = folder_open_dl
+        self.folder_open_cv = folder_open_cv
 
     def set_window(self, window):
         self.window = window
         self.settings = SettingsManager(window, self.translations, self.language, self.update, self.download_folder, self.notifications, self.theme, self.converterFolder, self.proxy_url, self.proxy)
-        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications, self.proxy_url, self.proxy, self.notifi_download)
-        self.converter = Converter(window, self.translations, self.converterFolder, self.notifications, self.notifi_conversion)
+        self.downloader = Downloader(window, self.translations, self.download_queue, self.download_folder, self.notifications, self.proxy_url, self.proxy, self.notifi_download, self.folder_open_dl)
+        self.converter = Converter(window, self.translations, self.converterFolder, self.notifications, self.notifi_conversion, self.folder_open_cv)
         print("При инициализации окна: ", self.notifications)
 
 
