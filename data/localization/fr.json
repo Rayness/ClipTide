@@ -69,7 +69,7 @@
             "open_folder":"Ouvrir le dossier des thèmes"
         },
         "folders": {
-            "title": "Gestion des dossiers",
+            "title": "Gestion des téléchargements",
             "placeholder_download":"Chemin du dossier de téléchargement",
             "placeholder_conversion": "Chemin d'accès au dossier de conversion",
             "choose_download_folder" : "Modifier le dossier de téléchargement",
@@ -79,7 +79,7 @@
             "by_defoult":"Rétablir le dossier par défaut"
         },
         "notifications" : {
-            "title": "Gestion des notifications",
+            "title": "Gestion de la conversion",
             "notifi_download":"Recevoir des notifications lorsque le téléchargement est terminé",
             "notifi_conversion":"Recevoir des notifications lorsque la conversion est terminée"
         },

@@ -69,7 +69,7 @@
             "open_folder" : "Open a folder with themes"
         },
         "folders": {
-            "title" : "Folder management",
+            "title" : "Download Management",
             "placeholder_download": "Path to the downloads folder",
             "placeholder_conversion": "Path to the conversion folder",
             "choose_download_folder": "Change the downloads folder",
@@ -79,7 +79,7 @@
             "by_default" : "Return the default folder"
         },
         "notifications" : {
-            "title" : "Notification management",
+            "title" : "Conversion Management",
             "notifi_download" : "Receive notifications of download completion",
             "notifi_conversion" : "Receive notifications of conversion completion"
         },

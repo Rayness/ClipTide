@@ -69,7 +69,7 @@
             "open_folder" : "Ordner mit Themen öffnen"
         },
         "folders": {
-            "title" : "Ordner verwalten",
+            "title" : "Verwalten des Downloads",
             "placeholder_download" : "Pfad zum Download-Ordner",
             "placeholder_conversion" : "Pfad zum Konvertierungsordner",
             "choose_download_folder" : "Download-Ordner ändern",
@@ -79,7 +79,7 @@
             "by_defoult" : "Standardordner zurücksetzen"
         },
         "notifications" : {
-            "title" : "Benachrichtigungen verwalten",
+            "title" : "Konvertierung verwalten",
             "notifi_download" : "Benachrichtigungen erhalten, wenn der Download abgeschlossen ist",
             "notifi_conversion" : "Benachrichtigungen erhalten, wenn die Konvertierung abgeschlossen ist"
         },

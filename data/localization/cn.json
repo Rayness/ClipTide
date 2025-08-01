@@ -69,7 +69,7 @@
             "open_folder":"打开带有主题的文件夹"
         },
         "folders":{
-            "title":"文件夹管理",
+            "title":"下载管理",
             "placeholder_download":"下载文件夹的路径",
             "placeholder_conversion":"转换文件夹的路径",
             "choose_download_folder":"更改下载文件夹",
@@ -79,7 +79,7 @@
             "by_default":"返回默认文件夹"
         },
         "notifications":{
-            "title":"通知管理",
+            "title":"转换管理",
             "notifi_download":"接收下载完成通知",
             "notifi_conversion":"接收转换完成通知"
         },

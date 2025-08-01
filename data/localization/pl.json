@@ -69,7 +69,7 @@
             "open_folder": "Otwórz folder motywów"
         },
         "folders": {
-            "title": "zarządzanie folderami",
+            "title": "Zarządzanie pobieraniem",
             "placeholder_download": "ścieżka do folderu pobierania",
             "placeholder_conversion": "ścieżka do folderu konwersji",
             "choose_download_folder": "Zmień folder pobierania",
@@ -79,7 +79,7 @@
             "by_defoult": "Przywróć domyślny folder"
         },
         "notifications" : {
-            "title": "Zarządzaj powiadomieniami",
+            "title": "Zarządzanie konwersją",
             "notifi_download": "Otrzymuj powiadomienia o zakończeniu pobierania",
             "notifi_conversion": "Otrzymuj powiadomienia o zakończeniu konwersji"
         },

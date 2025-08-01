@@ -69,7 +69,7 @@
             "open_folder":"テーマのあるフォルダを開く"
         },
         "folders":{
-            "title":"フォルダ管理",
+            "title":"ダウンロード管理",
             "placeholder_download":"ダウンロードフォルダへのパス",
             "placeholder_conversion":"変換フォルダへのパス",
             "choose_download_folder":"ダウンロードフォルダを変更する",
@@ -79,7 +79,7 @@
             "by_default":"デフォルトのフォルダを返す"
         },
         "notifications":{
-            "title":"通知管理",
+            "title":"コンバージョン管理",
             "notifi_download":"ダウンロード完了の通知を受け取る",
             "notifi_conversion":"変換完了の通知を受け取る"
         },
