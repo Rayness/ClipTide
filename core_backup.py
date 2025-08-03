@@ -10,12 +10,12 @@ import ffmpeg
 import yt_dlp
 import os
 from tkinter import Tk, filedialog
-from app.utils.translations import load_translations 
-from app.utils.config import load_config, save_config
+from app.utils.locale.translations import load_translations 
+from app.utils.config.config import load_config, save_config
 from app.utils.const import COOKIES_FILE, UPDATER, html_file_path, download_dir
-from app.utils.queue import load_queue_from_file, save_queue_to_file
+from app.utils.queue.queue import load_queue_from_file, save_queue_to_file
 from app.utils.converter_utils import get_thumbnail_base64, print_video_info
-from app.utils.ui import createwindow
+from app.utils.ui.ui import createwindow
 from app.utils.utils import check_for_update
 
 

@@ -1,12 +1,12 @@
 # Copyright (C) 2025 Rayness
 # This program is free software under GPLv3. See LICENSE for details.
 
-from app.modules.downloader import Downloader
-from app.modules.converter import Converter
-from app.modules.settings import SettingsManager, open_folder
+from app.modules.downloader.downloader import Downloader
+from app.modules.converter.converter import Converter
+from app.modules.settings.settings import SettingsManager, open_folder
 from app.utils.const import THEME_DIR, TRANSLATIONS_DIR
-from app.utils.notifications import save_notifications, delete_notification, mark_notification_as_read
-from app.utils.themes import get_themes
+from app.utils.notifications.notifications import save_notifications, delete_notification, mark_notification_as_read
+from app.utils.ui.themes import get_themes
 
 class PublicWebViewApi:
     def __init__(self, _api):

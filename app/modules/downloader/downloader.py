@@ -5,8 +5,8 @@ import time
 import yt_dlp
 
 from app.utils.const import COOKIES_FILE
-from app.utils.queue import save_queue_to_file
-from app.utils.notifications import add_notification
+from app.utils.queue.queue import save_queue_to_file
+from app.utils.notifications.notifications import add_notification
 
 class Downloader():
     def __init__(self, window, translations, download_queue, download_folder, notifications, proxy_url, proxy, notification, open_folders):

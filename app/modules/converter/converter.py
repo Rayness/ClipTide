@@ -9,7 +9,7 @@ import time
 from threading import Thread
 from tkinter import Tk, filedialog
 from app.utils.converter_utils import get_thumbnail_base64, print_video_info
-from app.modules.settings import open_folder
+from app.modules.settings.settings import open_folder
 
 class Converter():
     def __init__(self, window, translations, output_path, notifications, notification, open_folders):
@@ -68,7 +68,7 @@ class Converter():
             time.sleep(2)
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
         except Exception as e:
-            print("Ошибка при выборе видео")
+            print(f"Ошибка при выборе видео: {e}")
             self.window.evaluate_js(f'hideSpinner()')
             self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
 
@@ -93,7 +93,7 @@ class Converter():
                 '-c:a', 'aac',  # Пример кодека аудио
                 output_path
             ]
-           # Запускаем процесс FFmpeg в отдельном потоке
+            # Запускаем процесс FFmpeg в отдельном потоке
             def run_ffmpeg():
                 self.ffmpeg_process = subprocess.Popen(
                     command,

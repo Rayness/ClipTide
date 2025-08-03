@@ -189,6 +189,13 @@
 
 
 
+.converter-app .input-file{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem;
+}
+
 
 /* Дроп зона */
 .converter-app .input-file .drop-zone{
@@ -197,9 +204,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    margin: 6rem 6rem 6rem 6rem;
-    padding: 5rem;
-    border: solid 0.1rem;
+    padding: 0.5rem;
     background-color: var(--dark-bg-transparent);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
@@ -211,7 +216,6 @@
 .converter-app .input-file .drop-zone:hover {
     border-radius: var(--border-radius-lg);
     scale: 1.05;
-    background-color: var(--accent-dark);
 }
 
 .converter-app .input-file .drop-zone.highlight {

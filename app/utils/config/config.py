@@ -4,6 +4,7 @@
 import os
 import configparser
 from app.utils.const import download_dir, CONFIG_FILE
+from app.utils.utils import restart_app
 
 # Настройки по умолчанию
 DEFAULT_CONFIG_SETTINGS = {
@@ -59,6 +60,14 @@ def load_config():
     
     # Если все попытки чтения провалились, создаем дефолтную конфиг
     return create_default_config()
+
+def update_config(config):
+    if config.has_section('Proxy'):
+        print("Конфиг актуальный", config)
+    else:
+        print("Конфиг не актуальный")
+        create_default_config()
+        restart_app()
 
 def create_default_config():
     config = configparser.ConfigParser()

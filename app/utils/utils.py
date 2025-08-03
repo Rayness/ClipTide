@@ -69,6 +69,9 @@ def check_for_update():
     else:
         return False
     
+def restart_app():
+    subprocess.run([sys.executable] + sys.argv)
+    sys.exit(0)  # Корректно закрываем текущий процесс
 
 def get_appdata_path(app_name: str, roaming: bool = False) -> Path:
     """Возвращает путь к папке приложения в AppData"""

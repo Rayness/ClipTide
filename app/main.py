@@ -3,15 +3,15 @@
 
 import json
 import webview
-from app.utils.config import load_config
-from app.utils.notifications import load_notifications
-from app.utils.themes import get_themes
-from app.utils.translations import load_translations
+from app.utils.config.config import load_config, update_config
+from app.utils.notifications.notifications import load_notifications
+from app.utils.ui.themes import get_themes
+from app.utils.locale.translations import load_translations
 from app.core import PublicWebViewApi, WebViewApi
 from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg, load_modal_content
-from app.utils.logs import logs
+from app.utils.logs.logs import logs
 from app.utils.const import html_file_path
-from app.utils.queue import load_queue_from_file
+from app.utils.queue.queue import load_queue_from_file
 
 def startApp():
     version = get_local_version()
@@ -25,6 +25,8 @@ def startApp():
     themes = get_themes()
 
     config = load_config()
+
+    update_config(config)
 
     language = config.get("Settings", "language", fallback="en")
 
@@ -82,7 +84,6 @@ def startApp():
         frameless=True,
     )
     real_api.set_window(window)
-
 
     print("Window created:", window)
 

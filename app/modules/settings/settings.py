@@ -6,11 +6,11 @@ import platform
 import subprocess
 from tkinter import Tk, filedialog
 
-from app.utils.translations import load_translations
+from app.utils.locale.translations import load_translations
 
 from app.utils.const import download_dir, UPDATER
 
-from app.utils.config import load_config, save_config
+from app.utils.config.config import load_config, save_config
 
 config = load_config()
 

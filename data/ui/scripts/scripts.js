@@ -8,21 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const name = document.getElementById('name');
     
     buttons.forEach(button => {
-      button.addEventListener('click', function() {
-        // Удаляем активный класс у всех кнопок и блоков
-        buttons.forEach(btn => btn.classList.remove('active'));
-        blocks.forEach(block => block.classList.remove('active'));
-        
-        // Добавляем активный класс нажатой кнопке
-        this.classList.add('active');
-        
-        // Находим соответствующий блок и показываем его
-        const tabId = this.getAttribute('data-tab');
-        const block = document.getElementById(tabId)
-        block.classList.add('active');
+        button.addEventListener('click', function() {
+            // Удаляем активный класс у всех кнопок и блоков
+            buttons.forEach(btn => btn.classList.remove('active'));
+            blocks.forEach(block => block.classList.remove('active'));
+            
+            // Добавляем активный класс нажатой кнопке
+            this.classList.add('active');
+            
+            // Находим соответствующий блок и показываем его
+            const tabId = this.getAttribute('data-tab');
+            const block = document.getElementById(tabId)
+            block.classList.add('active');
 
-        name.textContent = block.getAttribute('data-status');
-      });
+            name.textContent = block.getAttribute('data-status');
+        });
     });
     
     // По желанию: активировать первую вкладку при загрузке
@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.addEventListener('load', () => {
-    console.log('Page load:', performance.now());
-  });
+        console.log('Page load:', performance.now());
+    });
 
 dropArea = document.getElementById('dropZone');
 
@@ -312,7 +312,7 @@ document.getElementById('close-video').addEventListener('click', function() {
 });
 
 function closeVideo() {
-    document.getElementById('input-file').style.display = 'block';
+    document.getElementById('input-file').style.display = 'grid';
     document.getElementById('main-app').style.display = 'none';
 }
 
