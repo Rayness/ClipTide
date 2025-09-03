@@ -33,7 +33,7 @@ document.getElementById('help-theme').addEventListener('click', ()=> {
     default:
       displayData(data.en);
       break
-  }
+    }
 });
 
 document.getElementById('help-proxy').addEventListener('click', ()=>{
