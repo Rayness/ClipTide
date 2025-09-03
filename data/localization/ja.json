@@ -3,7 +3,7 @@
     "audio_only":"オーディオのみ",
     "audio_text":"オーディオ",
     "format":"フォーマット:",
-    "resolution":"Resolution:",
+    "resolution":"解像度:",
     "add_to_queue":"キューに追加",
     "start_downloading":"ダウンロードを開始する",
     "status":{
@@ -64,7 +64,7 @@
         },
         "themes":{
             "decoration":"装飾管理",
-            "theme":"Theme:",
+            "theme":"テーマ:",
             "style":"スタイル:",
             "open_folder":"テーマのあるフォルダを開く"
         },
@@ -127,7 +127,7 @@
         
         "video_info":{
             "title":"動画情報:",
-            "duration":"Duration:",
+            "duration":"期間:",
             "framerate":"フレームレート:",
             "video_codec":"ビデオコーデック:",
             "video_bitrate":"ビデオビットレート:",

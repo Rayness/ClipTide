@@ -92,10 +92,10 @@
 
 /* Переключатель */
 .switch {
-      position: relative;
-      display: inline-block;
-      width: 2rem;
-      /* height: 34px; */
+    position: relative;
+    display: inline-block;
+    width: 2rem;
+    /* height: 34px; */
 }
 
 .switchs {

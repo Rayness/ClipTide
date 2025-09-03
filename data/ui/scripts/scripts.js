@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.tab-btn');
     const blocks = document.querySelectorAll('.content');
     const name = document.getElementById('name');
+    document.getElementById("stopBtn_conv").disabled = true
     
     buttons.forEach(button => {
         button.addEventListener('click', function() {
@@ -271,7 +272,11 @@ window.updateConvertFolder = function(folder_path) {
 
 document.getElementById("stopBtn").addEventListener('click', function() {
     window.pywebview.api.stopDownload();
+})
+
+document.getElementById("stopBtn_conv").addEventListener('click', function() {
     window.pywebview.api.stop_conversion()
+    document.getElementById("stopBtn_conv").disabled = true
 })
 
 document.getElementById("chooseButton").addEventListener("click", function() {
@@ -343,7 +348,7 @@ function file_is_input(data) {
 
 document.getElementById('convert_btn').addEventListener('click', () => {
     format = document.getElementById('conv-format').value
-
+    document.getElementById("stopBtn_conv").disabled = false
     window.pywebview.api.convert_video(format)
 })
 

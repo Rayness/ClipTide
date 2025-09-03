@@ -116,9 +116,9 @@ class PublicWebViewApi:
     def switch_open_folder_dl(self, type, enabled):
         self._api.settings.switch_open_folder_dl(type, enabled)
         if type == "dl":
-            self._api.downloader.open_folders = enabled
+            self._api.downloader.open_folder = enabled
         if type == "cv":
-            self._api.converter.open_folders = enabled
+            self._api.converter.open_folder = enabled
 
 class WebViewApi:
     def __init__(self, translations=None, update=False, language="en", download_folder="", download_queue="", notifications="", theme="", style="", converter_folder="", proxy_url = "", proxy = "False", notifi_download = "True", notifi_conversion = "True", folder_open_dl = "True", folder_open_cv = "True"):

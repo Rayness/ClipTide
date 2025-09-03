@@ -12,9 +12,14 @@ from app.utils.const import NOTIFICATION_FILE
 def load_notifications():
         path = NOTIFICATION_FILE
         if os.path.exists(path):
-            with open(path, "r", encoding="utf-8") as f:
-                print("Notifications: Файл был загружен")
-                return json.load(f)
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    print("Notifications: Файл был загружен")
+                    return json.load(f)
+            except json.JSONDecodeError:
+                return []
+            except:
+                return []
         return []
 
 def save_notifications(notifications):

@@ -68,7 +68,9 @@ def startApp():
         proxy_url=proxy,
         proxy=proxy_enabled,
         notifi_download=notifi_download,
-        notifi_conversion=notifi_conversion
+        notifi_conversion=notifi_conversion,
+        folder_open_dl = download_open_folder,
+        folder_open_cv = converter_open_folder
     )
 
     public_api = PublicWebViewApi(real_api)
@@ -106,7 +108,7 @@ def startApp():
     
     window.events.loaded += on_loaded
 
-    webview.start(debug=True)
+    webview.start()
 
 def main():
     unicodefix()

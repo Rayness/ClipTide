@@ -54,7 +54,8 @@ class Downloader():
             opt = {
                 'proxy': f'{self.proxy_url}',
                 'nocheckcertificate': True,
-                'cookies': f'{COOKIES_FILE}'
+                'cookies': f'{COOKIES_FILE}',
+                'dumpjson': True
             }
             if self.proxy != "False":
                 opt['proxy'] = self.proxy_url
@@ -99,7 +100,10 @@ class Downloader():
             return f"{self.translations.get('status', {}).get('downloading_already')}"
 
         if not self.download_queue:
-            return f"{self.translations.get('status', {}).get('the_queue_is_empty')}"
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('the_queue_is_empty')}"') # type: ignore
+            time.sleep(2)
+            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+            return
         
         # Запускаем загрузку
         self.start_next_download()
@@ -107,15 +111,17 @@ class Downloader():
         return
     
     def stopDownload(self):
-        self.is_downloading = False
-        self.download_stop = True
-        print(self.download_stop)
+        if self.is_downloading == True:
+            self.is_downloading = False
+            self.download_stop = True
+            print(self.download_stop)
 
     # Функция для начала следующей загрузки
     def start_next_download(self):
             if not self.download_stop:
                 if not self.download_queue:
-                    os.startfile(f"{self.download_folder}")
+                    if self.open_folder == "True":
+                        os.startfile(f"{self.download_folder}")
                     print("Очередь пуста. Загрузка завершена.")
                     # Обновляем статус
                     self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
