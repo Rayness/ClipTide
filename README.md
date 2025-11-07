@@ -7,7 +7,7 @@
 • [Russian Readme](https://github.com/Rayness/YouTube-Downloader/blob/main/README.ru.md)
 
 ## General information
-This small program is designed to download video content in audio and video formats from the YouTube video hosting, but other platforms are also supported, such as: Rutube, Vkvideo, ok and many others. The full list can be found [here](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), most likely videos will be downloaded from all these sources if they (the sources) are not blocked in your country.
+This small program is designed to download video content in audio and video formats from the YouTube, Twitch and other platforms are also supported, such as: Rutube, Vkvideo, ok and many others. The full list can be found [here](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), most likely videos will be downloaded from all these sources if they (the sources) are not blocked in your country.
 
 > [!NOTE]
 > The app also has a website: [cliptide.ru](https://cliptide.ru/index.html)
