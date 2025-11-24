@@ -364,8 +364,6 @@ function formatDuration(seconds) {
 function setLanguage(lang) {
     const select = document.getElementById("language");
     if (select) {
-      select.value = lang;
+        select.value = lang;
     }
-  }
-  
-
+}

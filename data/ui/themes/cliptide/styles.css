@@ -142,12 +142,14 @@ html, body {
     flex: 1;
     max-height: 100%;
     display: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .content.active {
     max-height: 100%;
     overflow: hidden;
     display: block;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .content .coming-soon {

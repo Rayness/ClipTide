@@ -16,6 +16,7 @@
     margin-bottom: 0.5rem;
     background: var(--dark-bg-transparent);
     border-radius: var(--border-radius-sm);
+    animation: slideInLeft 0.5s ease-out forwards;
 }
 
 .queue-items img {

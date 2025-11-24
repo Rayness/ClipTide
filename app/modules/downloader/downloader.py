@@ -55,7 +55,8 @@ class Downloader():
                 'proxy': f'{self.proxy_url}',
                 'nocheckcertificate': True,
                 'cookies': f'{COOKIES_FILE}',
-                'dumpjson': True
+                'dumpjson': True,
+                'javascript_executable': './qjs/qjs.exe',
             }
             if self.proxy != "False":
                 opt['proxy'] = self.proxy_url
@@ -165,9 +166,10 @@ class Downloader():
                     'outtmpl': f'{download_folder}/{video_title}.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
                     'cookiefile': f'{COOKIES_FILE}',
-                    'retries': 25,  # Увеличиваем количество попыток
-                    'socket_timeout': 5,  # Устанавливаем таймаут для сокета
+                    'retries': 5,  # Увеличиваем количество попыток
+                    'socket_timeout': 3,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
+                    'javascript_executable': './qjs/qjs.exe',
                 }
             else:
                 ydl_opts = {
@@ -180,9 +182,10 @@ class Downloader():
                     }],
                     'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
                     'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-                    'retries': 25,  # Увеличиваем количество попыток
-                    'socket_timeout': 5,  # Устанавливаем таймаут для сокета
+                    'retries': 5,  # Увеличиваем количество попыток
+                    'socket_timeout': 3,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
+                    'javascript_executable': './qjs/qjs.exe',
                 }
 
             if self.proxy != "False":
