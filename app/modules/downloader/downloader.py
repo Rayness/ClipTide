@@ -56,7 +56,8 @@ class Downloader():
                 'nocheckcertificate': True,
                 'cookies': f'{COOKIES_FILE}',
                 'dumpjson': True,
-                'javascript_executable': './qjs/qjs.exe',
+                'extractor_args': {"ytdl_js": ["js"]},
+                'javascript_executable': '../qjs/qjs.exe',
             }
             if self.proxy != "False":
                 opt['proxy'] = self.proxy_url
@@ -169,7 +170,8 @@ class Downloader():
                     'retries': 5,  # Увеличиваем количество попыток
                     'socket_timeout': 3,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
-                    'javascript_executable': './qjs/qjs.exe',
+                    'extractor_args': {"ytdl_js": ["js"]},
+                    'javascript_executable': 'qjs/qjs.exe'
                 }
             else:
                 ydl_opts = {
@@ -185,7 +187,8 @@ class Downloader():
                     'retries': 5,  # Увеличиваем количество попыток
                     'socket_timeout': 3,  # Устанавливаем таймаут для сокета
                     'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
-                    'javascript_executable': './qjs/qjs.exe',
+                    'extractor_args': {"ytdl_js": ["js"]},
+                    'javascript_executable': 'qjs/qjs.exe'
                 }
 
             if self.proxy != "False":
