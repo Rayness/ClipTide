@@ -1,5 +1,4 @@
-# Copyright (C) 2025 Rayness
-# This program is free software under GPLv3. See LICENSE for details.
+# app/modules/converter/converter.py
 
 import os
 import json
@@ -11,174 +10,144 @@ from tkinter import Tk, filedialog
 from app.utils.converter_utils import get_thumbnail_base64, print_video_info
 from app.modules.settings.settings import open_folder
 
-class Converter():
-    def __init__(self, window, translations, output_path, notifications, notification, open_folders):
-        self.window = window
-        self.translations = translations
-        self.notifications = notifications
+class Converter:
+    def __init__(self, context):
+        self.ctx = context
         self.convert_video_path = None
-        self.output_path = output_path
-        self.notification = notification
-        self.open_folder = open_folders
+        self.ffmpeg_process = None
 
-# функция для выбора видео для конвертации
     def openFile(self):
-        # Открытие диалогового окна для выбора папки
         root = Tk()
-        root.withdraw()  # Скрываем главное окно tkinter
-        try:
-            file_path = filedialog.askopenfilename(
-                title="Выберите файл",
-                filetypes=(("Все файлы", "*.*"), ("Текстовые файлы", "*.txt"), ("Видео", "*.mp4;*.avi"))
-            )
-        except Exception as e:
-            print(f"Ошибка при выборе папки: {e}")
+        root.withdraw()
+        file_path = filedialog.askopenfilename(
+            title="Выберите файл",
+            filetypes=(("Video files", "*.mp4;*.avi;*.mkv;*.mov"), ("All files", "*.*"))
+        )
         root.destroy()
+
+        if not file_path:
+            return
+
         try:
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('converter', {}).get('video_adding')}"')
-            self.window.evaluate_js(f'showSpinner()')
-            self.window.evaluate_js(f'window.updateTranslations({self.translations})')
+            self.ctx.log_status('converter', 'video_adding') # Используем ключи из json
+            self.ctx.js_exec('showSpinner()')
+
             thumbnail, error = get_thumbnail_base64(file_path)
             result = print_video_info(file_path)
-            if result is None:
-                print("Не удалось получить данные о видео")
-            else:
-                if result and len(result) == 8:
-                    duration, bitrate, width, height, codec, fps, audio_codec, audio_bitrate = result
-                else: 
-                    print(result)
-            file_name = os.path.basename(file_path)
-            self.convert_video_path = file_path
-            # print(duration, bitrate, codec, fps, audio_codec, audio_bitrate, thumbnail, error, file_name)
-
-            # Формируем данные
+            
+            # Дефолтные значения
             video_data = {
-                'duration': duration,
-                'bitrate': bitrate,
-                'codec': codec,
-                'fps': fps,
-                'audio_codec': audio_codec,
-                'audio_bitrate': audio_bitrate,
+                'file_name': os.path.basename(file_path),
                 'thumbnail': thumbnail,
-                'error': error,
-                'file_name': file_name
+                'error': error
             }
-            self.window.evaluate_js(f"file_is_input({json.dumps(video_data)})")
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('converter', {}).get('video_add')}"')
-            time.sleep(2)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+
+            if result and len(result) == 8:
+                video_data.update({
+                    'duration': result[0], 'bitrate': result[1],
+                    'width': result[2], 'height': result[3],
+                    'codec': result[4], 'fps': result[5],
+                    'audio_codec': result[6], 'audio_bitrate': result[7]
+                })
+
+            self.convert_video_path = file_path
+            
+            # Обновляем UI
+            self.ctx.js_exec(f"file_is_input({json.dumps(video_data)})")
+            self.ctx.log_status('converter', 'video_add')
+            time.sleep(1)
+            self.ctx.log_status('status_text') # Сброс статуса
+
         except Exception as e:
-            print(f"Ошибка при выборе видео: {e}")
-            self.window.evaluate_js(f'hideSpinner()')
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+            print(f"Converter Error: {e}")
+            self.ctx.js_exec('hideSpinner()')
+            self.ctx.log_status('error_adding', str(e))
 
-    # Функция для конвертации видео
     def convert_video(self, output_format):
+        if not self.convert_video_path:
+            return
+
+        out_folder = self.ctx.converter_folder
+        filename = os.path.splitext(os.path.basename(self.convert_video_path))[0]
+        output_path = os.path.join(out_folder, f"{filename}.{output_format}")
+
+        self.ctx.log_status('converting')
+
+        # Запускаем поток
+        Thread(target=self._run_ffmpeg, args=(output_path,)).start()
+
+    def _run_ffmpeg(self, output_path):
         try:
-            filename = os.path.splitext(os.path.basename(self.convert_video_path))[0]
-            output_path = os.path.join(self.output_path, f"{filename}.{output_format}")
-
-            print(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("converting")}"')
-                
-
-            # Получаем длительность видео
+            # Получаем длительность для расчета прогресса
             probe = ffmpeg.probe(self.convert_video_path)
             duration = float(probe['format']['duration'])
-            # Команда ffmpeg
+
             command = [
-                'ffmpeg',
-                '-i', self.convert_video_path,
-                '-c:v', 'libx264',  # Пример кодека видео
-                '-preset', 'medium',  # Скорость/качество конвертации
-                '-c:a', 'aac',  # Пример кодека аудио
-                output_path
+                'ffmpeg', '-i', self.convert_video_path,
+                '-c:v', 'libx264', '-preset', 'medium',
+                '-c:a', 'aac', '-y', output_path
             ]
-            # Запускаем процесс FFmpeg в отдельном потоке
-            def run_ffmpeg():
-                self.ffmpeg_process = subprocess.Popen(
-                    command,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    universal_newlines=True,
-                    encoding='utf-8',
-                    errors='ignore',  # Явно указываем кодировку UTF-8
-                    creationflags=subprocess.CREATE_NO_WINDOW  # Предотвращает открытие консоли
-                )
-                # Чтение вывода FFmpeg для анализа прогресса
-                for line in self.ffmpeg_process.stdout:
-                    print(line.strip())  # Для отладки
-                    if "time=" in line:
-                        try:
-                            # Извлекаем текущее время обработки из строки
-                            time_str = line.split("time=")[1].split()[0]
-                            if time_str == 'N/A':
-                                continue
-                            hours, minutes, seconds = map(float, time_str.split(":"))
-                            current_time = hours * 3600 + minutes * 60 + seconds
 
-                            # Вычисляем процент завершения
-                            progress = (current_time / duration) * 100 if duration > 0 else 0
-                            progress = min(progress, 100)  # Ограничиваем значение до 100%
-                            progress = round(progress, 2)
+            self.ffmpeg_process = subprocess.Popen(
+                command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                universal_newlines=True, encoding='utf-8', errors='ignore',
+                creationflags=subprocess.CREATE_NO_WINDOW
+            )
 
-                            eta_seconds_total = max(duration - current_time, 0)
-                            eta_minutes = int(eta_seconds_total // 60)
-                            eta_seconds = int(eta_seconds_total % 60)
+            for line in self.ffmpeg_process.stdout:
+                if "time=" in line:
+                    self._parse_progress(line, duration)
 
-                            eta_formatted = f"{eta_minutes} {self.translations['min']} {eta_seconds} {self.translations['sec']}"
+            self.ffmpeg_process.wait()
 
-                            # Обновляем прогресс-бар в интерфейсе
-                            self.window.evaluate_js(f'showSpinner()')
-                            self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} {progress}%"')
-                            self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} {eta_formatted}"')
-                            self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "{progress}%"')
-                        except Exception as e:
-                            print(f"Ошибка при обработке строки: {line.strip()}. Подробности: {str(e)}")
-                            continue
+            if self.ffmpeg_process.returncode == 0:
+                self.ctx.log_status('convert_success')
+                self.ctx.js_exec(f'document.getElementById("progress").innerText = "100%"')
+                self.ctx.js_exec(f'document.getElementById("progress-fill").style.width = "100%"')
+                
+                # Проверяем настройки автооткрытия папки
+                if self.ctx.config.get("Folders", "cv", fallback="True") == "True":
+                    open_folder(os.path.dirname(output_path))
+                
+                time.sleep(2)
+                # Сброс UI
+                self.ctx.js_exec('closeVideo()')
+                self.ctx.js_exec('hideSpinner()')
+                self.ctx.log_status('status_text')
+                self._reset_progress_ui()
 
-                self.ffmpeg_process.wait()
-                if progress > 99:
-                    # Уведомляем об успешной конвертации
-                    self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("convert_success")}"')
-                    self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
-                    time.sleep(2)
-                    open_folder(self.output_path)
-                    self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
-                    self.window.evaluate_js(f'closeVideo()')
-                    self.window.evaluate_js(f'hideSpinner()')
-                    self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("status_text")}"')
-                    self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0 мин 0 сек"')
-                    self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
-
-            # Запускаем процесс конвертации в отдельном потоке
-            ffmpeg_thread = Thread(target=run_ffmpeg)
-            ffmpeg_thread.start()
-
-            # Уведомляем о начале конвертации
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("converting")}"')
-
-            # Ждем завершения потока
-            ffmpeg_thread.join()
         except Exception as e:
-            print(f"Ошибка при конвертации: {str(e)}")
-            self.window.evaluate_js(f'hideSpinner()')
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("convert_error")}: {str(e)}"')
-            time.sleep(2)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("status_text")}"')
+            print(f"FFmpeg Error: {e}")
+            self.ctx.log_status('convert_error', str(e))
+            self.ctx.js_exec('hideSpinner()')
 
+    def _parse_progress(self, line, duration):
+        try:
+            time_str = line.split("time=")[1].split()[0]
+            if time_str == 'N/A': return
+            
+            h, m, s = map(float, time_str.split(":"))
+            current_time = h * 3600 + m * 60 + s
+            
+            progress = min(round((current_time / duration) * 100, 2), 100)
+            
+            # Отправляем в UI
+            self.ctx.js_exec(f'updateProgressBar({progress}, "", "")') # Нужно адаптировать JS функцию
+            # Или по-старому:
+            self.ctx.js_exec(f'document.getElementById("progress").innerText = "{progress}%"')
+            self.ctx.js_exec(f'document.getElementById("progress-fill").style.width = "{progress}%"')
+            
+        except:
+            pass
+
+    def _reset_progress_ui(self):
+        self.ctx.js_exec('document.getElementById("progress").innerText = "0%"')
+        self.ctx.js_exec('document.getElementById("eta").innerText = ""')
+        self.ctx.js_exec('document.getElementById("progress-fill").style.width = "0%"')
 
     def stop_conversion(self):
-        # Прерывает процесс конвертации
-        if self.ffmpeg_process and self.ffmpeg_process.poll() is None:  # Проверяем, что процесс еще работает
-            try:
-                self.ffmpeg_process.terminate()  # Отправляем сигнал завершения
-                print("Конвертация прервана пользователем.")
-                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("conversion_stopped")}"')
-                time.sleep(2)
-                self.window.evaluate_js(f'hideSpinner()')
-                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get("status", {}).get("status_text")}"')
-                self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0 мин 0 сек"')
-                self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
-                self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
-            except Exception as e:
-                print(f"Ошибка при попытке прервать конвертацию: {str(e)}")
+        if self.ffmpeg_process and self.ffmpeg_process.poll() is None:
+            self.ffmpeg_process.terminate()
+            self.ctx.log_status('conversion_stopped')
+            self._reset_progress_ui()
+            self.ctx.js_exec('hideSpinner()')

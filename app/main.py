@@ -1,80 +1,57 @@
-# Copyright (C) 2025 Rayness
-# This program is free software under GPLv3. See LICENSE for details.
+# main.py
 
 import json
 import webview
+from app.core.context import AppContext
+from app.core.core import PublicWebViewApi, WebViewApi
 from app.utils.config.config import load_config, update_config
 from app.utils.notifications.notifications import load_notifications
 from app.utils.ui.themes import get_themes
 from app.utils.locale.translations import load_translations
-from app.core import PublicWebViewApi, WebViewApi
 from app.utils.utils import check_for_update, get_local_version, unicodefix, ffmpegreg, load_modal_content
 from app.utils.logs.logs import logs
 from app.utils.const import html_file_path
 from app.utils.queue.queue import load_queue_from_file
 
 def startApp():
-    version = get_local_version()
+    # 1. Создаем контекст
+    ctx = AppContext()
+    
+    # 2. Загружаем конфигурацию
+    ctx.config = load_config()
+    update_config(ctx.config) # Проверка валидности
 
-    version = str(version).lower()
-
-    update = check_for_update()
-    update_js = str(update).lower()
-    notifications = load_notifications()
-    print(f"Verison: {version}")
+    # 3. Наполняем контекст данными
+    ctx.language = ctx.config.get("Settings", "language", fallback="en")
+    ctx.translations = load_translations(ctx.language)
+    ctx.download_folder = ctx.config.get("Settings", "folder_path", fallback="downloads")
+    ctx.converter_folder = ctx.config.get("Settings", "converter_folder", fallback="downloads")
+    
+    ctx.theme = ctx.config.get("Themes", "theme", fallback="default")
+    ctx.style = ctx.config.get("Themes", "style", fallback="default")
+    
+    ctx.proxy_url = ctx.config.get("Proxy", "url", fallback="")
+    ctx.proxy_enabled = ctx.config.get("Proxy", "enabled", fallback="False")
+    
+    ctx.download_queue = load_queue_from_file()
+    ctx.notifications = load_notifications()
+    
+    version = str(get_local_version()).lower()
+    update_status = str(check_for_update()).lower()
     themes = get_themes()
-
-    config = load_config()
-
-    update_config(config)
-
-    language = config.get("Settings", "language", fallback="en")
-
-    theme = config.get("Themes", "theme", fallback="default")
-    style = config.get("Themes", "style", fallback="default")
-
-    notifi_download = config.get("Notifications", "downloads", fallback="True")
-    notifi_conversion = config.get("Notifications", "conversion", fallback="True")
-
-    proxy = config.get("Proxy", "url", fallback="")
-    proxy_enabled = config.get("Proxy", "enabled", fallback="False")
-
-    download_open_folder = config.get("Folders", "dl", fallback="True")
-    converter_open_folder = config.get("Folders", "cv", fallback="True")
-
-    translations = load_translations(language)
-
-    download_queue = load_queue_from_file()
-
     modal_content = load_modal_content()
+    
+    # Флаги настроек (можно читать напрямую из ctx.config в модулях, но для кэша ок)
+    dl_open = ctx.config.get("Folders", "dl", fallback="True")
+    cv_open = ctx.config.get("Folders", "cv", fallback="True")
+    notif_dl = ctx.config.get("Notifications", "downloads", fallback="True")
+    notif_cv = ctx.config.get("Notifications", "conversion", fallback="True")
 
-    download_folder = config.get("Settings", "folder_path", fallback="downloads")
-    converter_folder = config.get("Settings", "converter_folder", fallback="downloads")
-    auto_update = config.getboolean("Settings", "auto_update", fallback=False)
-    print(config, translations, language)
-
-    print("ЗАПУСК", proxy_enabled, notifi_download)
-
-    real_api = WebViewApi(
-        translations = translations,
-        language = language,
-        download_folder = download_folder,
-        download_queue = download_queue,
-        update = update_js,
-        notifications=notifications,
-        theme=theme,
-        style=style,
-        converter_folder=converter_folder,
-        proxy_url=proxy,
-        proxy=proxy_enabled,
-        notifi_download=notifi_download,
-        notifi_conversion=notifi_conversion,
-        folder_open_dl = download_open_folder,
-        folder_open_cv = converter_open_folder
-    )
-
+    # 4. Инициализация API
+    real_api = WebViewApi(ctx)
     public_api = PublicWebViewApi(real_api)
 
+    # 5. Создание окна
     window = webview.create_window(
         f'ClipTide {version}',
         html_file_path,
@@ -86,28 +63,33 @@ def startApp():
         frameless=True,
     )
     real_api.set_window(window)
+    print("Window object passed to API") # Добавь этот принт для проверки
 
-    print("Window created:", window)
-
+    # 6. Загрузка данных в UI при старте
     def on_loaded():
-        window.evaluate_js(f'updateDownloadFolder({json.dumps(download_folder)})')
-        window.evaluate_js(f'updateConvertFolder({json.dumps(converter_folder)})')
-        window.evaluate_js(f'updateTranslations({json.dumps(translations)})')
-        window.evaluate_js(f'window.loadQueue({json.dumps(download_queue)})')
-        window.evaluate_js(f'updateApp({update_js}, {json.dumps(translations)})')
-        window.evaluate_js(f'setLanguage("{language}")')
-        window.evaluate_js(f'loadNotifications({json.dumps(notifications)})')
-        window.evaluate_js(f'loadproxy("{proxy}",{json.dumps(proxy_enabled)})')
-        window.evaluate_js(f'loadopenfolders({json.dumps(download_open_folder)},{json.dumps(converter_open_folder)})')
-        window.evaluate_js(f'load_settingsNotificatios("{notifi_download}","{notifi_conversion}")')
-        window.evaluate_js(f'loadTheme("{theme}", "{style}", {themes})')
-        window.evaluate_js(f'get_version("{version}")')
-        window.evaluate_js(f'loadData({json.dumps(modal_content)})')
-
+        # Вместо 20 вызовов evaluate_js, передаем данные пачками
+        # Но пока сохраним совместимость с твоим JS:
         
-    
-    window.events.loaded += on_loaded
+        cmds = [
+            f'updateDownloadFolder({json.dumps(ctx.download_folder)})',
+            f'updateConvertFolder({json.dumps(ctx.converter_folder)})',
+            f'updateTranslations({json.dumps(ctx.translations)})',
+            f'window.loadQueue({json.dumps(ctx.download_queue)})',
+            f'updateApp({update_status}, {json.dumps(ctx.translations)})',
+            f'setLanguage("{ctx.language}")',
+            f'loadNotifications({json.dumps(ctx.notifications)})',
+            f'loadproxy("{ctx.proxy_url}", {json.dumps(ctx.proxy_enabled)})',
+            f'loadopenfolders({json.dumps(dl_open)}, {json.dumps(cv_open)})',
+            f'load_settingsNotificatios("{notif_dl}","{notif_cv}")',
+            f'loadTheme("{ctx.theme}", "{ctx.style}", {themes})',
+            f'get_version("{version}")',
+            f'loadData({json.dumps(modal_content)})'
+        ]
+        
+        for cmd in cmds:
+            window.evaluate_js(cmd)
 
+    window.events.loaded += on_loaded
     webview.start()
 
 def main():

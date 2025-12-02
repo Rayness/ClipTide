@@ -1,127 +1,90 @@
-# Copyright (C) 2025 Rayness
-# This program is free software under GPLv3. See LICENSE for details.
+# app/modules/settings/settings.py
 
 import json
-import platform
 import subprocess
+import platform
 from tkinter import Tk, filedialog
-
+from app.utils.const import download_dir, UPDATER
 from app.utils.locale.translations import load_translations
 
-from app.utils.const import download_dir, UPDATER
-
-from app.utils.config.config import load_config, save_config
-
-config = load_config()
-
-class SettingsManager():
-    def __init__(self, window, language, translations, update, notifications, theme, style, folder=None, converterFolder = None, proxy_url = "", proxy = "False"):
-        self.window = window
-        self.language = language
-        self.folder = folder
-        self.converterFolder = converterFolder
-        self.translations = translations
-        self.update = update
-        self.theme = theme
-        self.style = style
-        self.notifications = notifications
-        self.proxy_url = proxy_url
-        self.proxy = proxy
-
-    # Запуск программы обновления
-    def launch_update(self):
-        try:
-            result = subprocess.run(["powershell", "Start-Process", UPDATER, "-Verb", "runAs"], shell=True)
-            print("Код завершения:", result.returncode)
-            print("Вывод программы:", result.stdout.decode())
-            return result
-        except Exception as e:
-            print("Ошибки:", result.stderr.decode())
-            print(f"Ошибка при запуске апдейтера: {str(e)}")
-
-# Функция для смены языка
-    def switch_language(self, language):
-        self.language = language
-        self.translations = load_translations(language)
-        config.set("Settings", "language", self.language)
-        save_config(config)
-        self.window.evaluate_js(f'updateApp({self.update},{json.dumps(self.translations)})')
-        self.window.evaluate_js(f'window.updateTranslations({json.dumps(self.translations)})')
-        return self.translations
-    
-    def switch_theme(self, theme):
-        self.theme = theme
-        config.set("Themes", "theme", self.theme)
-        save_config(config)
-
-    def switch_style(self, style):
-        self.style = style
-        config.set("Themes", "style", self.style)
-        save_config(config)
-
-    def switch_proxy_url(self, proxy):
-        self.proxy_url = proxy
-        config.set("Proxy", "url", self.proxy_url)
-        save_config(config)
-
-    def switch_proxy(self, proxy):
-        self.proxy = proxy
-        config.set("Proxy", "enabled", self.proxy)
-        save_config(config)
-
-    def switch_notifi(self, type, enabled):
-        config.set("Notifications", type, enabled)
-        save_config(config)
-
-    def switch_open_folder_dl(self, type, enabled):
-        config.set("Folders", type, enabled)
-        save_config(config)
-
-    # Функция для смены папки загрузок
-    def switch_download_folder(self, folder_path=f'{download_dir}'):
-        self.folder = folder_path if folder_path is not None else download_dir
-        config.set("Settings", "folder_path", self.folder)
-        save_config(config)
-        self.download_folder = self.folder
-        print("Folder_path: " + folder_path, "download_folder: " + self.download_folder)
-        self.window.evaluate_js(f'updateDownloadFolder({json.dumps(self.folder)})')
-
-    def switch_converter_folder(self, folder_path=f'{download_dir}'):
-        self.converterFolder = folder_path if folder_path is not None else download_dir
-        config.set("Settings", "converter_folder", self.converterFolder)
-        save_config(config)
-        print("Converter Folder: " + folder_path)
-        self.window.evaluate_js(f'updateConvertFolder({json.dumps(folder_path)})')
-
-    # Функция для выбора папки для загрузки
-    def choose_folder(self):
-        # Открытие диалогового окна для выбора папки
-        root = Tk()
-        root.withdraw()  # Скрываем главное окно tkinter
-        try:
-            folder_path = filedialog.askdirectory()  # Открывает окно выбора папки
-            self.window.evaluate_js(f'updateDownloadFolder({json.dumps(folder_path)})')
-            self.switch_download_folder(folder_path)
-        except Exception as e:
-            print(f"Ошибка при выборе папки: {e}")
-        root.destroy()
-
-    def choose_converter_folder(self):
-        root = Tk()
-        root.withdraw()
-        try:
-            folder_path = filedialog.askdirectory()
-            self.switch_converter_folder(folder_path)
-        except Exception as e:
-            print(f"Ошибка при выборе папка: {e}")
-        root.destroy()
-
-# Функция для открытия папки с загрузками
-def open_folder(download_folder):
+# Эту функцию можно оставить здесь или вынести в utils.py
+def open_folder(folder_path):
     try:
         if platform.system() == "Windows":
-            subprocess.run(["explorer", download_folder])
+            subprocess.run(["explorer", folder_path])
         else:
-            subprocess.run(['xdg-open', download_folder])
+            subprocess.run(['xdg-open', folder_path])
     except Exception as e:
         print(f"Ошибка при открытии папки: {e}")
+
+class SettingsManager:
+    def __init__(self, context):
+        self.ctx = context # Вся сила теперь здесь
+
+    def launch_update(self):
+        try:
+            subprocess.run(["powershell", "Start-Process", UPDATER, "-Verb", "runAs"], shell=True)
+        except Exception as e:
+            print(f"Ошибка при запуске апдейтера: {str(e)}")
+
+    def switch_language(self, language):
+        self.ctx.language = language
+        self.ctx.translations = load_translations(language)
+        self.ctx.update_config_value("Settings", "language", language)
+        
+        # Обновляем UI
+        # Предполагаем, что updateApp и updateTranslations делают одно и то же, упрощаем:
+        self.ctx.js_exec(f'window.updateTranslations({json.dumps(self.ctx.translations)})')
+        self.ctx.js_exec(f'setLanguage("{language}")')
+        return self.ctx.translations
+
+    def switch_theme(self, theme):
+        self.ctx.theme = theme
+        self.ctx.update_config_value("Themes", "theme", theme)
+
+    def switch_style(self, style):
+        self.ctx.style = style
+        self.ctx.update_config_value("Themes", "style", style)
+
+    def switch_proxy_url(self, proxy):
+        self.ctx.proxy_url = proxy
+        self.ctx.update_config_value("Proxy", "url", proxy)
+
+    def switch_proxy(self, enabled):
+        self.ctx.proxy_enabled = enabled
+        self.ctx.update_config_value("Proxy", "enabled", enabled)
+
+    def switch_notifi(self, n_type, enabled):
+        self.ctx.update_config_value("Notifications", n_type, enabled)
+
+    def switch_open_folder_dl(self, f_type, enabled):
+        self.ctx.update_config_value("Folders", f_type, enabled)
+
+    def switch_download_folder(self, folder_path=None):
+        path = folder_path if folder_path else download_dir
+        self.ctx.download_folder = path
+        self.ctx.update_config_value("Settings", "folder_path", path)
+        self.ctx.js_exec(f'updateDownloadFolder({json.dumps(path)})')
+
+    def switch_converter_folder(self, folder_path=None):
+        path = folder_path if folder_path else download_dir
+        self.ctx.converter_folder = path
+        self.ctx.update_config_value("Settings", "converter_folder", path)
+        self.ctx.js_exec(f'updateConvertFolder({json.dumps(path)})')
+
+    def choose_folder(self):
+        path = self._open_dialog()
+        if path:
+            self.switch_download_folder(path)
+
+    def choose_converter_folder(self):
+        path = self._open_dialog()
+        if path:
+            self.switch_converter_folder(path)
+
+    def _open_dialog(self):
+        root = Tk()
+        root.withdraw()
+        path = filedialog.askdirectory()
+        root.destroy()
+        return path

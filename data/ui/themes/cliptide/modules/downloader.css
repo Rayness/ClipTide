@@ -63,3 +63,70 @@
 .delete-button:hover {
     background-color: var(--danger-dark);
 }
+
+/* data/ui/styles/downloader.css */
+
+/* Стили для логов */
+.logs-container {
+    height: 6rem; /* Фиксированная высота */
+    background: var(--input-bg-transparent);
+    border-radius: var(--border-radius-sm);
+    padding: 0.5rem;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column-reverse; /* Новые сообщения внизу, но прижаты */
+}
+
+.log-entry {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 2px 0;
+}
+
+/* Обновленный элемент очереди */
+.queue-items li {
+    display: flex;
+    flex-direction: column; /* Теперь вертикально, чтобы прогресс был под инфо */
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+.queue-item-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.queue-item-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+}
+
+.queue-item-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 0.2rem;
+}
+
+/* Индивидуальный прогресс-бар */
+.mini-progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.3rem;
+    width: 100%;
+}
+
+.mini-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--progress-gradient);
+    transition: width 0.3s ease;
+}

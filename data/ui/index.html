@@ -473,29 +473,15 @@
                 <div class="down-panel">
                     <div class="flex-conteiner-row">
                         <div class="flex-conteiner flex-1">
-                            <div id="status" class="status-info fade-in">
-                                Статус: Ожидание...
-                            </div>
-                            <div id="loading-spinner" class="spinner-container">
-                                <!-- <div class="spinner"></div> -->
-                                <div class="spinner">
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                </div>
-                            </div>
-                            <div class="progress-info fade-in">
-                                <div id="progress">Прогресс: 0%</div>
-                                <div id="speed">Скорость: 0B/s</div>
-                                <div id="eta">Осталось: </div>
+                            <!-- Заголовок лога -->
+                            <div style="padding: 0.5rem; font-size: 0.8rem; opacity: 0.7;">Лог событий:</div>
+                            
+                            <!-- Окно логов -->
+                            <div id="app-logs" class="logs-container fade-in">
+                                <div class="log-entry">Приложение готово к работе</div>
                             </div>
                         </div>
                     </div>
-                    <div class="progress-bar fade-in">
-                        <div id="progress-fill" class="progress-fill"></div>
-                    </div> 
                 </div>
             </div>
         </div>

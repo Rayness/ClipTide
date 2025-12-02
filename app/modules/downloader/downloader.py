@@ -1,266 +1,279 @@
+# app/modules/downloader/downloader.py
+
 import os
 import threading
 import time
-
+import uuid
+import subprocess
+import platform
 import yt_dlp
 
 from app.utils.const import COOKIES_FILE
 from app.utils.queue.queue import save_queue_to_file
 from app.utils.notifications.notifications import add_notification
 
-class Downloader():
-    def __init__(self, window, translations, download_queue, download_folder, notifications, proxy_url, proxy, notification, open_folders):
-        self.window = window
-        self.translations = translations
-        self.download_queue = download_queue
-        self.download_folder = download_folder
-        self.notifications = notifications
-        self.is_downloading = False
-        self.download_stop = False
-        self.proxy_url = proxy_url
-        self.proxy = proxy
-        self.notification = notification
-        self.open_folder = open_folders
+class Downloader:
+    def __init__(self, context):
+        self.ctx = context
+        self.stop_requested = False
+        self.is_running = False 
+        self.active_tasks = 0   
+        self.max_concurrent = 3
+        self.semaphore = threading.Semaphore(self.max_concurrent)
 
+    def _js_exec(self, code):
+        if self.ctx.window:
+            self.ctx.window.evaluate_js(code)
 
-# Функция для удаления видео из очереди
-    def removeVideoFromQueue(self, video_title):
+    def get_trans(self, category, key=None, default=""):
+        value = self.ctx.translations.get(category)
+        if isinstance(value, str): return value
+        if isinstance(value, dict) and key: return value.get(key, default or key)
+        return default or key or category
+
+    def log(self, message):
+        print(f"[LOG] {message}")
+        safe_msg = message.replace('"', '\\"').replace("'", "\\'")
+        self._js_exec(f'addLog("{safe_msg}")')
+
+    def open_dl_folder(self):
+        path = self.ctx.download_folder
         try:
-            # Фильтруем очередь, удаляя видео с указанным названием
-            self.download_queue = [
-                (url, title, fmt, res, thumb)
-                for url, title, fmt, res, thumb in self.download_queue
-                if title != video_title
-            ]
-
-            # Сохраняем обновленную очередь в файл
-            save_queue_to_file(self.download_queue)
-
-            print(f"Видео удалено из очереди: {video_title}")
-            print(video_title)
-            # Обновляем интерфейс
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('removed_from_queue')}: {video_title}"'), time.sleep(3), self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-            time.sleep(2)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+            if platform.system() == "Windows":
+                os.startfile(path)
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", path])
+            else:
+                subprocess.Popen(["xdg-open", path])
         except Exception as e:
-            print(f"Ошибка при удалении видео из очереди: {str(e)}", video_title)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('error_removing')}: {str(e)}"'), time.sleep(3), self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-            time.sleep(2)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+            self.log(f"Error opening folder: {e}")
 
-    # Функция для добавления видео в очередь
     def addVideoToQueue(self, video_url, selected_format, selectedResolution):
-        try:
-            opt = {
-                'proxy': f'{self.proxy_url}',
-                'nocheckcertificate': True,
-                'cookies': f'{COOKIES_FILE}',
-                'dumpjson': True,
-                'extractor_args': {"ytdl_js": ["js"]},
-                'javascript_executable': '../qjs/qjs.exe',
-            }
-            if self.proxy != "False":
-                opt['proxy'] = self.proxy_url
-            else:
-                opt['proxy'] = ''
-            # Извлекаем информацию о видео (название)
-            with yt_dlp.YoutubeDL(opt) as ydl:
-                print(opt)
-                info = ydl.extract_info(video_url, download=False)
-                video_title_get = info.get('title', 'Неизвестное видео')
-                thumbnail_url = info.get('thumbnail', '')
-            # video_title = self.remove_emoji_simple(video_title_get.replace('"',"'"))
-            video_title = video_title_get.replace('"',"'")
-
-
-            # Добавляем видео в очередь
-            self.download_queue.append((video_url, video_title, selected_format, selectedResolution, thumbnail_url))
-            print(f"Видео добавлено в очередь: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
-
-            # Сохраняем очередь в файл
-            save_queue_to_file(self.download_queue)
-
-            # Обновляем интерфейс
-            self.window.evaluate_js(f'addVideoToList("{video_title}", "{thumbnail_url}", "{selected_format}","{selectedResolution}")')
-            
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('to_queue')}: {video_title} {self.translations.get('status', {}).get('in_format')} {selected_format} {self.translations.get('status', {}).get('in_resolution')} {selectedResolution}p"')
-            self.window.evaluate_js(f'hideSpinner()')
-            time.sleep(3)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-            return
-        except Exception as e:
-            print(f"Ошибка при добавлении видео в очередь: {str(e)}")
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('error_adding')}: {str(e)}"')
-            self.window.evaluate_js(f'hideSpinner()')
-            time.sleep(3)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-            return 
+        task_id = str(uuid.uuid4())
         
-    # Функция для начала загрузки
+        status_pending = self.get_trans('status', 'status_text', 'Pending...')
+        self.log(f"{status_pending} ({video_url})")
+        self._js_exec('showSpinner()')
+
+        def _analyze():
+            try:
+                opt = {
+                    'proxy': self.ctx.proxy_url if self.ctx.proxy_enabled == "True" else '',
+                    'nocheckcertificate': True,
+                    'cookies': COOKIES_FILE,
+                    'quiet': True,
+                    'extract_flat': True
+                }
+
+                with yt_dlp.YoutubeDL(opt) as ydl:
+                    info = ydl.extract_info(video_url, download=False)
+                    title = info.get('title', 'Unknown').replace('"', "'")
+                    thumbnail = info.get('thumbnail', '')
+
+                t_fmt = self.get_trans('status', 'in_format', 'format')
+                t_res = self.get_trans('status', 'in_resolution', 'res')
+                
+                video_data = {
+                    "id": task_id,
+                    "url": video_url,
+                    "title": title,
+                    "format": selected_format,
+                    "resolution": selectedResolution,
+                    "thumbnail": thumbnail,
+                    "status": "queued",
+                    "fmt_label": t_fmt, 
+                    "res_label": t_res 
+                }
+                
+                self.ctx.download_queue.append(video_data)
+                save_queue_to_file(self.ctx.download_queue)
+
+                self._js_exec(f'addVideoToList({video_data})')
+                
+                msg_added = self.get_trans('status', 'to_queue', 'Added to queue')
+                self.log(f"{msg_added}: {title}")
+
+            except Exception as e:
+                err_msg = self.get_trans('status', 'error_adding', 'Error adding')
+                self.log(f"{err_msg}: {str(e)}")
+            finally:
+                self._js_exec('hideSpinner()')
+
+        threading.Thread(target=_analyze, daemon=True).start()
+
+    def removeVideoFromQueue(self, task_id):
+        title = "Video"
+        for v in self.ctx.download_queue:
+            if v.get("id") == task_id:
+                title = v.get("title", "Video")
+                break
+
+        self.ctx.download_queue = [v for v in self.ctx.download_queue if v.get("id") != task_id]
+        save_queue_to_file(self.ctx.download_queue)
+        
+        msg_removed = self.get_trans('status', 'removed_from_queue', 'Removed')
+        self.log(f"{msg_removed}: {title}")
+
     def startDownload(self):
-        if self.is_downloading: 
-            return f"{self.translations.get('status', {}).get('downloading_already')}"
-
-        if not self.download_queue:
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('the_queue_is_empty')}"') # type: ignore
-            time.sleep(2)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
+        # Если очередь пуста, выходим
+        if not self.ctx.download_queue:
+            msg_empty = self.get_trans('status', 'the_queue_is_empty', 'Queue empty')
+            self.log(msg_empty)
             return
+
+        if self.is_running:
+            self.log("Download manager is already running.")
+            return
+
+        # === FIX: Сброс зависших статусов ===
+        # Если мы нажимаем старт, значит мы хотим возобновить все, что не завершено.
+        # Переводим "downloading" (зависшие) обратно в "queued".
+        resumed_count = 0
+        for task in self.ctx.download_queue:
+            if task.get("status") == "downloading":
+                task["status"] = "queued"
+                resumed_count += 1
+                # Визуально обновляем статус
+                self._js_exec(f'updateItemProgress("{task["id"]}", 0, "", "Queued")')
         
-        # Запускаем загрузку
-        self.start_next_download()
-        self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('downloading')}: {video_title}"') # type: ignore
-        return
-    
+        if resumed_count > 0:
+            self.log(f"Resuming {resumed_count} stopped tasks...")
+
+        self.stop_requested = False
+        self.is_running = True
+        threading.Thread(target=self._download_manager, daemon=True).start()
+
     def stopDownload(self):
-        if self.is_downloading == True:
-            self.is_downloading = False
-            self.download_stop = True
-            print(self.download_stop)
+        self.stop_requested = True
+        # Мы НЕ ставим is_running = False здесь сразу, 
+        # пусть менеджер сам завершится корректно, увидев stop_requested
+        self.log("Stopping all downloads...")
 
-    # Функция для начала следующей загрузки
-    def start_next_download(self):
-            if not self.download_stop:
-                if not self.download_queue:
-                    if self.open_folder == "True":
-                        os.startfile(f"{self.download_folder}")
-                    print("Очередь пуста. Загрузка завершена.")
-                    # Обновляем статус
-                    self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('the_queue_is_empty_download_success')}"')
-                    time.sleep(3)
-                    self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-                    return
+    def _download_manager(self):
+        self.log("Download Manager Started")
+        
+        while self.is_running and not self.stop_requested:
+            # Ищем задачи
+            queued_tasks = [v for v in self.ctx.download_queue if v.get("status") == "queued"]
+            
+            # Если нет задач и нет активных потоков -> все готово, выключаемся
+            if not queued_tasks and self.active_tasks == 0:
+                self.log("Queue finished.")
+                self.is_running = False
+                break
 
-                # Устанавливаем флаг загрузки
-                self.is_downloading = True
+            if not queued_tasks:
+                time.sleep(1)
+                continue
 
-                save_queue_to_file(self.download_queue)
+            for task in queued_tasks:
+                if self.stop_requested: break
+                
+                if self.semaphore.acquire(blocking=False):
+                    task["status"] = "downloading"
+                    self.active_tasks += 1
+                    t = threading.Thread(target=self._download_worker, args=(task,))
+                    t.start()
+                else:
+                    time.sleep(1)
+            
+            time.sleep(0.5)
+        
+        # Если вышли из цикла по stop_requested
+        if self.stop_requested:
+            self.is_running = False
+            self.log("Download Manager Stopped.")
 
-                # Извлекаем следующее видео из очереди
-                video_url, video_title, selected_format, selectedResolution, thumbl = self.download_queue.pop(0)
-                print(f"Начинаю загрузку видео: {video_title} в формате {selected_format} в разрешении {selectedResolution}p")
-                self.window.evaluate_js(f'showSpinner()')
-
-                # Обновляем статус в интерфейсе
-                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('downloading')}: {video_title}"')
-                self.window.evaluate_js(f'removeVideoFromList("{video_title}")')
-
-                # Запускаем загрузку видео
-                threading.Thread(target=self.download_video, args=(video_url, video_title, selected_format, selectedResolution, self.download_folder)).start()
-
-                print("Очередь пуста")
-            else:
-                save_queue_to_file(self.download_queue)
-                self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-                self.window.evaluate_js('hideSpinner()')
-                self.download_stop = False
-    # Функция для загрузки видео с помощью yt-dlp
-    def download_video(self, video_url, video_title, selected_format, selectedResolution, download_folder='downloads'):
+    def _download_worker(self, task):
+        task_id = task["id"]
+        title = task["title"]
+        
         try:
-            if (selected_format != 'mp3'):
-                # Настройки для yt-dlp
-                print(self.proxy_url)
-                ydl_opts = {
-                    'proxy': f'',
-                    'format': f'bestvideo[height<={selectedResolution}]+bestaudio/best[height<={selectedResolution}]',  # Лучшее качество видео и аудио
-                    'merge_output_format': selected_format,  # Объединяем видео и аудио в один файл
-                    'outtmpl': f'{download_folder}/{video_title}.{selected_format}',  # Путь для сохранения
-                    'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-                    'cookiefile': f'{COOKIES_FILE}',
-                    'retries': 5,  # Увеличиваем количество попыток
-                    'socket_timeout': 3,  # Устанавливаем таймаут для сокета
-                    'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
-                    'extractor_args': {"ytdl_js": ["js"]},
-                    'javascript_executable': 'qjs/qjs.exe'
-                }
-            else:
-                ydl_opts = {
-                    'proxy': f'',
+            msg_start = self.get_trans('status', 'downloading', 'Downloading')
+            self.log(f"{msg_start}: {title}")
+            
+            t_mbs = self.get_trans('mbs', 'MB/s')
+            t_sec = self.get_trans('sec', 's')
+            t_min = self.get_trans('min', 'm')
+            t_done = self.get_trans('status', 'download_success', 'Done')
+
+            def progress_hook(d):
+                if self.stop_requested:
+                    raise yt_dlp.utils.DownloadCancelled("Stop requested")
+                
+                if d['status'] == 'downloading':
+                    total = d.get('total_bytes') or d.get('total_bytes_estimate', 1)
+                    downloaded = d.get('downloaded_bytes', 0)
+                    progress = round((downloaded / total) * 100, 1) if total else 0
+                    
+                    speed = d.get('speed', 0) or 0
+                    speed_str = f"{speed / 1024 / 1024:.1f} {t_mbs}"
+                    
+                    eta = d.get('eta', 0)
+                    if eta and eta > 60:
+                        eta_str = f"{eta // 60}{t_min} {eta % 60}{t_sec}"
+                    else:
+                        eta_str = f"{eta}{t_sec}" if eta else "..."
+
+                    self._js_exec(f'updateItemProgress("{task_id}", {progress}, "{speed_str}", "{eta_str}")')
+
+            out_tmpl = os.path.join(self.ctx.download_folder, f"{title}.%(ext)s")
+            
+            ydl_opts = {
+                'proxy': self.ctx.proxy_url if self.ctx.proxy_enabled == "True" else '',
+                'outtmpl': out_tmpl,
+                'progress_hooks': [progress_hook],
+                'quiet': True,
+                'nocheckcertificate': True
+            }
+
+            if task["format"] == 'mp3':
+                ydl_opts.update({
                     'format': 'bestaudio/best',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': f'mp3',
-                        'preferredquality': '192',
-                    }],
-                    'outtmpl': f'{download_folder}/%(title)s.{selected_format}',  # Путь для сохранения
-                    'progress_hooks': [self.progress_hook],  # Добавляем хук для отслеживания прогресса
-                    'retries': 5,  # Увеличиваем количество попыток
-                    'socket_timeout': 3,  # Устанавливаем таймаут для сокета
-                    'nocheckcertificate': True,  # Отключаем проверку SSL-сертификата
-                    'extractor_args': {"ytdl_js": ["js"]},
-                    'javascript_executable': 'qjs/qjs.exe'
-                }
-
-            if self.proxy != "False":
-                ydl_opts['proxy'] = self.proxy_url
+                    'postprocessors': [{'key': 'FFmpegExtractAudio', 'preferredcodec': 'mp3'}],
+                })
             else:
-                ydl_opts['proxy'] = ''
+                res = task["resolution"]
+                ydl_opts.update({
+                    'format': f'bestvideo[height<={res}]+bestaudio/best[height<={res}]',
+                    'merge_output_format': task["format"]
+                })
 
-            # Загружаем видео
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([video_url])
+                ydl.download([task["url"]])
 
-            self.removeVideoFromQueue(video_title)
-            self.window.evaluate_js(f'hideSpinner()')
-            print(f"Видео успешно загружено: {video_title}")
-            if self.notification == "True":
-                self.notifications = add_notification("Загрузка завершена", f"Видео {video_title} успешно загружено", "downloader")
-            self.window.evaluate_js(f'loadNotifications({self.notifications})')
-            print("Уведомления после загрузки: ", self.notifications)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('download_success')}: {video_title}"')
+            # --- УСПЕХ ---
+            self.log(f"{t_done}: {title}")
+            self._js_exec(f'updateItemProgress("{task_id}", 100, "{t_done}", "")')
+            
+            # Удаление
+            self.ctx.download_queue = [v for v in self.ctx.download_queue if v["id"] != task_id]
+            save_queue_to_file(self.ctx.download_queue)
+            time.sleep(1.5) 
+            self._js_exec(f'window.removeVideoFromQueue("{task_id}")')
+            
+            # Открытие папки
+            open_dl = self.ctx.config.get("Folders", "dl", fallback="True")
+            if open_dl == "True":
+                self.open_dl_folder()
+
+            # Уведомления
+            if self.ctx.config.get("Notifications", "downloads", fallback="True") == "True":
+                add_notification(t_done, title, "downloader")
+
+        except yt_dlp.utils.DownloadCancelled:
+            # === FIX: Обработка остановки ===
+            self.log(f"Paused: {title}")
+            task["status"] = "queued" # Возвращаем статус в очередь
+            self._js_exec(f'updateItemProgress("{task_id}", 0, "Paused", "")')
+            # Не удаляем из очереди!
+
         except Exception as e:
-            print(f"Ошибка при загрузке: {str(e)}")
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('download_error')}: {str(e)}"')
-            self.window.evaluate_js(f'hideSpinner()')
-            time.sleep(3)
-            self.window.evaluate_js(f'document.getElementById("status").innerText = "{self.translations.get('status', {}).get('status_text')}"')
-
-        # Сбрасываем флаг загрузки и запускаем следующую загрузку
-
-        self.is_downloading = False
-        self.start_next_download()
-
-    # Хук для отслеживания прогресса
-    def progress_hook(self, d):
-        if self.is_downloading == True:
-            if d['status'] == 'downloading':
-                # Получаем данные о прогрессе
-                downloaded_bytes = d.get('downloaded_bytes', 0)
-                total_bytes = d.get('total_bytes') or d.get('total_bytes_estimate', 1)  # Избегаем деления на ноль
-                speed = d.get('speed', 0)  # Скорость в байтах/сек
-                eta = d.get('eta', 0)  # Оставшееся время в секундах
-
-                # Вычисляем прогресс
-                progress = (downloaded_bytes / total_bytes) * 100 if total_bytes > 0 else 0
-                progress = round(progress, 2)  # Округляем до двух знаков после запятой
-
-                # Преобразуем ETA в читаемый формат
-                eta_minutes = eta // 60 if eta is not None else 0
-                eta_seconds = eta % 60 if eta is not None else 0
-                eta_formatted = "Завершение загрузки..." if eta == 0 else f"{int(eta_minutes)} {self.translations['min']} {int(eta_seconds)} {self.translations['sec']}"
-
-    # Преобразуем скорость в Мбайты/сек
-                speed_mbps = speed / (1024 * 1024) if speed else 0
-                speed_formatted = f"{speed_mbps:.2f} {self.translations['mbs']}"  # Форматируем до двух знаков после запятой
-
-                # Выводим отладочную информацию
-                print(f"Progress: {progress}%, Speed: {speed_formatted}, ETA: {eta_formatted}")
-
-                # Обновляем интерфейс
-                self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} {progress}%"')
-                self.window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} {speed_formatted}"')
-                self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} {eta_formatted}"')
-                self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "{progress}%"')
-            elif d['status'] == 'finished':
-                # Загрузка завершена
-                self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 100%"')
-                self.window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} 0"')
-                self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0"')
-                self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
-        else:
-            # Загрузка отменена
-            self.window.evaluate_js(f'document.getElementById("progress").innerText = "{self.translations['progress']} 0%"')
-            self.window.evaluate_js(f'document.getElementById("speed").innerText = "{self.translations['speed']} 0"')
-            self.window.evaluate_js(f'document.getElementById("eta").innerText = "{self.translations['eta']} 0"')
-            self.window.evaluate_js(f'document.getElementById("progress-fill").style.width = "0%"')
-            raise yt_dlp.utils.DownloadCancelled("Загрузка отменена")
+            msg_err = self.get_trans('status', 'download_error', 'Error')
+            self.log(f"{msg_err} [{title}]: {str(e)}")
+            task["status"] = "error" 
+            self._js_exec(f'updateItemProgress("{task_id}", 0, "Error", "Failed")')
+            
+        finally:
+            self.active_tasks -= 1
+            self.semaphore.release()

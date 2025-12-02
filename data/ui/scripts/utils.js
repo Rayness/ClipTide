@@ -18,7 +18,7 @@ document.getElementById('switch_openConverterFolder').addEventListener('change',
     }
 });
 
-function loadopenfolders(enabled_dl, enabled_cv){
+window.loadopenfolders = function(enabled_dl, enabled_cv){
   const checkbox_dl = document.getElementById('switch_openDownloadFolder');
   const checkbox_cv = document.getElementById('switch_openConverterFolder');
 
