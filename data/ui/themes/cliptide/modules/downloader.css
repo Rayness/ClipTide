@@ -72,6 +72,7 @@
     background: var(--input-bg-transparent);
     border-radius: var(--border-radius-sm);
     padding: 0.5rem;
+    margin: 0 0 0 0;
     overflow-y: auto;
     font-family: monospace;
     font-size: 0.8rem;

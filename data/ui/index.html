@@ -190,67 +190,81 @@
                     </div>
 
                     <div class="content" id="2" data-status="Converter">
-                        <div class="converter-app">
-                            <div class="input-file" id="input-file">
-                                <div class="drop-zone" id="dropZone">
+                        <div class="converter-layout">
+                            <!-- Левая часть: Список файлов и DropZone -->
+                            <div class="converter-main">
+                                <div class="drop-zone-small" id="dropZoneConv">
                                     <i class="fa-solid fa-plus"></i>
-                                    <p id="converter_add_video">Кликните для добавления видео</p>
+                                    <span>Добавить файлы</span>
                                 </div>
-                                <!-- <div class="drop-zone" id="dropZone-doc">
-                                    <i class="fa-solid fa-plus"></i>
-                                    <p id="converter_add_doc">Кликните для добавления документа</p>
-                                </div>
-                                <div class="drop-zone" id="dropZone-img">
-                                    <i class="fa-solid fa-plus"></i>
-                                    <p id="converter_add_image">Кликните для добавления изображения</p>
-                                </div> -->
+                                
+                                <ul id="converter-queue" class="converter-list">
+                                    <!-- Сюда будут добавляться файлы -->
+                                </ul>
                             </div>
-                            <div class="app" id="main-app">
-                                <div class="main">
-                                    <div id="video-after" class="video">
-                                        <img id="conv_image" src="" alt="Видео">
-                                        <div class="text">
-                                            <button id="close-video">Отмена</button>
-                                            <p id="conv_name">Название</p>
-                                            <div class="additional-text"><p id="video_info">Информация о видео:</p></div>
-                                            <div class="additional">
-                                                <div>
-                                                    <p id="conv_duration_text">Длительность: </p><p id="conv_duration">312312</p>
-                                                </div>
-                                                <!-- <p id="conv_format">Формат: </p> -->
-                                                <div>
-                                                    <p id="conv_framerate_text">Частота кадров: </p><p id="conv_framerate">3213213</p>
-                                                </div>
-                                                <div>
-                                                    <p id="conv_video_codec_text">Видеокодек: <p id="conv_video_codec">321312</p></p>
-                                                </div>
-                                                <div>
-                                                    <p id="conv_bit_rate-video_text">Битрейт видео: </p><p id="conv_bit_rate-video">3213</p>
-                                                </div>
-                                                <div>
-                                                    <p id="conv_audio_codec_text">Аудиокодек: </p><p id="conv_audio_codec">31231</p>
-                                                </div>
-                                                <div>
-                                                    <p id="conv_bit_rate-audio_text">Битрейт аудио: </p><p id="conv_bit_rate-audio">32131</p>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                            <!-- Правая часть: Настройки -->
+                            <div class="converter-sidebar">
+                                <!-- Заголовок, который будет меняться -->
+                                <div class="sidebar-header">
+                                    <h4 id="setting-header-title">Глобальные настройки</h4>
+                                    <button class="icon-btn small" id="btn-apply-all" title="Применить ко всем" style="display: none;">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Формат:</label>
+                                    <select id="cv-format" class="select-control">
+                                        <option value="mp4">MP4 (Video)</option>
+                                        <option value="avi">AVI (Video)</option>
+                                        <option value="mkv">MKV (Video)</option>
+                                        <option value="mov">MOV (Video)</option>
+                                        <option disabled>──────────</option>
+                                        <option value="mp3">MP3 (Audio)</option>
+                                        <option value="aac">AAC (Audio)</option>
+                                        <option value="wav">WAV (Audio)</option>
+                                    </select>
+                                </div>
+
+                                <div class="setting-item">
+                                    <label>Кодек:</label>
+                                    <select id="cv-codec" class="select-control">
+                                        <option value="libx264">H.264 (Стандарт)</option>
+                                        <option value="libx265">H.265 (HEVC)</option>
+                                        <option value="copy">Без перекодирования (Copy)</option>
+                                    </select>
+                                </div>
+
+                                <div class="setting-item">
+                                    <label>Качество (CRF):</label>
+                                    <input type="range" id="cv-quality" min="18" max="35" value="23" step="1">
+                                    <div class="range-value">
+                                        <span>Лучше</span>
+                                        <span id="cv-quality-val">23</span>
+                                        <span>Хуже</span>
                                     </div>
                                 </div>
-                                <div class="settings">
-                                    <div class="text">
-                                        <h3 id="convertion-settings">Настройки конвертации</h3>
-                                    </div>
-                                    <div class="format">
-                                        <p id="convertion_format">Формат: </p>
-                                        <select name="format" id="conv-format" class="select-control">
-                                            <option value="mp4">mp4</option>
-                                            <option value="avi">avi</option>
-                                            <option value="mkv">mkv</option>
-                                        </select>
-                                        <button class="primary-btn" id="convert_btn">Конвертировать</button>
-                                        <button class="primary-btn fade-in" id="stopBtn_conv"><i class="fa-solid fa-stop"></i></button>
-                                    </div>
+
+                                <div class="setting-item">
+                                    <label>Разрешение:</label>
+                                    <select id="cv-res" class="select-control">
+                                        <option value="original">Оригинал</option>
+                                        <option value="4K">2160p</option>
+                                        <option value="2K">1440p</option>
+                                        <option value="1080">1080p</option>
+                                        <option value="720">720p</option>
+                                        <option value="480">480p</option>
+                                    </select>
+                                </div>
+
+                                <div class="converter-actions">
+                                    <button class="primary-btn" id="btn-convert-start">
+                                        <i class="fa-solid fa-rotate"></i> Конвертировать
+                                    </button>
+                                    <button class="primary-btn" id="btn-convert-stop" disabled>
+                                        <i class="fa-solid fa-stop"></i> Стоп
+                                    </button>
                                 </div>
                             </div>
                         </div>

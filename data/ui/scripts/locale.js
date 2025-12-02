@@ -95,29 +95,21 @@ window.updateTranslations = function(translations) {
     // Загрузка видео
     document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
 
-    // Конвертер видео
-    document.getElementById('converter_add_video').innerText = translations.converter.click_for_add_video || '';
+    // // Конвертер видео
+    // document.getElementById('converter_add_video').innerText = translations.converter.click_for_add_video || '';
 
-    document.getElementById('convertion-settings').innerText = translations.converter.convertion_settings || '';
-    document.getElementById('convert_btn').innerText = translations.converter.conversion_button;
-    document.getElementById('convertion_format').innerText = translations.converter.format;
-    document.getElementById('close-video').innerText = translations.converter.close_video;
+    // document.getElementById('convertion-settings').innerText = translations.converter.convertion_settings || '';
+    // document.getElementById('convert_btn').innerText = translations.converter.conversion_button;
+    // document.getElementById('convertion_format').innerText = translations.converter.format;
+    // document.getElementById('close-video').innerText = translations.converter.close_video;
     
-    document.getElementById('video_info').innerText = translations.converter.video_info.title;
-    document.getElementById('conv_duration_text').innerText = translations.converter.video_info.duration;
-    document.getElementById('conv_framerate_text').innerText = translations.converter.video_info.framerate;
-    document.getElementById('conv_video_codec_text').innerText = translations.converter.video_info.video_codec;
-    document.getElementById('conv_bit_rate-video_text').innerText = translations.converter.video_info.video_bitrate;
-    document.getElementById('conv_audio_codec_text').innerText = translations.converter.video_info.audio_codec;
-    document.getElementById('conv_bit_rate-audio_text').innerText = translations.converter.video_info.audio_bitrate;
-
-    
-    // // Статус //
-    // document.getElementById('status').innerText = translations.status.status_text || 'Status. Waiting...';
-
-    // document.getElementById('progress').innerText = translations.progress + " 0% " || 'Progress: ';
-    // document.getElementById('speed').innerText = translations.speed + " 0 " + translations.bs || 'Speed: ';
-    // document.getElementById('eta').innerText = translations.eta + " 0 " + translations.min + " 0 " + translations.sec || 'Eta: ';
+    // document.getElementById('video_info').innerText = translations.converter.video_info.title;
+    // document.getElementById('conv_duration_text').innerText = translations.converter.video_info.duration;
+    // document.getElementById('conv_framerate_text').innerText = translations.converter.video_info.framerate;
+    // document.getElementById('conv_video_codec_text').innerText = translations.converter.video_info.video_codec;
+    // document.getElementById('conv_bit_rate-video_text').innerText = translations.converter.video_info.video_bitrate;
+    // document.getElementById('conv_audio_codec_text').innerText = translations.converter.video_info.audio_codec;
+    // document.getElementById('conv_bit_rate-audio_text').innerText = translations.converter.video_info.audio_bitrate;
 };
 
 document.getElementById('openLangFiles').addEventListener('click', ()=>{

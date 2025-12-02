@@ -30,47 +30,250 @@ document.addEventListener('DOMContentLoaded', function() {
     if(buttons.length > 0) buttons[0].click();
 });
 
-// --- Drag & Drop и Выбор файлов ---
-const dropArea = document.getElementById('dropZone');
-if (dropArea) {
-    dropArea.addEventListener('click', () => {
-        window.pywebview.api.openFile();
-    });
+// --- Converter Logic ---
+
+
+// --- CONVERTER NEW LOGIC ---
+
+// Хранилище индивидуальных настроек: { "task-id": { format: 'mp4', ... } }
+window.convSettingsMap = {};
+
+// Текущий выделенный ID (null = глобальный режим)
+let selectedConvId = null;
+
+// Дефолтные настройки (значения инпутов при старте)
+function getDefaultSettings() {
+    return {
+        format: document.getElementById('cv-format').value,
+        codec: document.getElementById('cv-codec').value,
+        quality: document.getElementById('cv-quality').value,
+        resolution: document.getElementById('cv-res').value
+    };
 }
 
-document.getElementById("close-video").addEventListener('click', closeVideo);
+// 1. Кнопка "Добавить файлы"
+document.getElementById('dropZoneConv').addEventListener('click', () => {
+    window.pywebview.api.converter_add_files();
+});
 
-function closeVideo() {
-    document.getElementById('input-file').style.display = 'grid'; // Вернул grid, как было в стилях обычно
-    document.getElementById('main-app').style.display = 'none';
+// 2. Добавление элемента (вызывается из Python)
+window.addConverterItem = function(item) {
+    // Сохраняем дефолтные настройки для нового файла
+    window.convSettingsMap[item.id] = getDefaultSettings();
+
+    const list = document.getElementById('converter-queue');
+    const li = document.createElement('li');
+    li.className = 'conv-item';
+    li.id = `conv-item-${item.id}`;
+    
+    // Добавляем обработчик клика для выделения (кроме кликов по кнопкам внутри)
+    li.onclick = function(e) {
+        // Если кликнули по кнопке удаления или раскрытия - не выделяем
+        if (e.target.closest('button')) return;
+        selectConverterItem(item.id);
+    };
+
+    const thumbSrc = item.thumbnail || "src/default_thumbnail.png";
+    const durationStr = formatDuration(item.duration);
+    const d = item.details || { resolution: '?', codec: '?', bitrate: 0, fps: 0, audio: '?' };
+
+    li.innerHTML = `
+        <div class="conv-item-top">
+            <button class="btn-expand" onclick="toggleConvDetails('${item.id}')">
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <img src="${thumbSrc}" class="conv-thumb">
+            <div class="conv-info">
+                <div class="conv-filename" title="${item.filename}">${item.filename}</div>
+                <div class="conv-meta"><i class="fa-regular fa-clock"></i> ${durationStr}</div>
+            </div>
+            <div class="conv-status" id="conv-status-${item.id}">Queued</div>
+            <button class="delete-button" onclick="removeConverterItem('${item.id}')">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="conv-details">
+            <div class="detail-row"><span class="detail-label">Res:</span> <span>${d.resolution}</span></div>
+            <div class="detail-row"><span class="detail-label">Codec:</span> <span>${d.codec}</span></div>
+            <div class="detail-row"><span class="detail-label">Bitrate:</span> <span>${d.bitrate} kbps</span></div>
+            <div class="detail-row" style="grid-column: span 2;">
+                <span class="detail-label">Audio:</span> <span>${d.audio}</span>
+            </div>
+        </div>
+        <div class="conv-progress-bg">
+            <div class="conv-progress-fill" id="conv-prog-${item.id}"></div>
+        </div>
+    `;
+    list.appendChild(li);
 }
 
-// Эту функцию вызывает Python (Converter)
-window.file_is_input = function(data) {
-    document.getElementById('input-file').style.display = 'none';
-    document.getElementById('main-app').style.display = 'block';
+// 3. Логика выделения
+function selectConverterItem(id) {
+    // Снимаем выделение с прошлого
+    const prev = document.querySelector('.conv-item.selected');
+    if (prev) prev.classList.remove('selected');
 
-    if (data.error) {
-        console.error('Error:', data.error);
-        document.getElementById('status').innerText = data.error;
+    // Если кликнули на тот же самый - снимаем выделение (возврат к глобальным)
+    if (selectedConvId === id) {
+        selectedConvId = null;
+        updateSidebarUI(null);
         return;
     }
 
-    // Заполняем данными
-    if(document.getElementById('conv_name')) document.getElementById('conv_name').textContent = data.file_name;
-    if(document.getElementById('conv_duration')) document.getElementById('conv_duration').textContent = formatDuration(data.duration);
-    if(document.getElementById('conv_bit_rate-video')) document.getElementById('conv_bit_rate-video').textContent = `${data.bitrate} kbps`;
-    if(document.getElementById('conv_bit_rate-audio')) document.getElementById('conv_bit_rate-audio').textContent = `${data.audio_bitrate} kbps`;
-    if(document.getElementById('conv_framerate')) document.getElementById('conv_framerate').textContent = `${data.fps} fps`;
-    if(document.getElementById('conv_video_codec')) document.getElementById('conv_video_codec').textContent = data.codec;
-    if(document.getElementById('conv_audio_codec')) document.getElementById('conv_audio_codec').textContent = data.audio_codec;
+    // Выделяем новый
+    selectedConvId = id;
+    const curr = document.getElementById(`conv-item-${id}`);
+    if (curr) curr.classList.add('selected');
 
-    if (data.thumbnail) {
-        document.getElementById('conv_image').src = data.thumbnail;
-    }
-
-    hideSpinner();
+    // Загружаем настройки этого файла в сайдбар
+    const settings = window.convSettingsMap[id];
+    updateSidebarUI(settings, id);
 }
+
+// Обновление инпутов сайдбара
+function updateSidebarUI(settings, id) {
+    const title = document.getElementById('setting-header-title');
+    const btnApplyAll = document.getElementById('btn-apply-all');
+
+    if (id && settings) {
+        // Режим файла
+        const filename = document.getElementById(`conv-item-${id}`).querySelector('.conv-filename').innerText;
+        title.innerText = filename;
+        title.title = filename; // тултип для длинных имен
+        btnApplyAll.style.display = 'block'; // Показываем кнопку "Применить ко всем"
+
+        // Устанавливаем значения
+        setInputValues(settings);
+    } else {
+        // Глобальный режим (показывать текущие значения инпутов или дефолт?)
+        // Оставим как есть, просто сменим заголовок
+        title.innerText = "Глобальные настройки";
+        btnApplyAll.style.display = 'none';
+    }
+    
+    // Триггерим событие change для обновления зависимостей (mp3 -> disabled codec)
+    document.getElementById('cv-format').dispatchEvent(new Event('change'));
+}
+
+function setInputValues(s) {
+    document.getElementById('cv-format').value = s.format;
+    document.getElementById('cv-codec').value = s.codec;
+    document.getElementById('cv-quality').value = s.quality;
+    document.getElementById('cv-quality-val').innerText = s.quality;
+    document.getElementById('cv-res').value = s.resolution;
+}
+
+// 4. Слушатели изменений в инпутах
+const inputs = ['cv-format', 'cv-codec', 'cv-quality', 'cv-res'];
+inputs.forEach(id => {
+    document.getElementById(id).addEventListener('input', (e) => {
+        // Если выбран файл - сохраняем в его настройки
+        if (selectedConvId) {
+            const field = id.replace('cv-', '').replace('res', 'resolution'); // маппинг id -> key
+            window.convSettingsMap[selectedConvId][field] = e.target.value;
+        } else {
+            // Если ничего не выбрано - обновляем все настройки глобально? 
+            // Или просто оставляем инпуты как "шаблон" для новых файлов.
+            // Давай сделаем так: изменение глобальных настроек НЕ меняет уже добавленные файлы,
+            // но меняет "шаблон" для будущих.
+        }
+    });
+});
+
+// Ползунок качества (визуал)
+document.getElementById('cv-quality').addEventListener('input', (e) => {
+    document.getElementById('cv-quality-val').innerText = e.target.value;
+});
+
+// Кнопка "Применить ко всем"
+document.getElementById('btn-apply-all').addEventListener('click', () => {
+    if (!selectedConvId) return;
+    const currentSettings = window.convSettingsMap[selectedConvId];
+    
+    // Копируем во все остальные
+    for (let key in window.convSettingsMap) {
+        window.convSettingsMap[key] = { ...currentSettings };
+    }
+    alert("Настройки применены ко всем файлам в очереди");
+});
+
+// 5. Старт конвертации
+document.getElementById('btn-convert-start').addEventListener('click', () => {
+    const btnStart = document.getElementById('btn-convert-start');
+    const btnStop = document.getElementById('btn-convert-stop');
+    
+    // Собираем карту настроек, но фильтруем удаленные файлы
+    // (на случай если в map остались мусорные данные)
+    const activeSettings = {};
+    const listItems = document.querySelectorAll('.conv-item');
+    listItems.forEach(li => {
+        const id = li.id.replace('conv-item-', '');
+        if (window.convSettingsMap[id]) {
+            activeSettings[id] = window.convSettingsMap[id];
+        }
+    });
+
+    // Отправляем ВСЮ карту настроек в Python
+    // Python должен обновить свою очередь
+    window.pywebview.api.converter_start(activeSettings);
+
+    btnStart.disabled = true;
+    btnStop.disabled = false;
+});
+
+// 6. Удаление
+window.removeConverterItem = function(taskId) {
+    const el = document.getElementById(`conv-item-${taskId}`);
+    if(el) el.remove();
+    delete window.convSettingsMap[taskId]; // Чистим память
+    
+    if (selectedConvId === taskId) {
+        selectedConvId = null;
+        updateSidebarUI(null);
+    }
+    
+    window.pywebview.api.converter_remove_item(taskId);
+}
+
+// ... Оставляем toggleConvDetails и updateConvStatus из прошлого ответа ...
+window.toggleConvDetails = function(taskId) {
+    const item = document.getElementById(`conv-item-${taskId}`);
+    if (item) item.classList.toggle('expanded');
+}
+
+window.updateConvStatus = function(taskId, text, percent) {
+    const statusEl = document.getElementById(`conv-status-${taskId}`);
+    const progEl = document.getElementById(`conv-prog-${taskId}`);
+    if(statusEl) statusEl.innerText = text;
+    if(progEl) progEl.style.width = `${percent}%`;
+}
+
+document.getElementById('btn-convert-stop').addEventListener('click', () => {
+    window.pywebview.api.converter_stop();
+});
+
+window.conversionFinished = function() {
+    document.getElementById('btn-convert-start').disabled = false;
+    document.getElementById('btn-convert-stop').disabled = true;
+}
+
+// Блокировка форматов
+document.getElementById('cv-format').addEventListener('change', (e) => {
+    const fmt = e.target.value;
+    const codecSel = document.getElementById('cv-codec');
+    const resSel = document.getElementById('cv-res');
+    
+    if (['mp3', 'aac', 'wav'].includes(fmt)) {
+        codecSel.disabled = true;
+        resSel.disabled = true;
+    } else {
+        codecSel.disabled = false;
+        resSel.disabled = false;
+    }
+});
+
+
+
 
 // --- Downloader Logic ---
 
@@ -162,8 +365,8 @@ window.updateProgressBar = function(progress, speed, eta) {
         
         // Если Python прислал просто число:
         if (typeof progress === 'number') {
-             if(pText) pText.innerText = `Progress ${progress}%`;
-             if(pFill) pFill.style.width = `${progress}%`;
+            if(pText) pText.innerText = `Progress ${progress}%`;
+            if(pFill) pFill.style.width = `${progress}%`;
         }
     }
 
@@ -339,20 +542,7 @@ document.getElementById("openFolder-conv").addEventListener("click", () =>{
     window.pywebview.api.open_folder(folder);
 });
 
-// --- Converter Logic ---
 
-document.getElementById('convert_btn').addEventListener('click', () => {
-    const format = document.getElementById('conv-format').value;
-    const stopBtn = document.getElementById("stopBtn_conv");
-    if(stopBtn) stopBtn.disabled = false;
-    
-    window.pywebview.api.convert_video(format);
-});
-
-document.getElementById("stopBtn_conv").addEventListener('click', function() {
-    window.pywebview.api.stop_conversion();
-    this.disabled = true;
-});
 
 // --- Прочее ---
 

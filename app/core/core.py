@@ -35,13 +35,17 @@ class PublicWebViewApi:
     def removeVideoFromQueue(self, task_id): # Аргумент теперь task_id
         self._api.downloader.removeVideoFromQueue(task_id)
 
-    def openFile(self):
+    def converter_add_files(self): # Переименовал для ясности, или оставь openFile
         self._api.converter.openFile()
 
-    def convert_video(self, fmt):
-        self._api.converter.convert_video(fmt)
+    def converter_remove_item(self, task_id):
+        self._api.converter.remove_item(task_id)
 
-    def stop_conversion(self):
+    def converter_start(self, settings):
+        # settings приходит как словарь из JS
+        self._api.converter.start_conversion(settings)
+
+    def converter_stop(self):
         self._api.converter.stop_conversion()
         
     def choose_folder(self):

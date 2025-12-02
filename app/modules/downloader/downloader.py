@@ -62,7 +62,9 @@ class Downloader:
                     'nocheckcertificate': True,
                     'cookies': COOKIES_FILE,
                     'quiet': True,
-                    'extract_flat': True
+                    'extract_flat': True,
+                    'extractor_args': {"ytdl_js": ["js"]},
+                    'javascript_executable': '../qjs/qjs.exe'
                 }
 
                 with yt_dlp.YoutubeDL(opt) as ydl:
@@ -224,7 +226,9 @@ class Downloader:
                 'outtmpl': out_tmpl,
                 'progress_hooks': [progress_hook],
                 'quiet': True,
-                'nocheckcertificate': True
+                'nocheckcertificate': True,
+                'extractor_args': {"ytdl_js": ["js"]},
+                'javascript_executable': '../qjs/qjs.exe'
             }
 
             if task["format"] == 'mp3':

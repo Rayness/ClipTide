@@ -1,228 +1,269 @@
+/* data/ui/styles/converter.css */
 
-/* Конвертер */
-.converter-app {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* Основной функционал */
-.converter-app .main {
+.converter-layout {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
-    border-radius: var(--border-radius-sm);
-    background-color: inherit;
-    backdrop-filter: inherit;
-}
-
-.converter-app .main i {
-    font-size: 2rem;
-}
-
-.converter-app .main .video {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem;
-    gap: 1rem;
-    overflow-wrap: anywhere;
-}
-
-.converter-app .main .video .text .additional {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    gap: 0.5rem;
-    flex-wrap: wrap
-}
-
-.converter-app .main .video .text .additional div {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    align-items: center;
-    gap: 0.2rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-    border-radius: var(--border-radius-sm);
-    background: var(--card-bg);
-    color: var(--titlebar-text);
-}
-
-.converter-app .main .video .text .additional div::before {
-    content: "";
-    position: absolute;
-    background: var(--danger-dark);
     height: 100%;
-    border-radius: var(--border-radius-sm);
-    width: 0.2rem;
-    left: 0;
-    transition: left 0.5s ease, bottom 0.2s ease-in;
+    gap: 0.5rem; /* Уменьшили отступ между колонками */
+    padding: 0.5rem;
+    overflow: hidden; /* Важно, чтобы не появлялось 2 скролла */
 }
 
-.converter-app .main .video .text .additional div:hover::before {
-    width: 100%;
-    height: 0.2rem;
-    bottom: 0;
-    animation: LeftToBottom 1s ease forwards;
-}
-
-.converter-app .video .text .additional div:not(:hover)::before {
-    bottom: 0;
-    animation: BottomToLeft 1s ease forwards;
-}
-
-@keyframes LeftToBottom {
-    from { height: 100%;}
-    to { height: 0;}
-    0% { width: 0.2rem; height: 100%;}
-    70% { width: 0.2rem; height: 0.2rem;}
-    100% { width: 100%; height: 0.2rem;}
-}
-
-@keyframes BottomToLeft {
-    from { height: 0; }
-    to { height: 100%; }
-    0% { width:  100%; height: 0.2rem;}
-    70% { width:  0.2rem; height: 0.2rem;}
-    100% { width:  0.2rem; height: 100%;}
-}
-
-.converter-app .main .video .text .additional-text {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-}
-
-.converter-app .main .video .text .additional-text i{
-    font-size: 0.6rem;
-}
-
-.converter-app .main .video .text .additional p{
-    margin: 0;
-    font-size: 0.8rem;
-}
-
-.converter-app .main .video .text {
-    position: relative;
+/* --- Левая часть (Список) --- */
+.converter-main {
+    flex: 2;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow-wrap: anywhere;
+    gap: 0.5rem;
+    min-width: 0;
+    height: 100%;
 }
 
-.converter-app .main .video .text p {
-    font-size: 1rem;
-}
-
-.converter-app .main .video .text button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    appearance: none;
-    background-color: var(--accent-dark);
-    padding: 0.5rem;
-    border: none;
-    border-radius: var(--border-radius-sm);
-    color: white;
-    box-shadow: var(--shadow-md);
-    transition: scale 0.3s ease;
-    cursor: pointer;
-}
-
-.converter-app .main .video .text button:hover {
-    scale: 1.1;
-}
-
-.converter-app .main img {
-    max-height: 8rem;
-    max-width: 15rem;
+.drop-zone-small {
+    border: 2px dashed rgba(255,255,255,0.2);
     border-radius: var(--border-radius-md);
+    padding: 0.75rem; /* Чуть меньше */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: var(--input-bg-transparent);
+    flex-shrink: 0; /* Чтобы дропзона не сжималась */
 }
 
-/* Настройки */
-.converter-app .settings {
+.drop-zone-small:hover {
+    background: var(--input-bg);
+    border-color: var(--accent-color);
+}
+
+.converter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* Скролл только у списка */
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    padding-right: 0.2rem; /* Место для скроллбара */
+}
+
+.conv-item {
+    background: var(--dark-bg-transparent);
     padding: 0.5rem;
-}
-
-.converter-app .settings .text {
+    border-radius: var(--border-radius-sm);
     display: flex;
     flex-direction: column;
+    gap: 0.3rem;
+    animation: slideIn 0.3s ease;
+    flex-shrink: 0;
+    overflow-wrap: wrap;
 }
 
-.converter-app .settings .format {
+.conv-item-top {
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.conv-thumb {
+    width: 50px; /* Чуть меньше */
+    height: 35px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.conv-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.conv-filename {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.conv-meta {
+    font-size: 0.7rem;
+    color: #aaa;
+}
+
+.conv-status {
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 70px;
+    text-align: right;
+    color: var(--accent-color);
+}
+
+/* Прогресс бар внутри элемента списка */
+.conv-progress-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 2px;
+}
+
+.conv-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--progress-gradient);
+    transition: width 0.3s;
+}
+
+/* --- Правая часть (Сайдбар) --- */
+.converter-sidebar {
+    flex: 0 0 340px; /* Фиксированная ширина, чтобы не прыгало */
+    background: var(--card-bg-transparent);
+    padding: 0.75rem; /* Компактнее */
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Меньше отступы между настройками */
+    max-height: 100%;
+    overflow-y: auto; /* Добавлен скролл, если экран совсем маленький */
+}
+
+.converter-sidebar h4 {
+    margin: 0 0 0.25rem 0;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex-shrink: 0;
+}
+
+.setting-item label {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-left: 0.2rem;
+}
+
+/* Переопределяем глобальные стили инпутов ТОЛЬКО для сайдбара, чтобы они были тоньше */
+.converter-sidebar .select-control {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem;
+    margin: 0; /* Убираем лишние внешние отступы */
+    height: auto;
+}
+
+.range-value {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+/* Кнопки */
+.converter-actions {
+    margin-top: auto; /* Прижимаем к низу */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-shrink: 0;
+}
+
+.converter-actions .primary-btn {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Кнопка раскрытия (стрелочка) */
+.btn-expand {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-expand:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* Анимация поворота стрелки при открытии */
+.conv-item.expanded .btn-expand {
+    transform: rotate(180deg);
+    color: var(--accent-color);
+}
+
+/* Блок деталей (скрыт по умолчанию) */
+.conv-details {
+    display: none; /* Скрыто */
+    background: rgba(0,0,0,0.2);
+    border-radius: var(--border-radius-sm);
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #ccc;
+    
+    /* Сетка для данных */
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+/* Показываем блок, если у родителя класс expanded */
+.conv-item.expanded .conv-details {
+    display: grid;
+    animation: fadeIn 0.3s ease;
+}
+
+.detail-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.detail-label {
+    color: #777;
+    font-weight: bold;
+}
+
+/* Выделенный элемент в списке */
+.conv-item.selected {
+    background: var(--input-bg);
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 10px rgba(140, 127, 255, 0.2);
+}
+
+/* Заголовок сайдбара */
+.sidebar-header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    min-height: 2rem;
 }
 
-.converter-app .settings .format button {
-    height: 2.7rem;
-}
-
-.converter-app .settings .format select {
-    flex: 1;
-}
-
-.converter-app .input-file {
-    display: block;
-    /* display: none; */
-}
-
-.converter-app .app {
-    display: none;
-    /* display: block; */
-}
-
-
-
-
-.converter-app .input-file{
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 1rem;
-    margin: 2rem;
-}
-
-
-/* Дроп зона */
-.converter-app .input-file .drop-zone{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    background-color: var(--dark-bg-transparent);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-    cursor: pointer;
-    scale: 1;
-    transition: background-color 0.4s ease, scale 0.4s ease, border-radius 0.4s ease;
-}
-
-.converter-app .input-file .drop-zone:hover {
-    border-radius: var(--border-radius-lg);
-    scale: 1.05;
-}
-
-.converter-app .input-file .drop-zone.highlight {
-    border-radius: var(--border-radius-lg);
-    background-color: var(--accent-dark);
-}
-
-.converter-app .input-file .drop-zone i{
-    font-size: 5rem;;
+.sidebar-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none; /* Убираем старый бордер */
+    padding: 0;
 }
