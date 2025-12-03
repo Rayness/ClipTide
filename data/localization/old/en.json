@@ -64,7 +64,6 @@
             "english" : "English",
             "polish" : "Polski",
             "ukraine" : "Український",
-            "italian" : "Italiano",
             "german" : "Deutsch",
             "french" : "Français",
             "japan" : "日本語",
@@ -83,8 +82,6 @@
             "placeholder_conversion": "Path to the conversion folder",
             "choose_download_folder": "Change the downloads folder",
             "open_download_folder" : "Open the downloads folder",
-            "open_after_download" : "Open folder after download",
-            "open_after_conversion" : "Open folder after conversion",
             "choose_converter_folder" : "Change the conversion folder",
             "open_converter_folder" : "Open the conversion folder",
             "by_default" : "Return the default folder"

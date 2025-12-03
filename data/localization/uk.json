@@ -1,0 +1,185 @@
+{
+    "video_URL" : "Введіть URL відео",
+    "audio_only" : "Тільки аудіо",
+    "audio_text": "Аудіо",
+    "format": "Формат: ",
+    "resolution": "Роздільна здатність: ",
+    "add_to_queue" : "Додати до черги",
+    "start_downloading" : "Почати завантаження",
+    "status" : {
+        "status_text" : "Статус: Очікування...",
+        "pending": "Аналіз...",
+        "paused": "Пауза",
+        "error": "Помилка",
+        "resuming": "Відновлення завдань...",
+        "queue_finished": "Черга завершена.",
+        "manager_started": "Менеджер завантажень запущено",
+        "manager_stopped": "Менеджер завантажень зупинено",
+        "stopping": "Зупинка...",
+        "unknown video" : "Невідоме відео",
+        "download_success" : "Відео успішно завантажено",
+        "download_error" : "Помилка при завантаженні",
+        "to_queue" : "Відео додано до черги",
+        "in_format" : "у форматі",
+        "in_resolution" : "у роздільній здатності",
+        "error_adding" : "Помилка при додаванні відео:",
+        "downloading_already" : "Завантаження вже триває.",
+        "the_queue_is_empty" : "Черга порожня. Нічого завантажувати.",
+        "the_queue_is_empty_download_success" : "Черга порожня. Нічого завантажувати.",
+        "download_started" : "Завантаження розпочато.",
+        "downloading" : "Завантажую",
+        "removed_from_queue" : "Відео видалено з черги: ",
+        "error_removing" : "Помилка при видаленні відео: ",
+        "converting" : "Конвертація",
+        "convert_success" : "Конвертацію успішно завершено",
+        "convert_stopped" : "Конвертацію скасовано",
+        "download_ended" : "Завершення завантаження..."
+    },
+    "queue" : "Черга: ",
+    "progress" : "Прогрес: ",
+    "speed" : "Швидкість: ",
+    "eta" : "Залишилось: ",
+    "bs" : "Б/с",
+    "mbs" : "МБ/с",
+    "min" : "хв",
+    "sec" : "сек",
+    "error": "Помилка",
+
+    "sections": {
+        "coming_soon": "Незабаром",
+        "video_downloader": "Відео завантажувач",
+        "converter": "Конвертер",
+        "queue": "Черга",
+        "setting": "Налаштування",
+        "profile": "Профіль",
+        "notifications": "Сповіщення"
+    },
+
+    "settings" : {
+        "title" : "Налаштування",
+        "language" : {
+            "title" : "Керування мовними налаштуваннями",
+            "language" : "Мова: ",
+            "russian" : "Русский",
+            "english" : "English",
+            "polish" : "Polski",
+            "ukraine" : "Український",
+            "italian" : "Italiano",
+            "german" : "Deutsch",
+            "french" : "Français",
+            "japan" : "日本語",
+            "chinese" : "中文",
+            "open_folder" : "Відкрити папку з локалізацією"
+        },
+        "themes" : {
+            "decoration" : "Керування оформленням",
+            "theme" : "Тема: ",
+            "style" : "Стиль: ",
+            "open_folder" : "Відкрити папку з темами"
+        },
+        "folders": {
+            "title" : "Керування завантаженнями",
+            "placeholder_download" : "Шлях до папки завантажень",
+            "placeholder_conversion" : "Шлях до папки конвертації",
+            "choose_download_folder" : "Змінити папку завантаження",
+            "open_download_folder" : "Відкрити папку завантаження",
+            "open_after_download" : "Відкрити папку після завантаження",
+            "open_after_conversion" : "Відкрити папку після конвертації",
+            "choose_converter_folder" : "Змінити папку конвертації",
+            "open_converter_folder" : "Відкрити папку конвертації",
+            "by_defoult" : "Повернути папку за замовчуванням"
+        },
+        "notifications" : {
+            "title" : "Керування конвертацією",
+            "notifi_download" : "Отримувати сповіщення про завершення завантаження",
+            "notifi_conversion" : "Отримувати сповіщення про завершення конвертації"
+        },
+        "proxys" : {
+            "title" : "Керування проксі-сервером",
+            "turn_on" : "Увімкнути Проксі-сервер",
+            "reset" : "Повернути значення за замовчуванням",
+            "button_apply" : "Застосувати"
+        },
+        "updates" : {
+            "title" : "Керування оновленнями",
+            "update_text_ready" : "Доступне оновлення",
+            "update_text_not_ready" : "Оновлення не потрібне",
+            "update_text_error" : "Помилка отримання версії",
+            "update_button" : " Запустити Updater",
+            "auto_update" : "Автоматичне оновлення"
+        },
+        "about" : {
+            "title" : "Про додаток",
+            "version" : "Версія:",
+            "date" : "Дата виходу:"
+        }
+    },
+
+    "notifications" : {
+        "video_title" : "Завантаження завершено!",
+        "video_message_1" : "Відео ",
+        "video_message_2" : " успішно завантажено!",
+        "queue_title" : "Завантаження завершено",
+        "queue_message" : "Усі відео з черги були завантажені",
+        "convert_title" : "Конвертація завершена"
+    },
+
+    "donate" : {
+        "title" : "Донат",
+        "description" : "Якщо є бажання допомогти фінансово та прискорити подальшу розробку програми!"
+    },
+
+    "converter": {
+        "add_files_btn": "Додати файли",
+        "settings_title": "Налаштування",
+        "global_settings": "Глобальні налаштування",
+        "apply_all_btn": "Застосувати до всіх",
+        "lbl_format": "Формат:",
+        "lbl_codec": "Кодек:",
+        "lbl_quality": "Якість (CRF):",
+        "lbl_resolution": "Роздільна здатність:",
+        "cv_res_orig": "Оригінал",
+        "val_better": "Краще",
+        "val_worse": "Гірше",
+        "btn_convert": "Конвертувати",
+        "btn_stop": "Стоп",
+        "status_queued": "У черзі",
+        "status_processing": "В роботі...",
+        "status_done": "Готово",
+        "status_error": "Помилка",
+        "click_for_add_video" : "Клікніть для вибору відео",
+        "convertion_settings" : "Налаштування конвертації",
+        "conversion_button" : "Конвертувати",
+        "format" : "Формат: ",
+        "close_video" : "Скасувати",
+        
+        "video_info" : {
+            "title" : "Інформація про відео:",
+            "duration" : "Тривалість: ",
+            "framerate" : "Частота кадрів: ",
+            "video_codec" : "Відеокодек: ",
+            "video_bitrate" : "Бітрейт відео: ",
+            "audio_codec" : "Аудіокодек: ",
+            "audio_bitrate" : "Бітрейт аудіо: "
+        },
+
+        "video_add": "Відео було додано",
+        "video_error": "Помилка додавання відео",
+        "video_adding": "Додавання відео"
+    },
+
+    "history": {
+        "date_label": "Дата завантаження:",
+        "format_label": "Формат:",
+        "link_label": "Посилання:",
+        "open_browser": "Відкрити в браузері",
+        "btn_download_again": "Завантажити знову",
+        "btn_delete_record": "Видалити запис",
+        "empty": "Історія порожня"
+    },
+
+    "logs": {
+        "title": "Лог подій",
+        "app_ready": "Програма готова до роботи"
+    }
+}

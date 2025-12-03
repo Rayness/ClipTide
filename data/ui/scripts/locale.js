@@ -40,6 +40,7 @@ window.updateTranslations = function(translations) {
             safeSetText('lang_pl', translations.settings.language.polish);
             safeSetText('lang_ja', translations.settings.language.japan);
             safeSetText('lang_ua', translations.settings.language.ukraine);
+            safeSetText('lang_it', translations.settings.language.italian);
             safeSetText('lang_de', translations.settings.language.german);
             safeSetText('lang_fr', translations.settings.language.french);
             safeSetText('lang_cn', translations.settings.language.chinese);
@@ -130,6 +131,8 @@ window.updateTranslations = function(translations) {
             
             safeSetText('txt-btn-conv', translations.converter.btn_convert);
             safeSetText('txt-btn-stop', translations.converter.btn_stop);
+
+            safeSetText('cv-res-orig', translations.converter.cv_res_orig);
         
         // История (Модальное окно)
         if (translations.history) {
