@@ -1,0 +1,82 @@
+/* Neon City Theme */
+@import url(modules/modal.css);
+@import url(modules/flex.css);
+@import url(modules/animations.css);
+@import url(modules/side-bars.css);
+@import url(modules/center.css);
+@import url(modules/title-bar.css);
+@import url(modules/converter.css);
+@import url(modules/components.css);
+@import url(modules/settings.css);
+@import url(modules/downloader.css);
+@import url(modules/notifications.css);
+
+:root {
+    /* Фон - Глубокий черный/синий */
+    --bg-color: #050505; 
+    
+    /* Основные блоки - Темно-серый с легкой прозрачностью */
+    --card-bg: #121212;
+    --card-bg-transparent: rgba(18, 18, 18, 0.8);
+    
+    --dark-bg: #000000;
+    --dark-bg-transparent: rgba(0, 0, 0, 0.6);
+
+    --btn-bg: rgba(255, 0, 255, 0.1); /* Розоватый оттенок кнопок */
+
+    /* Инпуты */
+    --input-bg: #1a1a1a;
+    --input-bg-transparent: rgba(26, 26, 26, 0.7);
+
+    /* Текст */
+    --text-color: #e0e0e0;
+
+    /* Акцент - Неоновый Розовый (Hot Pink) */
+    --accent-color: #ff00ff; 
+    --accent-dark: #b300b3;
+    
+    --accent-color-transparent: rgba(255, 0, 255, 0.2);
+    --accent-dark-transparent: rgba(179, 0, 179, 0.1);
+
+    /* Опасность - Ярко-красный */
+    --danger-color: #ff3333;
+    --danger-dark: #cc0000;
+
+    /* Градиенты - Cyan + Pink */
+    --accent-cyan: #00ffff;
+    --accent-pink: #ff00ff;
+    --accent-purple: #9d00ff;
+
+    --progress-gradient: linear-gradient(90deg, #00ffff, #ff00ff);
+    --main-gradient: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+    --accent-gradient: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    --accent-gradient-text: linear-gradient(135deg, #00ffff, #ff00ff);
+
+    /* Скругления - Более острые для техно-стиля */
+    --border-radius-sm: 0px;
+    --border-radius-md: 4px;
+    --border-radius-lg: 8px;
+
+    /* Тени - Неоновое свечение */
+    --shadow-sm: 0 0 5px rgba(255, 0, 255, 0.2);
+    --shadow-md: 0 0 10px rgba(0, 255, 255, 0.15);
+    --shadow-lg: 0 0 20px rgba(157, 0, 255, 0.2);
+
+    /* Заголовок окна */
+    --titlebar-bg: #000000;
+    --titlebar-text: #ffffff;
+    --titlebar-btn-hover: #333333;
+}
+
+/* Дополнительный эффект для кнопок в этой теме */
+.primary-btn {
+    border: 1px solid var(--accent-color-transparent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    box-shadow: 0 0 15px var(--accent-color);
+    border-color: var(--accent-color);
+}

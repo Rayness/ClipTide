@@ -1,0 +1,81 @@
+/* Forest Theme */
+@import url(modules/modal.css);
+@import url(modules/flex.css);
+@import url(modules/animations.css);
+@import url(modules/side-bars.css);
+@import url(modules/center.css);
+@import url(modules/title-bar.css);
+@import url(modules/converter.css);
+@import url(modules/components.css);
+@import url(modules/settings.css);
+@import url(modules/downloader.css);
+@import url(modules/notifications.css);
+
+:root {
+    /* Фон - Темно-серо-зеленый (Slate) */
+    --bg-color: #2b303b;
+    
+    /* Карточки - Чуть светлее фона */
+    --card-bg: #343d46;
+    --card-bg-transparent: rgba(52, 61, 70, 0.9);
+    
+    --dark-bg: #1e2329;
+    --dark-bg-transparent: rgba(30, 35, 41, 0.7);
+
+    --btn-bg: rgba(167, 192, 128, 0.15); 
+
+    /* Инпуты */
+    --input-bg: #232830;
+    --input-bg-transparent: rgba(35, 40, 48, 0.6);
+
+    /* Текст - Мягкий белый/бежевый */
+    --text-color: #d3d7cf;
+
+    /* Акцент - Мягкий зеленый (Sage Green) */
+    --accent-color: #a7c080; 
+    --accent-dark: #8ba366;
+    
+    --accent-color-transparent: rgba(167, 192, 128, 0.3);
+    --accent-dark-transparent: rgba(139, 163, 102, 0.2);
+
+    /* Опасность - Приглушенный красный */
+    --danger-color: #e67e80;
+    --danger-dark: #cf6a6c;
+
+    /* Градиенты - Природные тона */
+    --accent-cyan: #83c092; /* More greenish cyan */
+    --accent-pink: #d699b6; /* Muted pink */
+    --accent-purple: #dbbc7f; /* Yellowish */
+
+    /* Прогресс бар - от темного к светло-зеленому */
+    --progress-gradient: linear-gradient(90deg, #8ba366, #a7c080);
+    
+    --main-gradient: linear-gradient(180deg, rgba(167, 192, 128, 0.1), rgba(52, 61, 70, 0.5));
+    --accent-gradient: linear-gradient(135deg, #343d46, #4f5b66);
+    --accent-gradient-text: linear-gradient(135deg, #a7c080, #dbbc7f);
+
+    /* Скругления - Мягкие */
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+
+    /* Тени - Мягкие и рассеянные */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+    /* Заголовок окна */
+    --titlebar-bg: #1e2329;
+    --titlebar-text: #d3d7cf;
+    --titlebar-btn-hover: #343d46;
+}
+
+/* Убираем лишние границы для мягкости */
+.input-folder, .select-control, .url-input {
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.input-folder:focus, .select-control:focus, .url-input:focus {
+    border-color: var(--accent-color);
+}
