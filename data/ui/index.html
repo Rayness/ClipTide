@@ -12,6 +12,18 @@
     <title>ClipTide Video Downloader</title>
 </head>
 <body>
+    <!-- ПРЕЛОАДЕР -->
+    <div id="app-preloader">
+        <div class="preloader-content">
+            <img src="src/logo.png" alt="ClipTide" class="preloader-logo">
+            <div class="preloader-spinner">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <h4 id="preloader-text">Загрузка...</h4>
+        </div>
+    </div>
     <div class="app">
         <!--  -->
         <div class="drag-area pywebview-drag-region">
@@ -39,16 +51,61 @@
             </div>
         </div>
 
-        <!-- Модальное окно -->
-        <div class="modal" id="modal">
-            <div class="modal-content">
-            <span class="modal-close" id="close-modal">&times;</span>
-            <h2 id="modal-title">Заголовок</h2>
-            <div id="modal-content">Это модальное окно.</div>
+        <!-- Основное информационное модальное окно (Help) -->
+        <div class="modal" id="modal-info">
+            <div class="modal-content info-card">
+                <div class="modal-header">
+                    <h3 id="info-modal-title">Заголовок</h3>
+                    <span class="modal-close" id="close-info-modal">&times;</span>
+                </div>
+                
+                <div class="modal-body-text" id="info-modal-content">
+                    <!-- Сюда будет вставляться HTML текст из JSON -->
+                </div>
+
+                <div class="modal-footer">
+                    <button class="primary-btn" id="btn-info-close">Понятно</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно истории (Детали уведомления) -->
+        <div class="modal" id="modal-history">
+            <div class="modal-content history-card">
+                <span class="modal-close" id="close-history">&times;</span>
+                
+                <h3 id="hist-title">Название видео</h3>
+                
+                <div class="hist-body">
+                    <img id="hist-img" src="" alt="Preview">
+                    <div class="hist-info">
+                        <div class="hist-row">
+                            <span id="lbl-hist-date">Дата загрузки:</span>
+                            <span id="hist-date" class="hist-val">--.--.----</span>
+                        </div>
+                        <div class="hist-row">
+                            <span id="lbl-hist-fmt">Формат:</span>
+                            <span id="hist-fmt" class="hist-val">MP4</span>
+                        </div>
+                        <div class="hist-row">
+                            <span id="lbl-hist-link">Ссылка:</span>
+                            <a id="hist-link" href="#" target="_blank" class="hist-val link">Открыть в браузере</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hist-actions">
+                    <button class="primary-btn" id="btn-redownload">
+                        <i class="fa-solid fa-download"></i> <span id="txt-hist-dl">Скачать снова</span>
+                    </button>
+                    <button class="delete-button" id="btn-hist-delete">
+                        <i class="fa-solid fa-trash"></i> <span id="txt-hist-del">Удалить запись</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Основное приложение -->
-        </div>
         <div class="body-app">
             <div class="left-panel">
                 <div class="utils">
@@ -195,7 +252,7 @@
                             <div class="converter-main">
                                 <div class="drop-zone-small" id="dropZoneConv">
                                     <i class="fa-solid fa-plus"></i>
-                                    <span>Добавить файлы</span>
+                                    <span id="txt-conv-add">Добавить файлы</span> <!-- ID -->
                                 </div>
                                 
                                 <ul id="converter-queue" class="converter-list">
@@ -214,7 +271,7 @@
                                 </div>
                                 
                                 <div class="setting-item">
-                                    <label>Формат:</label>
+                                    <label id="lbl-cv-fmt">Формат:</label>
                                     <select id="cv-format" class="select-control">
                                         <option value="mp4">MP4 (Video)</option>
                                         <option value="avi">AVI (Video)</option>
@@ -228,7 +285,7 @@
                                 </div>
 
                                 <div class="setting-item">
-                                    <label>Кодек:</label>
+                                    <label id="lbl-cv-codec">Кодек:</label>
                                     <select id="cv-codec" class="select-control">
                                         <option value="libx264">H.264 (Стандарт)</option>
                                         <option value="libx265">H.265 (HEVC)</option>
@@ -237,17 +294,17 @@
                                 </div>
 
                                 <div class="setting-item">
-                                    <label>Качество (CRF):</label>
+                                    <label id="lbl-cv-qual">Качество (CRF):</label>
                                     <input type="range" id="cv-quality" min="18" max="35" value="23" step="1">
                                     <div class="range-value">
-                                        <span>Лучше</span>
+                                        <span id="txt-cv-better">Лучше</span>
                                         <span id="cv-quality-val">23</span>
-                                        <span>Хуже</span>
+                                        <span id="txt-cv-worse">Хуже</span>
                                     </div>
                                 </div>
 
                                 <div class="setting-item">
-                                    <label>Разрешение:</label>
+                                    <label id="lbl-cv-res">Разрешение:</label> 
                                     <select id="cv-res" class="select-control">
                                         <option value="original">Оригинал</option>
                                         <option value="4K">2160p</option>
@@ -260,10 +317,10 @@
 
                                 <div class="converter-actions">
                                     <button class="primary-btn" id="btn-convert-start">
-                                        <i class="fa-solid fa-rotate"></i> Конвертировать
+                                        <i class="fa-solid fa-rotate"></i> <span id="txt-btn-conv">Конвертировать</span>
                                     </button>
                                     <button class="primary-btn" id="btn-convert-stop" disabled>
-                                        <i class="fa-solid fa-stop"></i> Стоп
+                                        <i class="fa-solid fa-stop"></i> <span id="txt-btn-stop">Стоп</span>
                                     </button>
                                 </div>
                             </div>
@@ -488,11 +545,11 @@
                     <div class="flex-conteiner-row">
                         <div class="flex-conteiner flex-1">
                             <!-- Заголовок лога -->
-                            <div style="padding: 0.5rem; font-size: 0.8rem; opacity: 0.7;">Лог событий:</div>
+                            <div style="padding: 0.5rem; font-size: 0.8rem; opacity: 0.7;" id="event-log-title">Лог событий:</div>
                             
                             <!-- Окно логов -->
                             <div id="app-logs" class="logs-container fade-in">
-                                <div class="log-entry">Приложение готово к работе</div>
+                                <div class="log-entry" id="log-entry">Приложение готово к работе</div>
                             </div>
                         </div>
                     </div>

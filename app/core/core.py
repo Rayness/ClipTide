@@ -23,8 +23,12 @@ class PublicWebViewApi:
     # ... твои остальные методы ...
     # Убедись, что методы ниже вызывают self._api...
     
-    def addVideoToQueue(self, url, fmt, res):
-        self._api.downloader.addVideoToQueue(url, fmt, res)
+    def addVideoToQueue(self, url, fmt, res, temp_id=None):
+        # Передаем temp_id дальше в downloader
+        self._api.downloader.addVideoToQueue(url, fmt, res, temp_id)
+        
+    def update_video_settings(self, task_id, fmt, res):
+        self._api.downloader.update_item_settings(task_id, fmt, res)
 
     def startDownload(self):
         self._api.downloader.startDownload()

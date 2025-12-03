@@ -1,5 +1,6 @@
 # app/modules/downloader/downloader.py
 
+import json
 import os
 import threading
 import time
@@ -48,12 +49,15 @@ class Downloader:
         except Exception as e:
             self.log(f"Error opening folder: {e}")
 
-    def addVideoToQueue(self, video_url, selected_format, selectedResolution):
+    # Обновленный метод
+    def addVideoToQueue(self, video_url, selected_format, selectedResolution, temp_id=None):
         task_id = str(uuid.uuid4())
         
         status_pending = self.get_trans('status', 'status_text', 'Pending...')
         self.log(f"{status_pending} ({video_url})")
-        self._js_exec('showSpinner()')
+        
+        # Мы больше не вызываем глобальный showSpinner(), так как у нас теперь локальный лоадер!
+        # self._js_exec('showSpinner()') 
 
         def _analyze():
             try:
@@ -62,9 +66,7 @@ class Downloader:
                     'nocheckcertificate': True,
                     'cookies': COOKIES_FILE,
                     'quiet': True,
-                    'extract_flat': True,
-                    'extractor_args': {"ytdl_js": ["js"]},
-                    'javascript_executable': '../qjs/qjs.exe'
+                    'extract_flat': True
                 }
 
                 with yt_dlp.YoutubeDL(opt) as ydl:
@@ -84,7 +86,8 @@ class Downloader:
                     "thumbnail": thumbnail,
                     "status": "queued",
                     "fmt_label": t_fmt, 
-                    "res_label": t_res 
+                    "res_label": t_res,
+                    "temp_id": temp_id # <--- Возвращаем temp_id обратно в JS
                 }
                 
                 self.ctx.download_queue.append(video_data)
@@ -98,10 +101,40 @@ class Downloader:
             except Exception as e:
                 err_msg = self.get_trans('status', 'error_adding', 'Error adding')
                 self.log(f"{err_msg}: {str(e)}")
-            finally:
-                self._js_exec('hideSpinner()')
+                
+                # Если ошибка - удаляем временный блок
+                if temp_id:
+                    self._js_exec(f'removeLoadingItem("{temp_id}")')
+                    
+            # finally:
+                # self._js_exec('hideSpinner()') # Больше не нужно
 
         threading.Thread(target=_analyze, daemon=True).start()
+
+    def update_item_settings(self, task_id, new_fmt, new_res):
+        # Ищем видео по ID
+        found = False
+        for item in self.ctx.download_queue:
+            if item["id"] == task_id:
+                # Обновляем значения
+                item["format"] = new_fmt
+                item["resolution"] = new_res
+                
+                # Если статус был 'error', можно сбросить на 'queued', 
+                # так как пользователь мог исправить настройки
+                if item["status"] == "error":
+                    item["status"] = "queued"
+                    self._js_exec(f'updateItemProgress("{task_id}", 0, "", "Queued")')
+                
+                found = True
+                break
+        
+        if found:
+            save_queue_to_file(self.ctx.download_queue)
+            # self.log(f"Settings updated for {task_id}: {new_fmt} / {new_res}")
+        else:
+            print(f"Video {task_id} not found for update")
+
 
     def removeVideoFromQueue(self, task_id):
         title = "Video"
@@ -139,7 +172,8 @@ class Downloader:
                 self._js_exec(f'updateItemProgress("{task["id"]}", 0, "", "Queued")')
         
         if resumed_count > 0:
-            self.log(f"Resuming {resumed_count} stopped tasks...")
+            msg = self.get_trans('status', 'resuming', 'Resuming tasks...')
+            self.log(f"{msg} ({resumed_count})")
 
         self.stop_requested = False
         self.is_running = True
@@ -147,12 +181,13 @@ class Downloader:
 
     def stopDownload(self):
         self.stop_requested = True
-        # Мы НЕ ставим is_running = False здесь сразу, 
-        # пусть менеджер сам завершится корректно, увидев stop_requested
-        self.log("Stopping all downloads...")
+        self.is_running = False
+        msg = self.get_trans('status', 'stopping', 'Stopping...')
+        self.log(msg)
 
     def _download_manager(self):
-        self.log("Download Manager Started")
+        msg_start = self.get_trans('status', 'manager_started', 'Manager Started')
+        self.log(msg_start)
         
         while self.is_running and not self.stop_requested:
             # Ищем задачи
@@ -160,7 +195,8 @@ class Downloader:
             
             # Если нет задач и нет активных потоков -> все готово, выключаемся
             if not queued_tasks and self.active_tasks == 0:
-                self.log("Queue finished.")
+                msg_fin = self.get_trans('status', 'queue_finished', 'Queue finished.')
+                self.log(msg_fin)
                 self.is_running = False
                 break
 
@@ -263,20 +299,30 @@ class Downloader:
 
             # Уведомления
             if self.ctx.config.get("Notifications", "downloads", fallback="True") == "True":
-                add_notification(t_done, title, "downloader")
+                # Собираем данные для истории
+                history_payload = {
+                    "url": task["url"],
+                    "thumbnail": task["thumbnail"],
+                    "format": task["format"],
+                    "resolution": task["resolution"],
+                    "title": title
+                }
+                
+                # 1. Добавляем и ПОЛУЧАЕМ обновленный список
+                updated_list = add_notification(t_done, title, "downloader", payload=history_payload)
+                self._js_exec(f'loadNotifications({json.dumps(updated_list)})')
 
         except yt_dlp.utils.DownloadCancelled:
-            # === FIX: Обработка остановки ===
-            self.log(f"Paused: {title}")
-            task["status"] = "queued" # Возвращаем статус в очередь
-            self._js_exec(f'updateItemProgress("{task_id}", 0, "Paused", "")')
-            # Не удаляем из очереди!
+            t_paused = self.get_trans('status', 'paused', 'Paused')
+            self.log(f"{t_paused}: {title}")
+            task["status"] = "queued"
+            self._js_exec(f'updateItemProgress("{task_id}", 0, "{t_paused}", "")')
 
         except Exception as e:
-            msg_err = self.get_trans('status', 'download_error', 'Error')
-            self.log(f"{msg_err} [{title}]: {str(e)}")
+            t_err = self.get_trans('status', 'error', 'Error')
+            self.log(f"{t_err} [{title}]: {str(e)}")
             task["status"] = "error" 
-            self._js_exec(f'updateItemProgress("{task_id}", 0, "Error", "Failed")')
+            self._js_exec(f'updateItemProgress("{task_id}", 0, "{t_err}", "Failed")')
             
         finally:
             self.active_tasks -= 1

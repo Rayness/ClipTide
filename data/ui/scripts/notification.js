@@ -1,39 +1,40 @@
 // Copyright (C) 2025 Rayness
-// This program is free software under GPLv3. See LICENSE for details.
+
+let cachedNotifications = [];
 
 function loadNotifications(data) {
     const container = document.getElementById("notification-container");
+    if (!container) return; // Защита
     container.innerHTML = "";
     
-    notifs = data
-    notifs.reverse().forEach(n => {
-    if (n.read != "True") {
+    // Обновляем кэш
+    cachedNotifications = data; 
+    console.log("Notifications loaded:", cachedNotifications.length);
+
+    const sortedData = [...data].reverse();
+
+    if (sortedData.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:#777; margin-top:2rem;">История пуста</div>`;
+        return;
+    }
+
+    sortedData.forEach(n => {
         const block = document.createElement("div");
-        let icon = "";
-
-        console.log("Уведомление создано!")
-
-        block.className = "block";
+        block.className = "block fade-in";
         block.id = "notif-" + n.id;
-
         
-            if (n.type == "local") {
-                if (n.source == "downloader") {
-                    icon = '<i class="fa-solid fa-download"></i>';
-                    console.log("Загрузчик");
-                } 
-                if (n.source == "donverter") {
-                    icon = '<i class="fa-solid fa-download"></i>';
-                    console.log("Конвертер");
-                }
-            } else {
-                icon = 'Сервер';
-            }
-            
-            block.innerHTML = `
-            <div class="icon">
-                ${icon}
-            </div>
+        // Определяем иконку
+        let icon = '<i class="fa-solid fa-info-circle"></i>';
+        if (n.source == "downloader") icon = '<i class="fa-solid fa-download"></i>';
+        if (n.source == "converter") icon = '<i class="fa-solid fa-rotate"></i>';
+
+        // Прозрачность для прочитанных
+        if (n.read === "True") {
+            block.style.opacity = "0.7";
+        }
+
+        block.innerHTML = `
+            <div class="icon">${icon}</div>
             <div class="body">
                 <h4>${n.title}</h4>
                 <p>${n.message}</p>
@@ -42,71 +43,163 @@ function loadNotifications(data) {
                 </div>
             </div>
             <div class="remove">
-                <button class="delete-notif-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path
-                        d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
-                        />
-                    </svg>
+                <button class="delete-notif-btn" title="Удалить">
+                    <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
-            `;
-            container.appendChild(block);
+        `;
+
+        // ОБРАБОТЧИК КЛИКА ПО КАРТОЧКЕ
+        block.addEventListener("click", () => {
+            console.log("Card clicked, ID:", n.id);
+            openHistoryModal(n.id);
+        });
+
+        // ОБРАБОТЧИК КЛИКА ПО УДАЛЕНИЮ
+        const delBtn = block.querySelector(".delete-notif-btn");
+        delBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Чтобы не открывалась модалка
+            deleteNotification(n.id);
+        });
+
+        container.appendChild(block);
+    });
+}
+
+window.deleteNotification = function(id) {
+    // Удаляем визуально сразу
+    const item = document.getElementById(`notif-${id}`);
+    if (item) item.remove();
+    
+    // Обновляем кэш
+    cachedNotifications = cachedNotifications.filter(n => n.id != id);
+    
+    // Шлем в Python
+    window.pywebview.api.delete_notification(id);
+}
+
+function openHistoryModal(id) {
+    console.log("Opening modal for ID:", id);
+    
+    // Ищем уведомление в кэше. Сравниваем как строки на всякий случай.
+    const notif = cachedNotifications.find(n => String(n.id) === String(id));
+    
+    if (!notif) {
+        console.error("Notification not found in cache!");
+        return;
+    }
+
+    const modal = document.getElementById("modal-history");
+    if (!modal) {
+        console.error("Modal element #modal-history not found in DOM!");
+        return;
+    }
+
+    // Помечаем прочитанным
+    if (notif.read !== "True") {
+        window.pywebview.api.mark_notification_as_read(id);
+        const el = document.getElementById(`notif-${id}`);
+        if(el) el.style.opacity = "0.7";
+        notif.read = "True";
+    }
+
+    // Заполняем данными
+    const payload = notif.payload || {};
+    
+    document.getElementById("hist-title").innerText = notif.title;
+    document.getElementById("hist-date").innerText = notif.timestamp;
+    
+    const img = document.getElementById("hist-img");
+    // Проверка, есть ли картинка, иначе дефолт
+    img.src = payload.thumbnail ? payload.thumbnail : "src/default_thumbnail.png";
+    
+    // Формат
+    let fmtInfo = "Инфо отсутствует";
+    if (payload.format) {
+        fmtInfo = payload.format.toUpperCase();
+        if (payload.resolution) fmtInfo += ` / ${payload.resolution}p`;
+    }
+    document.getElementById("hist-fmt").innerText = fmtInfo;
+
+    // Ссылка
+    const linkEl = document.getElementById("hist-link");
+    if (payload.url) {
+        linkEl.href = payload.url;
+        linkEl.innerText = payload.url;
+        linkEl.style.display = "block";
+    } else {
+        linkEl.style.display = "none";
+    }
+
+    // Кнопка ре-скачивания
+    const btnRedownload = document.getElementById("btn-redownload");
+    if (payload.url) {
+        btnRedownload.style.display = "flex";
+        btnRedownload.onclick = function() {
+            modal.classList.remove("show");
             
-            button = block.querySelector(".delete-notif-btn")
-            button.addEventListener("click", () => {
-                console.log(n.id);
-                mark_notification_as_read(n.id);
-            })
+            // Переход на вкладку 1 (Загрузчик)
+            const tab = document.querySelector('[data-tab="1"]');
+            if(tab) tab.click();
+
+            // Создаем заглушку и отправляем запрос
+            const tempId = Date.now().toString();
+            if (typeof window.createLoadingItem === 'function') window.createLoadingItem(tempId);
+
+            window.pywebview.api.addVideoToQueue(
+                payload.url, 
+                payload.format || 'mp4', 
+                payload.resolution || '1080', 
+                tempId
+            );
+        };
+    } else {
+        btnRedownload.style.display = "none";
+    }
+
+    // Кнопка удаления
+    const btnDel = document.getElementById("btn-hist-delete");
+    btnDel.onclick = function() {
+        deleteNotification(id);
+        modal.classList.remove("show");
+    };
+
+    // Показываем окно
+    modal.classList.add("show");
+}
+
+// Закрытие модалки
+const closeBtn = document.getElementById("close-history");
+if(closeBtn) {
+    closeBtn.addEventListener("click", () => {
+        document.getElementById("modal-history").classList.remove("show");
+    });
+}
+
+// Закрытие по клику на фон
+const modalHist = document.getElementById("modal-history");
+if(modalHist) {
+    modalHist.addEventListener("click", (e) => {
+        if (e.target === modalHist) {
+            modalHist.classList.remove("show");
         }
     });
 }
 
-function mark_notification_as_read(id) {
-    const cont = document.getElementById("notification-container");
-    const item = cont.querySelector(`#notif-${id}`);
-
-    console.log(id)
-    if (item) {
-        cont.removeChild(item);
-    }
-    window.pywebview.api.mark_notification_as_read(id);
+// ... Оставь код переключателей settings (load_settingsNotificatios и event listeners) ...
+function load_settingsNotificatios(down, conv) {
+    const swD = document.getElementById('switch_notifiDownload');
+    const swC = document.getElementById('switch_notifiConvertion');
+    if(swD) swD.checked = (down === "True");
+    if(swC) swC.checked = (conv === "True");
 }
 
-function load_settingsNotificatios(video, conversion) {
-    const switch_down = document.getElementById('switch_notifiDownload');
-    const switch_conv = document.getElementById('switch_notifiConvertion');
+const swD = document.getElementById('switch_notifiDownload');
+if(swD) swD.addEventListener('change', (e) => {
+    window.pywebview.api.switch_notifi("downloads", e.target.checked ? "True" : "False");
+});
 
-    if (video == "True") {
-        switch_down.checked = true
-    } else {
-        switch_down.checked = false
-    };
-
-    if (conversion == "True") {
-        switch_conv.checked = true
-    } else {
-        switch_conv.checked = false
-    }
-    
-}
-
-document.getElementById('switch_notifiDownload').addEventListener('change', () => {
-    const checkbox = document.getElementById('switch_notifiDownload');
-    
-    if (checkbox.checked) {
-        window.pywebview.api.switch_notifi("downloads", "True")
-    } else {
-        window.pywebview.api.switch_notifi("downloads", "False")
-    }
-})
-
-document.getElementById('switch_notifiConvertion').addEventListener('change', () => {
-    const checkbox = document.getElementById('switch_notifiConvertion');
-    
-    if (checkbox.checked) {
-        window.pywebview.api.switch_notifi("conversion", "True")
-    } else {
-        window.pywebview.api.switch_notifi("conversion", "False")
-    }
-})
+const swC = document.getElementById('switch_notifiConvertion');
+if(swC) swC.addEventListener('change', (e) => {
+    window.pywebview.api.switch_notifi("conversion", e.target.checked ? "True" : "False");
+});

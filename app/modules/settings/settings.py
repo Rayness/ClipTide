@@ -3,7 +3,7 @@
 import json
 import subprocess
 import platform
-from tkinter import Tk, filedialog
+# from tkinter import Tk, filedialog
 from app.utils.const import download_dir, UPDATER
 from app.utils.locale.translations import load_translations
 
@@ -73,18 +73,31 @@ class SettingsManager:
         self.ctx.js_exec(f'updateConvertFolder({json.dumps(path)})')
 
     def choose_folder(self):
-        path = self._open_dialog()
-        if path:
+        import webview
+        folder_path = self.ctx.window.create_file_dialog(
+            webview.FOLDER_DIALOG,
+            allow_multiple=False
+        )
+        
+        # Метод возвращает кортеж или None
+        if folder_path and len(folder_path) > 0:
+            path = folder_path[0] # Берем первый путь
             self.switch_download_folder(path)
 
     def choose_converter_folder(self):
-        path = self._open_dialog()
-        if path:
+        import webview
+        folder_path = self.ctx.window.create_file_dialog(
+            webview.FOLDER_DIALOG,
+            allow_multiple=False
+        )
+        
+        if folder_path and len(folder_path) > 0:
+            path = folder_path[0]
             self.switch_converter_folder(path)
 
-    def _open_dialog(self):
-        root = Tk()
-        root.withdraw()
-        path = filedialog.askdirectory()
-        root.destroy()
-        return path
+    # def _open_dialog(self):
+    #     root = Tk()
+    #     root.withdraw()
+    #     path = filedialog.askdirectory()
+    #     root.destroy()
+    #     return path

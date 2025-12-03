@@ -131,3 +131,90 @@
     background: var(--progress-gradient);
     transition: width 0.3s ease;
 }
+
+
+/* Селекты внутри очереди */
+.queue-selects {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.queue-select {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--border-radius-sm);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    outline: none;
+    max-width: 80px;
+}
+
+.queue-select:hover {
+    border-color: var(--accent-color);
+}
+
+.queue-select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+/* Скелетон загрузки (Временный элемент) */
+.queue-item-skeleton {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--dark-bg-transparent);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.skeleton-thumb {
+    width: 100px;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-sm);
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skeleton-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.skeleton-line {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    width: 60%;
+    animation: pulse-bg 1.5s infinite ease-in-out;
+}
+
+.skeleton-line.short {
+    width: 30%;
+}
+
+@keyframes pulse-bg {
+    0% { background: rgba(255, 255, 255, 0.05); }
+    50% { background: rgba(255, 255, 255, 0.1); }
+    100% { background: rgba(255, 255, 255, 0.05); }
+}
+
+/* Маленький спиннер внутри скелетона */
+.mini-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}

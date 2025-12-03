@@ -76,6 +76,7 @@ window.addConverterItem = function(item) {
     const thumbSrc = item.thumbnail || "src/default_thumbnail.png";
     const durationStr = formatDuration(item.duration);
     const d = item.details || { resolution: '?', codec: '?', bitrate: 0, fps: 0, audio: '?' };
+    const txtQueued = window.i18n.converter?.status_queued || 'Queued';
 
     li.innerHTML = `
         <div class="conv-item-top">
@@ -87,7 +88,7 @@ window.addConverterItem = function(item) {
                 <div class="conv-filename" title="${item.filename}">${item.filename}</div>
                 <div class="conv-meta"><i class="fa-regular fa-clock"></i> ${durationStr}</div>
             </div>
-            <div class="conv-status" id="conv-status-${item.id}">Queued</div>
+            <div class="conv-status" id="conv-status-${item.id}">${txtQueued}</div>
             <button class="delete-button" onclick="removeConverterItem('${item.id}')">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -141,13 +142,14 @@ function updateSidebarUI(settings, id) {
         title.innerText = filename;
         title.title = filename; // тултип для длинных имен
         btnApplyAll.style.display = 'block'; // Показываем кнопку "Применить ко всем"
+        btnApplyAll.title = window.i18n.converter?.apply_all_btn || "Apply to all";
 
         // Устанавливаем значения
         setInputValues(settings);
     } else {
         // Глобальный режим (показывать текущие значения инпутов или дефолт?)
         // Оставим как есть, просто сменим заголовок
-        title.innerText = "Глобальные настройки";
+        title.innerText = window.i18n.converter?.global_settings || "Global settings";
         btnApplyAll.style.display = 'none';
     }
     
@@ -284,22 +286,28 @@ document.getElementById('addBtn').addEventListener('click', function() {
     const selectedResolution = document.getElementById('resolution').value;
 
     if (!videoUrl) {
-        // Тут можно взять перевод из переменной, но пока так
-        document.getElementById('status').innerText = 'Error: Enter URL'; 
+        // Желательно добавить красивый тост/алерт
         return;
     }
+    
+    // Генерируем временный ID
+    const tempId = Date.now().toString();
+    
+    // 1. Сразу показываем заглушку
+    createLoadingItem(tempId);
 
-    showSpinner();
-
-    // Вызываем Python
-    window.pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution)
+    // 2. Отправляем запрос в Python (вместе с tempId)
+    // Обрати внимание: теперь 4 аргумента
+    window.pywebview.api.addVideoToQueue(videoUrl, selectedFormat, selectedResolution, tempId)
         .catch(() => {
+            // Если сам вызов API упал
+            removeLoadingItem(tempId);
             document.getElementById('status').innerHTML = 'API Error';
-            hideSpinner();
         });
         
     document.getElementById('videoUrl').value = '';
 });
+
 
 // Кнопка "Начать загрузку"
 document.getElementById('startBtn').addEventListener('click', function() {
@@ -385,20 +393,60 @@ window.updateProgressBar = function(progress, speed, eta) {
 
 // --- Очередь (Queue) ---
 
+// Создает временный блок загрузки
+function createLoadingItem(tempId) {
+    const queueList = document.getElementById("queue");
+    const li = document.createElement("li");
+    li.id = `temp-${tempId}`;
+    li.className = "queue-item-skeleton";
+    
+    li.innerHTML = `
+        <div class="skeleton-thumb">
+            <div class="mini-spinner"></div>
+        </div>
+        <div class="skeleton-info">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+        </div>
+    `;
+    
+    // Добавляем в начало списка (или в конец, как тебе удобнее)
+    queueList.appendChild(li); // В конец
+    // queueList.insertBefore(li, queueList.firstChild); // В начало (чтобы сразу видно)
+}
+
+// Удаляет временный блок (вызывается из Python при ошибке или JS при успехе)
+window.removeLoadingItem = function(tempId) {
+    const el = document.getElementById(`temp-${tempId}`);
+    if (el) el.remove();
+}
+
+
 // Функция принимает объект videoData из Python
 window.addVideoToList = function(videoData) {
+    // 1. Если это ответ на конкретный запрос добавления, удаляем заглушку
+    if (videoData.temp_id) {
+        window.removeLoadingItem(videoData.temp_id);
+    }
+
     const queueList = document.getElementById("queue");
-    // Проверка на дубликаты (если вдруг)
+    // Проверка на дубликаты
     if(document.getElementById(`item-${videoData.id}`)) return;
 
+    // ... (дальше код создания элемента списка без изменений) ...
+    // Скопируй сюда старый код создания listItem из предыдущего ответа
+    
     const listItem = document.createElement("li");
-    listItem.id = `item-${videoData.id}`; // Уникальный ID DOM элемента
-
-    // Генерируем HTML внутри элемента
+    listItem.id = `item-${videoData.id}`;
+    
+    // ... генерация селектов ...
     const thumb = videoData.thumbnail || "src/default_thumbnail.png";
-    const details = videoData.format === "mp3" 
-        ? `Audio / ${videoData.format}` 
-        : `${videoData.resolution}p / ${videoData.format}`;
+    const currentFmt = videoData.format;
+    const currentRes = videoData.resolution;
+    const isAudio = ['mp3', 'm4a', 'aac'].includes(currentFmt);
+    const fmtSelect = generateFormatSelect(videoData.id, currentFmt);
+    const resSelect = generateResolutionSelect(videoData.id, currentRes, isAudio);
+    const txtWait = window.i18n.status?.status_text?.replace('Status: ', '') || 'Waiting...';
 
     listItem.innerHTML = `
         <div class="queue-item-top">
@@ -406,8 +454,9 @@ window.addVideoToList = function(videoData) {
                 <img src="${thumb}" alt="thumb">
                 <div class="video-info">
                     <div class="video_queue_text" title="${videoData.title}">${videoData.title}</div>
-                    <div class="video-details" style="margin-top: 5px;">
-                        <span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">${details}</span>
+                    <div class="queue-selects" style="margin-top: 5px;">
+                        ${fmtSelect}
+                        ${resSelect}
                     </div>
                 </div>
             </div>
@@ -416,13 +465,12 @@ window.addVideoToList = function(videoData) {
             </button>
         </div>
         
-        <!-- Статус бар -->
         <div class="queue-item-bottom">
             <div class="mini-progress-track">
                 <div class="mini-progress-fill" id="prog-bar-${videoData.id}" style="width: 0%"></div>
             </div>
             <div class="queue-item-stats">
-                <span id="status-${videoData.id}">Ожидание...</span>
+                <span id="status-${videoData.id}">${txtWait}</span>
                 <span>
                     <span id="speed-${videoData.id}">-- MB/s</span> | 
                     <span id="eta-${videoData.id}">--:--</span>
@@ -431,7 +479,63 @@ window.addVideoToList = function(videoData) {
         </div>
     `;
 
-    queueList.appendChild(listItem);
+    // Важно: вставляем туда же, где был скелетон (в начало или конец)
+    queueList.appendChild(listItem); 
+    // queueList.insertBefore(listItem, queueList.firstChild); // В начало
+}
+
+// Генератор HTML для селекта форматов
+function generateFormatSelect(id, selected) {
+    const formats = ['mp4', 'mkv', 'webm', 'avi', 'mp3'];
+    let options = '';
+    formats.forEach(f => {
+        const isSel = f === selected ? 'selected' : '';
+        options += `<option value="${f}" ${isSel}>${f.toUpperCase()}</option>`;
+    });
+    // Добавляем onchange прямо здесь
+    return `<select class="queue-select" id="fmt-${id}" onchange="onQueueSettingsChange('${id}')">${options}</select>`;
+}
+
+// Генератор HTML для селекта разрешений
+function generateResolutionSelect(id, selected, disabled) {
+    const resolutions = [
+        {val: '2160', label: '4K'},
+        {val: '1440', label: '2K'},
+        {val: '1080', label: '1080p'},
+        {val: '720', label: '720p'},
+        {val: '480', label: '480p'},
+        {val: '360', label: '360p'}
+    ];
+    
+    let options = '';
+    resolutions.forEach(r => {
+        const isSel = r.val == selected ? 'selected' : '';
+        options += `<option value="${r.val}" ${isSel}>${r.label}</option>`;
+    });
+    
+    const disAttr = disabled ? 'disabled' : '';
+    return `<select class="queue-select" id="res-${id}" ${disAttr} onchange="onQueueSettingsChange('${id}')">${options}</select>`;
+}
+
+// Обработчик изменений
+window.onQueueSettingsChange = function(taskId) {
+    const fmtEl = document.getElementById(`fmt-${taskId}`);
+    const resEl = document.getElementById(`res-${taskId}`);
+    
+    if (!fmtEl || !resEl) return;
+
+    const newFmt = fmtEl.value;
+    const newRes = resEl.value;
+
+    // Логика блокировки разрешения для аудио
+    if (['mp3', 'aac', 'm4a'].includes(newFmt)) {
+        resEl.disabled = true;
+    } else {
+        resEl.disabled = false;
+    }
+
+    // Отправляем в Python
+    window.pywebview.api.update_video_settings(taskId, newFmt, newRes);
 }
 
 
@@ -503,6 +607,14 @@ window.updateItemProgress = function(taskId, progress, speed, eta) {
         if (statusText) statusText.innerText = "Готово";
         // Можно добавить анимацию исчезновения, если нужно
         // setTimeout(() => window.removeVideoFromQueue(taskId), 2000); 
+    }
+
+    // Блокировка настроек при старте
+    if (progress > 0 && progress < 100) {
+        const fmtEl = document.getElementById(`fmt-${taskId}`);
+        const resEl = document.getElementById(`res-${taskId}`);
+        if(fmtEl) fmtEl.disabled = true;
+        if(resEl) resEl.disabled = true;
     }
 }
 

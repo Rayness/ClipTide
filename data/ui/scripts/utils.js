@@ -34,3 +34,15 @@ window.loadopenfolders = function(enabled_dl, enabled_cv){
         checkbox_cv.checked = false
     }
 }
+
+window.removePreloader = function() {
+    const preloader = document.getElementById('app-preloader');
+    if (preloader) {
+        preloader.classList.add('hidden');
+        
+        // Удаляем из DOM через секунду, чтобы не мешал
+        setTimeout(() => {
+            preloader.remove();
+        }, 1000);
+    }
+}

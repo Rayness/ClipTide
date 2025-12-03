@@ -1,66 +1,73 @@
+// data/ui/scripts/modal.js
 
-var content;
+let modalContentData = {};
 
-function loadData(data){
-  content = data
-  console.log(content)
+// Вызывается из Python при старте (загружает modals.json)
+function loadData(data) {
+    // data может быть массивом с одним объектом (как у тебя было раньше) или сразу объектом
+    if (Array.isArray(data) && data.length > 0) {
+        modalContentData = data[0].content;
+    } else {
+        modalContentData = data.content || data;
+    }
+    console.log("Modal data loaded", modalContentData);
 };
 
-document.getElementById('close-modal').addEventListener('click', ()=>{
-  const modal = document.getElementById('modal')
+// Функция открытия окна по ключу (theme, proxy и т.д.)
+function openInfoModal(key) {
+    const modal = document.getElementById('modal-info');
+    const titleEl = document.getElementById('info-modal-title');
+    const bodyEl = document.getElementById('info-modal-content');
+    
+    // Получаем текущий язык из селекта
+    const currentLang = document.getElementById('language').value || 'en';
+    
+    // Пытаемся добраться до данных
+    // Структура JSON: settings -> [key] -> language -> [lang]
+    try {
+        const section = modalContentData.settings[key];
+        const langData = section.language[currentLang] || section.language['en']; // Фолбек на EN
+        
+        if (langData) {
+            titleEl.innerHTML = langData.title;
+            bodyEl.innerHTML = langData.content; // Вставляем как HTML
+            modal.classList.add('show');
+        } else {
+            console.error("No data found for key:", key, "lang:", currentLang);
+        }
+    } catch (e) {
+        console.error("Error parsing modal data:", e);
+    }
+}
 
-  modal.classList.remove('show')
+// --- Обработчики событий ---
+
+// Кнопка "?" возле Тем
+document.getElementById('help-theme').addEventListener('click', () => {
+    openInfoModal('themes');
 });
 
-document.getElementById('modal').addEventListener('click', (e) => {
-  if (e.target === modal) {
-    modal.classList.remove('show');
-  }
+// Кнопка "?" возле Прокси
+const proxyHelpBtn = document.getElementById('help-proxy');
+if (proxyHelpBtn) {
+    proxyHelpBtn.addEventListener('click', () => {
+        openInfoModal('proxy');
+    });
+}
+
+// Закрытие (Крестик)
+document.getElementById('close-info-modal').addEventListener('click', () => {
+    document.getElementById('modal-info').classList.remove('show');
 });
 
-document.getElementById('help-theme').addEventListener('click', ()=> {
-  const data = content[0].content.settings.themes.language;
-  const lang = document.getElementById('language').value;
-  console.log('содержимое: ', )
+// Закрытие (Кнопка "Понятно")
+document.getElementById('btn-info-close').addEventListener('click', () => {
+    document.getElementById('modal-info').classList.remove('show');
+});
 
-  switch(lang) {
-    case "ru":
-      displayData(data.ru);
-      break
-    case "en":
-      displayData(data.en);
-      break
-    default:
-      displayData(data.en);
-      break
+// Закрытие по клику на фон
+document.getElementById('modal-info').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modal-info')) {
+        document.getElementById('modal-info').classList.remove('show');
     }
 });
-
-document.getElementById('help-proxy').addEventListener('click', ()=>{
-  const data = content[0].content.settings.proxy.language;
-  const lang = document.getElementById('language').value;
-
-  switch(lang) {
-    case "ru":
-      displayData(data.ru);
-      break
-    case "en":
-      displayData(data.en);
-      break
-    default:
-      displayData(data.en);
-      break
-  }
-});
-
-
-function displayData(data){
-  const title = document.getElementById('modal-title');
-  const content = document.getElementById('modal-content');
-
-  title.innerHTML = ``
-  content.innerHTML = ``
-
-  title.innerHTML = data.title;
-  content.innerHTML = data.content;
-};

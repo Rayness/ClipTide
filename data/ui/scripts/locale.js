@@ -1,15 +1,18 @@
 // Copyright (C) 2025 Rayness
 // This program is free software under GPLv3. See LICENSE for details.
 
+window.i18n = {};
+
 updateApp = function(update, translations) {
+    update_text = document.getElementById('update__text');
     if (update) {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_ready || 'Update ready';
+        safeSetText('update__text', translations.settings.updates.update_text_ready);
         update_text.style.backgroundColor=  "#5d8a51";
     } else if (!update) {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_not_ready || 'Update not required';
+        safeSetText('update__text', translations.settings.updates.update_text_not_ready);
         update_text.style.backgroundColor = "#3e4d3a";
     } else {
-        document.getElementById('update__text').innerHTML = translations.settings.update_text_error || 'Update not available';
+        safeSetText('update__text', translations.settings.updates.update_text_error);
         update_text.style.backgroundColor = "#7c363d";
     }
 }
@@ -18,100 +21,155 @@ updateApp = function(update, translations) {
 
 // Функция для обновления текста интерфейса
 window.updateTranslations = function(translations) {
-    update_text = document.getElementById('update__text')
+    if (!translations) return; 
 
-    document.getElementById('10').setAttribute('data-status', translations.sections.setting);
+    window.i18n = translations;
+    if (translations.settings) {
+        // safeSetText('update__text', translations.settings.updates.update_text_ready);
 
-    // Настройки //
-    // 
-    // Язык
-    document.getElementById('language_settings_title').innerText = translations.settings.language.title || 'Language';
-    
-    document.getElementById('language_title').innerText = translations.settings.language.language || 'Language';
-    document.getElementById('lang_ru').innerHTML = translations.settings.language.russian || 'Russian';
-    document.getElementById('lang_en').innerHTML = translations.settings.language.english || 'English';
-    document.getElementById('lang_pl').innerHTML = translations.settings.language.polish || 'Polish';
-    document.getElementById('lang_ja').innerHTML = translations.settings.language.japan || 'Japan';
-    document.getElementById('lang_ua').innerHTML = translations.settings.language.ukraine || 'Ukraine';
-    document.getElementById('lang_de').innerHTML = translations.settings.language.german || 'German';
-    document.getElementById('lang_fr').innerHTML = translations.settings.language.french || 'French';
-    document.getElementById('lang_cn').innerHTML = translations.settings.language.chinese || 'Chinese';
-    document.getElementById('open_locale_folder').innerHTML = translations.settings.language.open_folder || 'Open folder';
+        // safeSetText('10', translations.sections.setting);
 
+        // Настройки //
 
-    // Оформление
-    document.getElementById('decorations-title').innerHTML = translations.settings.themes.decoration || 'Decoration';
-    document.getElementById('theme-title').innerHTML = translations.settings.themes.theme || 'Theme: ';
-    document.getElementById('style-title').innerHTML = translations.settings.themes.style || 'Style: ';
-    document.getElementById('themes-tooltip-open').innerHTML = translations.settings.themes.open_folder || 'Open theme folder';
-    
+        // Язык
+        if (translations.settings.language) {
+            safeSetText('language_settings_title', translations.settings.language.title);
+            safeSetText('language_title', translations.settings.language.language);
+            safeSetText('lang_ru', translations.settings.language.russian);
+            safeSetText('lang_en', translations.settings.language.english);
+            safeSetText('lang_pl', translations.settings.language.polish);
+            safeSetText('lang_ja', translations.settings.language.japan);
+            safeSetText('lang_ua', translations.settings.language.ukraine);
+            safeSetText('lang_de', translations.settings.language.german);
+            safeSetText('lang_fr', translations.settings.language.french);
+            safeSetText('lang_cn', translations.settings.language.chinese);
+            safeSetText('open_locale_folder', translations.settings.language.open_folder);
+        }
+        // Оформление
 
-    // Папки 
-    document.getElementById('folders-title').innerHTML = translations.settings.folders.title || 'Folders control';
+        if (translations.settings.themes) {
+            safeSetText('decorations-title', translations.settings.themes.decoration);
+            safeSetText('theme-title', translations.settings.themes.theme);
+            safeSetText('style-title', translations.settings.themes.style);
+            safeSetText('themes-tooltip-open', translations.settings.themes.open_folder);
+        }
 
-    document.getElementById('download_folder_title').innerHTML = translations.settings.folders.placeholder_download || 'Path to download folder';
-    document.getElementById('conversion_folder_title').innerHTML = translations.settings.folders.placeholder_conversion || 'Path to conversion folder';
+        // Папки 
+        if (translations.settings.folders) {
+            safeSetText('folders-title', translations.settings.folders.title);
+            safeSetText('download_folder_title', translations.settings.folders.placeholder_download);
+            safeSetText('conversion_folder_title', translations.settings.folders.placeholder_conversion);
 
-    document.getElementById('download_tooltip_defoult').innerHTML = translations.settings.folders.by_defoult || 'By default';
-    document.getElementById('download_tooltip_choose').innerHTML = translations.settings.folders.choose_download_folder || 'Choose download folder';
-    document.getElementById('download_tooltip_open').innerHTML = translations.settings.folders.open_download_folder || 'Open download folder';
+            safeSetText('download_tooltip_defoult', translations.settings.folders.by_defoult);
+            safeSetText('download_tooltip_choose', translations.settings.folders.choose_download_folder);
+            safeSetText('download_tooltip_open', translations.settings.folders.open_download_folder);
 
-    document.getElementById('conversion-tooltip_defoult').innerHTML = translations.settings.folders.by_defoult || 'By default';
-    document.getElementById('conversion-tooltip_choose').innerHTML = translations.settings.folders.choose_converter_folder || 'Choose conversion folder';
-    document.getElementById('conversion-tooltip_open').innerHTML = translations.settings.folders.open_converter_folder || 'Open conversion folder';
+            safeSetText('conversion-tooltip_defoult', translations.settings.folders.by_defoult);
+            safeSetText('conversion-tooltip_choose', translations.settings.folders.choose_converter_folder);
+            safeSetText('conversion-tooltip_open', translations.settings.folders.open_converter_folder);
+        }
 
+        // Уведомления
+        if (translations.settings.notifications) {
+            safeSetText('notification-title', translations.settings.notifications.title);
+            safeSetText('get_notifi_download', translations.settings.notifications.notifi_download);
+            safeSetText('get_notifi_conversion', translations.settings.notifications.notifi_conversion);
+        }
 
-    // Уведомления
-    document.getElementById('notification-title').innerHTML = translations.settings.notifications.title || 'Notifications conrol';
-    document.getElementById('get_notifi_download').innerHTML = translations.settings.notifications.notifi_download || 'Get notifications from download';
-    document.getElementById('get_notifi_conversion').innerHTML = translations.settings.notifications.notifi_conversion || 'Get notification from converter';
+        // Прокси 
+        if (translations.settings.proxys) {
+            safeSetText('proxy-title', translations.settings.proxys.title);
+            safeSetText('turn_on_proxy', translations.settings.proxys.turn_on);
+        }
 
+        // Обновления
+        if (translations.settings.updates) {
+            safeSetText('updates-title', translations.settings.updates.title);
+            safeSetText('update', translations.settings.updates.update_button);
+        }
 
-    // Прокси 
-    document.getElementById('proxy-title').innerHTML = translations.settings.proxys.title || "Proxy-server control";
-    document.getElementById('turn_on_proxy').innerHTML = translations.settings.proxys.turn_on || "Proxy-server turn on";
+        // О приложении
+        if (translations.settings.about) {
+            safeSetText('about-title', translations.settings.about.title);
+            safeSetText('about-version', translations.settings.about.version);
+            safeSetText('about-date', translations.settings.about.date);
+        }
 
+    }
+        // Донат
+        if (translations.donate) {
+            safeSetText('donate-description', translations.donate.description);
+        }
 
-    // Обновления
-    document.getElementById('updates-title'). innerHTML = translations.settings.updates.title || 'Updates control';
-    document.getElementById('update').innerHTML = translations.settings.updates.update_button || 'Check';
+        // Основной функционал //
+        // 
+        // Загрузка видео
 
+        const vidUrl = document.getElementById('videoUrl');
+        if(vidUrl) vidUrl.placeholder = translations.video_URL || 'Enter video URL';
 
-    // О приложении
-    document.getElementById('about-title').innerHTML = translations.settings.about.title || "About";
-    document.getElementById('about-version').innerHTML = translations.settings.about.version || "Version: 1.5";
-    document.getElementById('about-date').innerHTML = translations.settings.about.date || "Release: 06/11/2025";
+        // Конвертер
+        if (translations.converter) {
+            safeSetText('converter_add_video', translations.converter.click_for_add_video);
+            safeSetText('convertion-settings', translations.converter.convertion_settings);
+            safeSetText('txt-conv-add', translations.converter.add_files_btn);
+            
+            // Заголовок сайдбара обновляется динамически, но дефолт зададим
+            const headerTitle = document.getElementById('setting-header-title');
+            if(headerTitle && headerTitle.innerText.includes("Глобальные")) { 
+                headerTitle.innerText = translations.converter.global_settings;
+            }
+            
+            safeSetText('lbl-cv-fmt', translations.converter.lbl_format);
+            safeSetText('lbl-cv-codec', translations.converter.lbl_codec);
+            safeSetText('lbl-cv-qual', translations.converter.lbl_quality);
+            safeSetText('lbl-cv-res', translations.converter.lbl_resolution);
+            
+            safeSetText('txt-cv-better', translations.converter.val_better);
+            safeSetText('txt-cv-worse', translations.converter.val_worse);
+            
+            safeSetText('txt-btn-conv', translations.converter.btn_convert);
+            safeSetText('txt-btn-stop', translations.converter.btn_stop);
+        
+        // История (Модальное окно)
+        if (translations.history) {
+            safeSetText('lbl-hist-date', translations.history.date_label);
+            safeSetText('lbl-hist-fmt', translations.history.format_label);
+            safeSetText('lbl-hist-link', translations.history.link_label);
+            safeSetText('txt-hist-dl', translations.history.btn_download_again);
+            safeSetText('txt-hist-del', translations.history.btn_delete_record);
 
+            // Ссылку "Открыть в браузере" нужно обновлять аккуратно, чтобы не стереть href
+            const linkEl = document.getElementById('hist-link');
+            if(linkEl && translations.history.open_browser) {
+                linkEl.innerText = translations.history.open_browser;
+            }
+            } else {
+                console.warn("Translation section 'history' is missing!");
+            }
 
-    // Донат
-    // 
-    // Станица с донатом
-    document.getElementById('')
-    document.getElementById('donate-description').innerHTML = translations.donate.description;
+        }
 
-
-    // Основной функционал //
-    // 
-    // Загрузка видео
-    document.getElementById('videoUrl').placeholder = translations.video_URL || 'Enter video URL';
-
-    // // Конвертер видео
-    // document.getElementById('converter_add_video').innerText = translations.converter.click_for_add_video || '';
-
-    // document.getElementById('convertion-settings').innerText = translations.converter.convertion_settings || '';
-    // document.getElementById('convert_btn').innerText = translations.converter.conversion_button;
-    // document.getElementById('convertion_format').innerText = translations.converter.format;
-    // document.getElementById('close-video').innerText = translations.converter.close_video;
-    
-    // document.getElementById('video_info').innerText = translations.converter.video_info.title;
-    // document.getElementById('conv_duration_text').innerText = translations.converter.video_info.duration;
-    // document.getElementById('conv_framerate_text').innerText = translations.converter.video_info.framerate;
-    // document.getElementById('conv_video_codec_text').innerText = translations.converter.video_info.video_codec;
-    // document.getElementById('conv_bit_rate-video_text').innerText = translations.converter.video_info.video_bitrate;
-    // document.getElementById('conv_audio_codec_text').innerText = translations.converter.video_info.audio_codec;
-    // document.getElementById('conv_bit_rate-audio_text').innerText = translations.converter.video_info.audio_bitrate;
+        // Логи
+        // Если лог пустой (только старт), можно обновить первую запись
+        if (translations.logs) {
+            safeSetText('event-log-title', translations.logs.tittle);
+        }
+        const logContainer = document.getElementById("app-logs");
+        if (logContainer && logContainer.children.length === 1) {
+            safeSetText('log-entry', translations.logs.app_ready);
+        }
 };
 
-document.getElementById('openLangFiles').addEventListener('click', ()=>{
-    window.pywebview.api.open_locale_folder()
-})
+function safeSetText(id, text) {
+    const el = document.getElementById(id);
+    if (el && text) el.innerText = text;
+}
+
+// Оставляем слушатель
+const openLangBtn = document.getElementById('openLangFiles');
+if(openLangBtn) {
+    openLangBtn.addEventListener('click', ()=>{
+        window.pywebview.api.open_locale_folder()
+    });
+}

@@ -2,6 +2,7 @@
 
 import json
 import webview
+import time
 from app.core.context import AppContext
 from app.core.core import PublicWebViewApi, WebViewApi
 from app.utils.config.config import load_config, update_config
@@ -88,6 +89,12 @@ def startApp():
         
         for cmd in cmds:
             window.evaluate_js(cmd)
+        
+        print("Initialization complete. Removing preloader.")
+        
+        time.sleep(0.5) 
+        
+        window.evaluate_js('window.removePreloader()')
 
     window.events.loaded += on_loaded
     webview.start()

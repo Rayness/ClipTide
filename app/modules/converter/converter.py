@@ -7,7 +7,7 @@ import time
 import uuid
 import subprocess
 import ffmpeg
-from tkinter import Tk, filedialog
+# from tkinter import Tk, filedialog
 from app.utils.converter_utils import get_thumbnail_base64, print_video_info
 from app.modules.settings.settings import open_folder
 
@@ -28,13 +28,15 @@ class Converter:
         self._js_exec(f'addLog("[CONV] {safe_msg}")')
 
     def openFile(self):
-        root = Tk()
-        root.withdraw()
-        file_paths = filedialog.askopenfilenames(
-            title="Выберите файлы",
-            filetypes=(("Video/Audio", "*.mp4;*.avi;*.mkv;*.mov;*.mp3;*.wav"), ("All files", "*.*"))
+        import webview
+        # Заменяем Tkinter на pywebview
+        ft =  ("Video and Audio files (*.mp4;*.avi;*.mkv;*.mov;*.mp3;*.wav)", "All files (*.*)")
+        file_paths = self.ctx.window.create_file_dialog(
+            webview.OPEN_DIALOG,
+            allow_multiple=True,
+            file_types=ft
         )
-        root.destroy()
+        # root.destroy()
 
         if not file_paths:
             return

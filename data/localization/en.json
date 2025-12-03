@@ -8,6 +8,14 @@
     "start_downloading" : "Start downloading",
     "status" : {
         "status_text" : "Status: Pending...",
+        "pending": "Analyzing...",
+        "paused": "Paused",
+        "error": "Error",
+        "resuming": "Resuming tasks...",
+        "queue_finished": "Queue finished.",
+        "manager_started": "Download Manager Started",
+        "manager_stopped": "Download Manager Stopped",
+        "stopping": "Stopping...",
         "unknown video" : "Unknown video",
         "download_success" : "Video uploaded successfully",
         "download_error" : "Error downloading",
@@ -119,6 +127,22 @@
     },
 
     "converter": {
+        "add_files_btn": "Add files",
+        "settings_title": "Settings",
+        "global_settings": "Global settings",
+        "apply_all_btn": "Apply to all",
+        "lbl_format": "Format:",
+        "lbl_codec": "Codec:",
+        "lbl_quality": "Quality (CRF):",
+        "lbl_resolution": "Resolution:",
+        "val_better": "Better",
+        "val_worse": "Worse",
+        "btn_convert": "Convert",
+        "btn_stop": "Stop",
+        "status_queued": "Queued",
+        "status_processing": "Processing...",
+        "status_done": "Done",
+        "status_error": "Error",
         "click_for_add_video" : "Click to select a video",
         "convertion_settings" : "Conversion settings",
         "conversion_button" : "Convert",
@@ -134,10 +158,24 @@
             "audio_codec": "Audio Codec:",
             "audio_bitrate" : "Audio bitrate: "
         },
-        
 
         "video_add": "Video has been added",
         "video_error": "Error adding video",
         "video_adding": "Adding video"
+    },
+
+    "history": {
+        "date_label": "Date loaded:",
+        "format_label": "Format:",
+        "link_label": "Link:",
+        "open_browser": "Open in browser",
+        "btn_download_again": "Download again",
+        "btn_delete_record": "Delete record",
+        "empty": "History is empty"
+    },
+
+    "logs": {
+        "title": "Event log",
+        "app_ready": "Application is ready"
     }
 }
