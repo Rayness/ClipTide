@@ -39,7 +39,7 @@ After launching the graphical interface, you need to:
 
 ## Known errors:
 1. Problem: Incorrect display of playlist downloads, how to determine: the indicator spins for a very long time and nothing happens for a long time. If you wait, the playlist name will appear in the queue without a preview. The entire playlist will be downloaded.
-- Solution: Do not add playlists to the queue, or wait;
+  - Solution: Do not add playlists to the queue, or wait;
 
 ## Future plans:
 - [x] Add auto-update ( Updater added );
